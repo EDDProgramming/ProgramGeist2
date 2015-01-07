@@ -42,50 +42,42 @@ package ProgramGeist.entity;
 import java.util.*;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.*;
 
 import ProgramGeist.world.*;
 
 
 public abstract class Entity {
 	public enum EntityType {
-		GenericEntity, Unit, RangedUnit, ProjectileEntity
+		GenericEntity, 
+		CodeBlock
 	}
 	
 	protected static Random random = new Random();
-	
 	protected double x, y, z;
-	
 	protected Vector3f acceleration = new Vector3f(0, 0, 0);
     protected Vector3f velocity = new Vector3f(0, 0, 0);
-    
     protected double frictionCoeffecient = 0.1;
-    
     private boolean removed;
-    
     protected int team;
     protected int id;
     private static int nextId = 0;
-    
     protected EntityType entityType = EntityType.GenericEntity;
-    
-    protected EntityWorld world;    
+    protected EntityWorld world;
+    protected Image image;
     
     // Constructors
     public Entity(EntityWorld world) {
-    	this(0, 0, 0, 0, world);
+    	this(0, 0, 0, world);
     	this.id = ++nextId;
     }
-    public Entity(double x, double y, int team, EntityWorld world) {
-    	this(x, y, 0, team, world);
+    public Entity(double x, double y, EntityWorld world) {
+    	this(x, y, 0, world);
     }
     public Entity(double x, double y, double z, EntityWorld world) {
-    	this(x, y, z, 0, world);
-    }
-    public Entity(double x, double y, double z, int team, EntityWorld world) {
     	this.x = x;
     	this.y = y;
     	this.z = z;
-    	this.team = team;
     	
     	this.world = world;
     }
@@ -93,7 +85,6 @@ public abstract class Entity {
     public EntityType getType() {
     	return entityType;
     }
-    
     
     public boolean isFixedPosition() {
     	return false;
@@ -103,8 +94,8 @@ public abstract class Entity {
     public abstract boolean update(int deltaMS);
     
     
-    public void render(double camX, double camY) {
-    	
+    public void render(Graphics g, double camX, double camY) {
+    	g.drawImage(image, (float)(x-camX), (float)(y-camY));
     }
     
     
