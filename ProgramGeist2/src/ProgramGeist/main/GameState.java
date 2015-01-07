@@ -5,7 +5,7 @@ import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.*;
 
 public class GameState extends BasicGameState {
-	public static final int ID = 1;
+	public static final int ID = 2;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -22,7 +22,7 @@ public class GameState extends BasicGameState {
 	@Override
 	public int getID() {
 		// TODO Auto-generated method stub
-		return 0;
+		return ID;
 	}
 
 	@Override

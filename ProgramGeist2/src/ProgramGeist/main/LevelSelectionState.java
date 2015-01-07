@@ -5,7 +5,7 @@ import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.*;
 
 public class LevelSelectionState extends BasicGameState {
-	public static final int ID = 1;
+	public static final int ID = 3;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
