@@ -11,7 +11,7 @@ public class LogoState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		logoImage = new Image("res/Logo.png");
+		logoImage = new Image("res/logo.png");
 		colMult.a = 0;
 	}
 
