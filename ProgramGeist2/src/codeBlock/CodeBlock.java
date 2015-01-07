@@ -5,7 +5,7 @@ import ProgramGeist.world.*;
 
 public class CodeBlock extends Entity{
 	
-	public enum BlockType {
+	public enum blockType {
 		Generic,
 		Hat,
 		Stack,
@@ -17,7 +17,10 @@ public class CodeBlock extends Entity{
 	
 	// Constructors
 	public CodeBlock(EntityWorld world) {
-		super(world);
+		this(0, 0, world);
+		
+		//blockType = Generic;
+		
 	}
 	public CodeBlock(double x, double y, EntityWorld world) {
 		super(x, y, world);
