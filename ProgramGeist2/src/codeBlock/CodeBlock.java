@@ -19,7 +19,6 @@ public class CodeBlock extends Entity{
 	public CodeBlock(EntityWorld world) {
 		this(0, 0, world);
 		
-		//blockType = Generic;
 		
 	}
 	public CodeBlock(double x, double y, EntityWorld world) {
