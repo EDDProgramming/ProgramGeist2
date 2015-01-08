@@ -5,7 +5,7 @@ import ProgramGeist.world.*;
 
 public class CodeBlock extends Entity{
 	
-	public enum blockType {
+	public enum BlockType {
 		Generic,
 		Hat,
 		Stack,
@@ -15,18 +15,24 @@ public class CodeBlock extends Entity{
 		Cap
 	}
 	
+	protected BlockType blockType = BlockType.Generic;
+	
+	protected CodeBlock downBlock = null;
+	protected CodeBlock upBlock   = null;
+	
 	// Constructors
 	public CodeBlock(EntityWorld world) {
 		this(0, 0, world);
-		
-		
 	}
 	public CodeBlock(double x, double y, EntityWorld world) {
 		super(x, y, world);
 	}
+	public CodeBlock(CodeBlock downBlock, EntityWorld world) {
+		this(downBlock.getX(), downBlock.getY()-20, world);
+		this.downBlock = downBlock;
+	}
 	
 	public boolean update(int deltaMS) {
-		
 		
 		return true;
 	}
