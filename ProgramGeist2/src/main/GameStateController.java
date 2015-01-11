@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ProgramGeist.main;
+package main;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;

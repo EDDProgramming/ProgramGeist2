@@ -1,11 +1,11 @@
-package ProgramGeist.main;
+package main;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.*;
 
-public class LevelSelectionState extends BasicGameState {
-	public static final int ID = 3;
+public class GameState extends BasicGameState {
+	public static final int ID = 2;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {

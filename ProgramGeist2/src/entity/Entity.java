@@ -37,14 +37,14 @@
  * 
  */
 
-package ProgramGeist.entity;
+package entity;
 
 import java.util.*;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
 
-import ProgramGeist.world.*;
+import world.*;
 
 
 public abstract class Entity {

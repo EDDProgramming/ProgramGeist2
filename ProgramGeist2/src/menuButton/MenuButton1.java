@@ -2,12 +2,12 @@ package menuButton;
 
 import java.net.URL;
 
-import ProgramGeist.entity.*;
-import ProgramGeist.world.*;
-
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
+
+import world.*;
+import entity.*;
 
 
 public class MenuButton1 extends Entity{

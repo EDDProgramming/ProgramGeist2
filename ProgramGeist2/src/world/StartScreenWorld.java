@@ -1,11 +1,11 @@
-package ProgramGeist.world;
+package world;
 
 import java.util.*;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
-import ProgramGeist.entity.*;
+import entity.*;
 import menuButton.*;
 
 public class StartScreenWorld extends EntityWorld {
