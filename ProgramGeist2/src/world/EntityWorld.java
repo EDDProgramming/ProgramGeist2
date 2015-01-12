@@ -1,9 +1,8 @@
-package ProgramGeist.world;
+package world;
 
 import java.util.*;
 
-import ProgramGeist.entity.*;
-//import ProgramGeist.gui.*;
+import entity.*;
 
 
 public class EntityWorld {

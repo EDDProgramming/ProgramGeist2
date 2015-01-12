@@ -1,11 +1,11 @@
-package ProgramGeist.main;
+package main;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.*;
 
-public class GameState extends BasicGameState {
-	public static final int ID = 2;
+public class StartScreenState extends BasicGameState {
+	public static final int ID = 1;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -21,7 +21,6 @@ public class GameState extends BasicGameState {
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return ID;
 	}
 

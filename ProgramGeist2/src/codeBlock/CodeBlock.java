@@ -1,7 +1,7 @@
 package codeBlock;
 
-import ProgramGeist.entity.*;
-import ProgramGeist.world.*;
+import world.*;
+import entity.*;
 
 public class CodeBlock extends Entity{
 	
