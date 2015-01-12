@@ -4,18 +4,24 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.*;
 
+import world.EntityWorld;
+
 public class GameState extends BasicGameState {
 	public static final int ID = 2;
+	private EntityWorld entityWorld;
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		// TODO Auto-generated method stub
 		
+		entityWorld = new EntityWorld();
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		// TODO Auto-generated method stub
+		if(entityWorld != null)
+		{
+			entityWorld.render(0.0, 0.0);
+		}
 		
 	}
 
@@ -27,7 +33,10 @@ public class GameState extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
-		// TODO Auto-generated method stub
+		if(entityWorld != null)
+		{
+			entityWorld.update(deltaMS);
+		}
 		
 	}
 	
