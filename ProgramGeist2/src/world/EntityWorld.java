@@ -20,7 +20,12 @@ public class EntityWorld {
 	
 	public EntityWorld() {
 		Random random = new Random();
-		//addEntity(new WorkerBee(10, 10, 0, 0, this));
+		
+		//TODO remove test code
+		
+		
+		// end test code
+		
 	}
     
     public void update(int deltaMS) {

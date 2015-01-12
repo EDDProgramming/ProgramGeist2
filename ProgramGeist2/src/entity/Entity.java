@@ -50,16 +50,14 @@ import world.*;
 public abstract class Entity {
 	public enum EntityType {
 		GenericEntity, 
-		CodeBlock
+		CodeBlock,
+		Object,
+		Tile
 	}
 	
 	protected static Random random = new Random();
 	protected double x, y, z;
-	protected Vector3f acceleration = new Vector3f(0, 0, 0);
-    protected Vector3f velocity = new Vector3f(0, 0, 0);
-    protected double frictionCoeffecient = 0.1;
     private boolean removed;
-    protected int team;
     protected int id;
     private static int nextId = 0;
     protected EntityType entityType = EntityType.GenericEntity;
@@ -98,7 +96,6 @@ public abstract class Entity {
     	g.drawImage(image, (float)(x-camX), (float)(y-camY));
     }
     
-    
     public double getX() {
     	return x;
     }
@@ -107,26 +104,43 @@ public abstract class Entity {
     	return y;
     }
     
+    // get squared distance from entity other
     public double distanceToSqr(Entity other) {
         double dx = x - other.x;
-        double dz = z - other.z;
-        return dx * dx + dz * dz;
+        double dy = y - other.y;
+        return dx * dx + dy * dy;
     }
     
-    // returns the xy plane distance from entity other
+    // returns the perspective xy plane distance from entity other
     public double perspectiveDistanceToSqr(Entity other) {
         double dx = x - other.x;
         double dy = (y - other.y) * 2;
         return dx * dx + dy * dy;
     }
     
-    // check if entity has collided with 
+    public int getID() {
+    	return id;
+    }
+    
+    public boolean isRemoved() {
+        return removed;
+    }
+    
+    public void setRemoved() {
+        this.removed = true;
+    }
+    
+    //
+    // Stuff that should probably be going into PhysicsObject
+    //
+    
+ // check if entity has collided with anything
     public void checkCollisions(List<Entity> entities) {
         double thisRadius = getCollisionRadius();
         for (Entity e : entities) {
             if (collidesWith(e) && e.collidesWith(this)) {
                 double radius = thisRadius + e.getCollisionRadius();
-                if (perspectiveDistanceToSqr(e) < radius * radius) {
+                if (distanceToSqr(e) < radius * radius) {
                     onCollide(e);
                 }
 //                // positions may have changed, so recalculate
@@ -141,49 +155,11 @@ public abstract class Entity {
         return other != this;
     }
     
-    public double getCollisionRadius() {
-        return 16;
-    }
-    
-    public double getEntityHeight() {
-        return 32.0f;
-    }
-    
-    public int getID() {
-    	return id;
-    }
-    
     protected void onCollide(Entity entity) {
     }
     
-    public boolean isRemoved() {
-        return removed;
-    }
-    
-    public void setRemoved() {
-        this.removed = true;
-    }
-    
-    public void push(Vector3f push) {
-        velocity.x += push.x;
-        velocity.y += push.y;
-        velocity.z += push.z;
-    }
-    
-    public void applyFriction(double MU) {
-    	velocity.x -= velocity.x * MU;
-    	velocity.y -= velocity.y * MU;
-    	velocity.z -= velocity.z * MU;
-    }
-    
-    public void resolveCollisionWithFixedEntity(Entity entity) {
-//        double radius = getCollisionRadius() + entity.getCollisionRadius();
-//        // push away... or something like that
-//        double dx = (entity.x - x);
-//        double dy = (entity.y - y) * 2;
-//        double dist = Math.sqrt(dx * dx + dy * dy);
-//        x = entity.x - dx / dist * radius;
-//        y = entity.y - dy / dist * radius * .5f;
+    public double getCollisionRadius() {
+        return 16;
     }
     
 }

@@ -34,7 +34,7 @@ public class LogoState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
 		if(startTime + logoDuration < gc.getTime())
 		{
-			game.enterState(StartScreenState.ID, new FadeOutTransition(), new FadeInTransition());
+			game.enterState(GameState.ID, new FadeOutTransition(), new FadeInTransition());
 		}
 		
 	}
