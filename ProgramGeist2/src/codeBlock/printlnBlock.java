@@ -1,6 +1,6 @@
 package codeBlock;
 
-import ProgramGeist.world.EntityWorld;
+import world.EntityWorld;
 
 
 public class printlnBlock extends StackBlock {

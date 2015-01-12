@@ -2,7 +2,7 @@ package codeBlock;
 
 import java.util.ArrayList;
 
-import ProgramGeist.world.*;
+import world.*;
 
 public class CBlock extends CodeBlock {
 	
