@@ -6,23 +6,46 @@ import org.newdawn.slick.state.transition.*;
 
 import world.EntityWorld;
 
+
 public class GameState extends BasicGameState {
 	public static final int ID = 2;
-	private EntityWorld entityWorld;
+	
+	private EntityWorld world;
+	private final int updatesPerSecond = 40;
+	private final int msPerUpdate = 1000 / updatesPerSecond;
+	private Camera camera;
+	
+	public GameState() {
+	}
+	
+	void startGame(GameContainer gc) throws SlickException {
+		camera = new Camera();
+		world = new EntityWorld(camera);
+	}
 	
 	@Override
-	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		
-		entityWorld = new EntityWorld();
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {	
+		gc.setMinimumLogicUpdateInterval(msPerUpdate);
+		gc.setMaximumLogicUpdateInterval(msPerUpdate);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-		if(entityWorld != null)
+		if(world != null)
 		{
-			entityWorld.render(0.0, 0.0);
+			world.render(0.0, 0.0);
 		}
 		
+		if(world != null) {
+			world.render(camera.getX(), camera.getY());
+		}
+	}
+	
+	@Override
+	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
+		super.enter(gc, game);
+		startGame(gc);
 	}
 
 	@Override
@@ -33,11 +56,16 @@ public class GameState extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
-		if(entityWorld != null)
+		if(world != null)
 		{
-			entityWorld.update(deltaMS);
+			world.update(deltaMS);
 		}
 		
+		if(world != null) {
+			camera.update(deltaMS);
+			world.update(deltaMS);
+		}
+		// TODO add isGameOver code
 	}
 	
 }

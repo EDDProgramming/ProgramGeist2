@@ -50,7 +50,9 @@ import world.*;
 public abstract class Entity {
 	public enum EntityType {
 		GenericEntity, 
-		CodeBlock
+		CodeBlock,
+		Object,
+		Tile
 	}
 	
 	protected static Random random = new Random();
