@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.SlickException;
 
 
 public class PhysicsObject extends Entity {
 	
-	protected boolean isEditable = true;
+	protected boolean isEditable  = true;
+	protected boolean isObjective = false;
+	protected boolean isPlayer    = false;
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
@@ -19,7 +22,7 @@ public class PhysicsObject extends Entity {
     protected Vector3f velocity = new Vector3f(0, 0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(double x, double y, EntityWorld world) {
+	public PhysicsObject(double x, double y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
@@ -43,7 +46,26 @@ public class PhysicsObject extends Entity {
     	velocity.z -= velocity.z * MU;
     }
     
+    public void setObjective() {
+    	isObjective = true;
+    }
     
+    public void setPlayer() {
+    	isPlayer = true;
+    }
+    
+    @Override
+    protected void onCollide(Entity other) {
+    	
+    }
+    protected void onCollide(PhysicsObject other) {
+    	if(isPlayer) {
+    		if(other.isObjective()) {
+    			// TODO create win screen
+    			System.out.println("YOU WIN!");
+    		}
+    	}
+    }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {
 //      double radius = getCollisionRadius() + entity.getCollisionRadius();
@@ -66,6 +88,13 @@ public class PhysicsObject extends Entity {
         return 32.0f;
     }
 	
+    public boolean isObjective() {
+    	return isObjective;
+    }
+    
+    public boolean isPlayer() {
+    	return isPlayer;
+    }
     
     
 }

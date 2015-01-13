@@ -1,5 +1,7 @@
 package codeBlock;
 
+import org.newdawn.slick.SlickException;
+
 import world.*;
 import entity.*;
 
@@ -21,13 +23,13 @@ public class CodeBlock extends Entity{
 	protected CodeBlock upBlock   = null;
 	
 	// Constructors
-	public CodeBlock(EntityWorld world) {
+	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
-	public CodeBlock(double x, double y, EntityWorld world) {
+	public CodeBlock(double x, double y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
-	public CodeBlock(CodeBlock downBlock, EntityWorld world) {
+	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20, world);
 		this.downBlock = downBlock;
 	}

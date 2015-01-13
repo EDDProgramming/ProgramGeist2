@@ -1,5 +1,7 @@
 package tile;
 
+import org.newdawn.slick.SlickException;
+
 import entity.Entity;
 import world.EntityWorld;
 
@@ -9,7 +11,7 @@ public class Tile extends Entity {
 		GenericTile
 	}
 	
-	Tile(int x, int y, EntityWorld world) {
+	public Tile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Tile;

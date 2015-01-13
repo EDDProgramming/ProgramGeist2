@@ -65,19 +65,21 @@ public abstract class Entity {
     protected Image image;
     
     // Constructors
-    public Entity(EntityWorld world) {
+    public Entity(EntityWorld world) throws SlickException {
     	this(0, 0, 0, world);
     	this.id = ++nextId;
     }
-    public Entity(double x, double y, EntityWorld world) {
+    public Entity(double x, double y, EntityWorld world) throws SlickException {
     	this(x, y, 0, world);
     }
-    public Entity(double x, double y, double z, EntityWorld world) {
+    public Entity(double x, double y, double z, EntityWorld world) throws SlickException {
     	this.x = x;
     	this.y = y;
     	this.z = z;
     	
     	this.world = world;
+    	
+    	image = new Image("res/Whoops.png");
     }
     
     public EntityType getType() {

@@ -2,8 +2,13 @@ package world;
 
 import java.util.*;
 
-import entity.*;
+import main.Camera;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+
+import tile.Tile;
+import entity.*;
 
 public class EntityWorld {
 	private List<Entity> entities = new ArrayList<Entity>();
@@ -18,10 +23,20 @@ public class EntityWorld {
 	
 	private int resource1;
 	
-	public EntityWorld() {
+	private Camera camera;
+	
+	public EntityWorld(Camera c) throws SlickException {
 		Random random = new Random();
 		
+		camera = c;
+		
 		//TODO remove test code
+		
+		addEntity(new Ball(50, 50, this));
+		
+		for(int i = 0; i<10; i++) {
+			addEntity(new Tile(20*i, 200, this));
+		}
 		
 		
 		// end test code
@@ -77,7 +92,7 @@ public class EntityWorld {
         newEnts.clear();
     }
     
-    public void render(double camX, double camY) {
+    public void render(Graphics g, double camX, double camY) {
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
@@ -85,7 +100,7 @@ public class EntityWorld {
         Iterator<Entity> iterator = renderableEntities.iterator();
         while (iterator.hasNext()) {
             Entity r = iterator.next();
-//            r.render(screen, camX, camY);
+            r.render(g, camX, camY);
             iterator.remove();
         }
     }

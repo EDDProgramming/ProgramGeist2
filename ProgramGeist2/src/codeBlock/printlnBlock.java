@@ -1,5 +1,7 @@
 package codeBlock;
 
+import org.newdawn.slick.SlickException;
+
 import world.EntityWorld;
 
 
@@ -7,10 +9,10 @@ public class printlnBlock extends StackBlock {
 	
 	String printText    = "";
 	
-	public printlnBlock(double x, double y, EntityWorld world) {
+	public printlnBlock(double x, double y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
-	public printlnBlock(CodeBlock downBlock, EntityWorld world) {
+	public printlnBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		super(downBlock, world);
 	}
 	
