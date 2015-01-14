@@ -57,7 +57,7 @@ public abstract class Entity {
 	
 	protected static Random random = new Random();
 	protected double x, y, z;
-    private boolean removed;
+    protected boolean removed = false;
     protected int id;
     private static int nextId = 0;
     protected EntityType entityType = EntityType.GenericEntity;

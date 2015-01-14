@@ -17,8 +17,8 @@ public class Ball extends PhysicsObject {
 	@Override
 	public boolean update(int deltaMS) {
 		super.update(deltaMS);
-		// TODO Auto-generated method stub
-		return false;
+		
+		return !removed;
 	}
 	
 	

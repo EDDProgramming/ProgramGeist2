@@ -25,7 +25,7 @@ public class Tile extends Entity {
 	
 	// TODO 
 	public double getCollisionRadius() {
-		return 20;
+		return 50;
 	}
 	
 }

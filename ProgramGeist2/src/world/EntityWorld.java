@@ -35,7 +35,7 @@ public class EntityWorld {
 		addEntity(new Ball(50, 50, this));
 		
 		for(int i = 0; i<10; i++) {
-			addEntity(new Tile(20*i, 200, this));
+			addEntity(new Tile(100*i, 300, this));
 		}
 		
 		
