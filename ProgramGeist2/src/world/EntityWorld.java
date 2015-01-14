@@ -2,6 +2,8 @@ package world;
 
 import java.util.*;
 
+import main.Camera;
+
 import entity.*;
 
 
@@ -18,7 +20,7 @@ public class EntityWorld {
 	
 	private int resource1;
 	
-	public EntityWorld() {
+	public EntityWorld(Camera camera) {
 		Random random = new Random();
 		//addEntity(new WorkerBee(10, 10, 0, 0, this));
 	}

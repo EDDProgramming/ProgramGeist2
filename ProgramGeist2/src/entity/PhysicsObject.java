@@ -4,9 +4,8 @@ import world.EntityWorld;
 import codeBlock.CodeBlock;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
 
 
@@ -18,11 +17,12 @@ public class PhysicsObject extends Entity {
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
-	protected Vector3f acceleration = new Vector3f(0, 0, 0);
-    protected Vector3f velocity = new Vector3f(0, 0, 0);
+	float mass;
+	protected Vector2f acceleration = new Vector2f(0, 0);
+    protected Vector2f velocity = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(double x, double y, EntityWorld world) throws SlickException {
+	public PhysicsObject(double x, double y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
@@ -30,15 +30,26 @@ public class PhysicsObject extends Entity {
 
 	@Override
 	public boolean update(int deltaMS) {
-		
-		
+		velocity.x += acceleration.x;
+		velocity.y += acceleration.y;
 		
 		return false;
 	}
     
-    public void push(Vector3f push) {
-        velocity.x += push.x;
-        velocity.y += push.y;
+    public void applyForce(float forceX, float forceY) {
+        acceleration.x += forceX / mass;
+        acceleration.y += forceY / mass;
+    }
+    
+    public void applyForce(double deg, double magnitude) {
+    	float forceX;
+    	float forceY;
+    	
+    	forceX = (float) (magnitude * Math.sin(deg));
+    	forceY = (float) (magnitude * Math.cos(deg));
+    	
+    	acceleration.x += forceX / mass;
+    	acceleration.y += forceY / mass;
     }
     
     public void applyFriction(double MU) {

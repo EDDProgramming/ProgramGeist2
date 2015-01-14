@@ -6,12 +6,21 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import entity.*;
+import main.Camera;
 import menuButton.*;
 
 public class StartScreenWorld extends EntityWorld {
 	
+	public StartScreenWorld(Camera camera) {
+		super(camera);
+	}
+
+
+
 	private List<Entity> buttons = new ArrayList<Entity>();
 	private MenuButton1 button1;
+	
+	
 	
 	public void init(GameContainer gc) throws SlickException
 	{

@@ -9,8 +9,8 @@ public class Ball extends PhysicsObject {
 	
 	
 	
-	public Ball(double x, double y, EntityWorld world) throws SlickException {
-		super(x, y, world);
+	public Ball(double x, double y, EntityWorld world, float mass) throws SlickException {
+		super(x, y, world, mass);
 		image = new Image("res/Ball.png");
 	}
 
