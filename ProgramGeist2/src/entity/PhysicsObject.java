@@ -22,7 +22,7 @@ public class PhysicsObject extends Entity {
     protected Vector3f velocity = new Vector3f(0, 0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(double x, double y, EntityWorld world) throws SlickException {
+	public PhysicsObject(double x, double y, EntityWorld world, double d) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
