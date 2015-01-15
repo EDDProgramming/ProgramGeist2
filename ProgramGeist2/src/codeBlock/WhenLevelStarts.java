@@ -4,7 +4,7 @@ import world.EntityWorld;
 
 public class WhenLevelStarts extends HatBlock {
 	
-	public WhenLevelStarts(double x, double y, EntityWorld world) {
+	public WhenLevelStarts(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public WhenLevelStarts(CodeBlock downBlock, EntityWorld world) {

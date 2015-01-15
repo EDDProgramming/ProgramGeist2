@@ -7,7 +7,7 @@ public class printlnBlock extends StackBlock {
 	
 	String printText    = "";
 	
-	public printlnBlock(double x, double y, EntityWorld world) {
+	public printlnBlock(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public printlnBlock(CodeBlock downBlock, EntityWorld world) {

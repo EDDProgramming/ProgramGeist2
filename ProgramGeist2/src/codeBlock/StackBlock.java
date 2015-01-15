@@ -4,7 +4,7 @@ import world.EntityWorld;
 
 public class StackBlock extends CodeBlock {
 	
-	public StackBlock(double x, double y, EntityWorld world) {
+	public StackBlock(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public StackBlock(CodeBlock downBlock, EntityWorld world) {

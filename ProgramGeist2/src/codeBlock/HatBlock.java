@@ -4,7 +4,7 @@ import world.EntityWorld;
 
 public class HatBlock extends CodeBlock {
 	
-	public HatBlock(double x, double y, EntityWorld world) {
+	public HatBlock(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public HatBlock(CodeBlock downBlock, EntityWorld world) {

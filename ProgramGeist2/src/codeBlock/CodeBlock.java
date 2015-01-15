@@ -24,7 +24,7 @@ public class CodeBlock extends Entity{
 	public CodeBlock(EntityWorld world) {
 		this(0, 0, world);
 	}
-	public CodeBlock(double x, double y, EntityWorld world) {
+	public CodeBlock(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) {

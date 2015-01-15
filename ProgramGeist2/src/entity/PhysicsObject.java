@@ -11,8 +11,11 @@ import org.newdawn.slick.SlickException;
 
 public class PhysicsObject extends Entity {
 	
+	//Signifies that code can be applied to this object
 	protected boolean isEditable  = true;
+	//Signifies that this is the goal
 	protected boolean isObjective = false;
+	//Signifies that this is the gamepiece that must go to the goal
 	protected boolean isPlayer    = false;
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
@@ -22,7 +25,7 @@ public class PhysicsObject extends Entity {
     protected Vector2f velocity = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(double x, double y, EntityWorld world, float mass) throws SlickException {
+	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
@@ -33,14 +36,20 @@ public class PhysicsObject extends Entity {
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
+		position.x += velocity.x;
+		position.y += velocity.y;
+		
 		return false;
 	}
     
+	
+	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
         acceleration.x += forceX / mass;
         acceleration.y += forceY / mass;
     }
     
+    //Force with a direction and magnitude
     public void applyForce(double deg, double magnitude) {
     	float forceX;
     	float forceY;
@@ -52,6 +61,7 @@ public class PhysicsObject extends Entity {
     	acceleration.y += forceY / mass;
     }
     
+    //Slows down an object
     public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;

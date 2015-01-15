@@ -41,6 +41,7 @@ package entity;
 
 import java.util.*;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
 
@@ -56,9 +57,9 @@ public abstract class Entity {
 	}
 	
 	protected static Random random = new Random();
-	protected double x, y, z;
-	protected Vector3f acceleration = new Vector3f(0, 0, 0);
-    protected Vector3f velocity = new Vector3f(0, 0, 0);
+	protected Vector2f position = new Vector2f(0, 0);
+	protected Vector2f acceleration = new Vector2f(0, 0);
+    protected Vector2f velocity = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1;
     private boolean removed;
     protected int team;
@@ -70,16 +71,13 @@ public abstract class Entity {
     
     // Constructors
     public Entity(EntityWorld world) {
-    	this(0, 0, 0, world);
+    	this(0, 0, world);
     	this.id = ++nextId;
     }
-    public Entity(double x, double y, EntityWorld world) {
-    	this(x, y, 0, world);
-    }
-    public Entity(double x, double y, double z, EntityWorld world) {
-    	this.x = x;
-    	this.y = y;
-    	this.z = z;
+
+    public Entity(float x, float y, EntityWorld world) {
+    	this.position.x = x;
+    	this.position.y = y;
     	
     	this.world = world;
     }
@@ -97,28 +95,28 @@ public abstract class Entity {
     
     
     public void render(Graphics g, double camX, double camY) {
-    	g.drawImage(image, (float)(x-camX), (float)(y-camY));
+    	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
     }
     
     
-    public double getX() {
-    	return x;
+    public float getX() {
+    	return position.x;
     }
     
-    public double getY() {
-    	return y;
+    public float getY() {
+    	return position.y;
     }
     
     public double distanceToSqr(Entity other) {
-        double dx = x - other.x;
-        double dz = z - other.z;
-        return dx * dx + dz * dz;
+        double dx = position.x - other.position.x;
+        double dy = position.y - other.position.y;
+        return dx * dx + dy * dy;
     }
     
     // returns the xy plane distance from entity other
     public double perspectiveDistanceToSqr(Entity other) {
-        double dx = x - other.x;
-        double dy = (y - other.y) * 2;
+        double dx = position.x - other.position.x;
+        double dy = (position.y - other.position.y) * 2;
         return dx * dx + dy * dy;
     }
     
@@ -169,13 +167,11 @@ public abstract class Entity {
     public void push(Vector3f push) {
         velocity.x += push.x;
         velocity.y += push.y;
-        velocity.z += push.z;
     }
     
     public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;
-    	velocity.z -= velocity.z * MU;
     }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {
