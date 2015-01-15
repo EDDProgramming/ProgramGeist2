@@ -7,13 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
 
 
 public class PhysicsObject extends Entity {
 	
+	//Signifies that code can be applied to this object
 	protected boolean isEditable  = true;
+	//Signifies that this is the goal
 	protected boolean isObjective = false;
+	//Signifies that this is the gamepiece that must go to the goal
 	protected boolean isPlayer    = false;
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
@@ -22,7 +26,7 @@ public class PhysicsObject extends Entity {
     protected Vector3f velocity = new Vector3f(0, 0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(double x, double y, EntityWorld world, double d) throws SlickException {
+	public PhysicsObject(float x, float y, EntityWorld world, double d) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
@@ -39,11 +43,26 @@ public class PhysicsObject extends Entity {
         velocity.y += push.y;
         velocity.z += push.z;
     }
+    public void applyForce(float forceX, float forceY) {
+        acceleration.x += forceX / mass;
+        acceleration.y += forceY / mass;
+    }
+    
+    //Force with a direction and magnitude
+    public void applyForce(double deg, double magnitude) {
+    	float forceX;
+    	float forceY;
+    	
+    	forceX = (float) (magnitude * Math.sin(deg));
+    	forceY = (float) (magnitude * Math.cos(deg));
+    	
+    	acceleration.x += forceX / mass;
+    	acceleration.y += forceY / mass;
+    }
     
     public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;
-    	velocity.z -= velocity.z * MU;
     }
     
     public void setObjective() {
@@ -65,16 +84,6 @@ public class PhysicsObject extends Entity {
     			System.out.println("YOU WIN!");
     		}
     	}
-    }
-    
-    public void resolveCollisionWithFixedEntity(Entity entity) {
-//      double radius = getCollisionRadius() + entity.getCollisionRadius();
-//      // push away... or something like that
-//      double dx = (entity.x - x);
-//      double dy = (entity.y - y) * 2;
-//      double dist = Math.sqrt(dx * dx + dy * dy);
-//      x = entity.x - dx / dist * radius;
-//      y = entity.y - dy / dist * radius * .5f;
     }
 	
 	//

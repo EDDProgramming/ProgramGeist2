@@ -6,7 +6,7 @@ import world.EntityWorld;
 
 public class HatBlock extends CodeBlock {
 	
-	public HatBlock(double x, double y, EntityWorld world) throws SlickException {
+	public HatBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public HatBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {

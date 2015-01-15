@@ -32,7 +32,7 @@ public class EntityWorld {
 		
 		//TODO remove test code
 		
-		addEntity(new Ball(50.0, 50.0, this, 10.0));
+		addEntity(new Ball(50.0f, 50.0f, this, 10.0f));
 		
 		for(int i = 0; i<10; i++) {
 			addEntity(new Tile(100*i, 300, this));

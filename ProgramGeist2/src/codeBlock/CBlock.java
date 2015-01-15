@@ -10,7 +10,7 @@ public class CBlock extends CodeBlock {
 	
 	protected ArrayList<CodeBlock> stack = new ArrayList<CodeBlock>();
 	
-	public CBlock(double x, double y, EntityWorld world) throws SlickException {
+	public CBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public CBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {

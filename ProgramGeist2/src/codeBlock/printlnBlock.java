@@ -9,7 +9,7 @@ public class printlnBlock extends StackBlock {
 	
 	String printText    = "";
 	
-	public printlnBlock(double x, double y, EntityWorld world) throws SlickException {
+	public printlnBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public printlnBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {

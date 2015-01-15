@@ -6,7 +6,7 @@ import world.EntityWorld;
 
 public class WhenLevelStarts extends HatBlock {
 	
-	public WhenLevelStarts(double x, double y, EntityWorld world) throws SlickException {
+	public WhenLevelStarts(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public WhenLevelStarts(CodeBlock downBlock, EntityWorld world) throws SlickException {

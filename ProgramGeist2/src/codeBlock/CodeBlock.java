@@ -27,11 +27,11 @@ public class CodeBlock extends Entity{
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
-	public CodeBlock(double x, double y, EntityWorld world) throws SlickException {
+	public CodeBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		this(downBlock.getX(), downBlock.getY()-20, world);
+		this((float)downBlock.getX(), (float)downBlock.getY()-20, world);
 		this.downBlock = downBlock;
 	}
 	

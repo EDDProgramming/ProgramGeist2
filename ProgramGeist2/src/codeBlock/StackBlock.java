@@ -6,7 +6,7 @@ import world.EntityWorld;
 
 public class StackBlock extends CodeBlock {
 	
-	public StackBlock(double x, double y, EntityWorld world) throws SlickException {
+	public StackBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
 	public StackBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
