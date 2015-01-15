@@ -22,6 +22,7 @@ public class PhysicsObject extends Entity {
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
+	float mass;
 	protected Vector3f acceleration = new Vector3f(0, 0, 0);
     protected Vector3f velocity = new Vector3f(0, 0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.

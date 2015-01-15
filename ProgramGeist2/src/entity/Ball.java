@@ -21,8 +21,6 @@ public class Ball extends PhysicsObject {
 		super.update(deltaMS);
 		
 		return !removed;
-		
-		return false;
 	}
 	
 	public boolean update(int deltaMS, GameContainer gc) {

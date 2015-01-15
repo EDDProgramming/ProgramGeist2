@@ -84,7 +84,7 @@ public abstract class Entity {
     	
     	try {
     	image = new Image("res/Whoops.png");
-    	catch (SlickException e) {
+    	} catch (SlickException e) {
     		e.printStackTrace();
     	}
     }
