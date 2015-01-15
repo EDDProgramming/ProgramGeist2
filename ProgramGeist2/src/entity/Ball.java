@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
-	
+
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world, mass);
 		image = new Image("res/Ball.png");
@@ -19,6 +19,7 @@ public class Ball extends PhysicsObject {
 		super.update(deltaMS);
 		
 		return !removed;
+
 	}
 	
 	public boolean update(int deltaMS, GameContainer gc) {

@@ -24,7 +24,8 @@ public class PhysicsObject extends Entity {
     protected Vector3f velocity = new Vector3f(0, 0, 0);
     protected double frictionCoeffecient = 0.1; // MU for EVERYTHING. Probably not a good idea.
 	
-	public PhysicsObject(float x, float y, EntityWorld world, double d) throws SlickException {
+
+	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world);
 		
 		entityType = EntityType.Object;
@@ -32,7 +33,12 @@ public class PhysicsObject extends Entity {
 
 	@Override
 	public boolean update(int deltaMS) {
-		// TODO PO update
+		velocity.x += acceleration.x;
+		velocity.y += acceleration.y;
+		
+		position.x += velocity.x;
+		position.y += velocity.y;
+		
 		return false;
 	}
     
@@ -42,6 +48,7 @@ public class PhysicsObject extends Entity {
         velocity.y += push.y;
         velocity.z += push.z;
     }
+    
     public void applyForce(float forceX, float forceY) {
         acceleration.x += forceX / mass;
         acceleration.y += forceY / mass;
@@ -59,8 +66,8 @@ public class PhysicsObject extends Entity {
     	acceleration.y += forceY / mass;
     }
     
-    @Override
-	public void applyFriction(double MU) {
+    //Slows down an object
+    public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;
     }

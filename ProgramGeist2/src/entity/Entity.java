@@ -59,6 +59,7 @@ public abstract class Entity {
 	protected static Random random = new Random();
 	protected double x, y, z;
     protected boolean removed = false;
+
 	protected Vector2f position = new Vector2f(0, 0);
 	protected Vector2f acceleration = new Vector2f(0, 0);
     protected Vector2f velocity = new Vector2f(0, 0);
@@ -75,7 +76,6 @@ public abstract class Entity {
     	this(0, 0, world);
     	this.id = ++nextId;
     }
-    	
     public Entity(float x, float y, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
@@ -179,6 +179,16 @@ public abstract class Entity {
     public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;
+    }
+    
+    public void resolveCollisionWithFixedEntity(Entity entity) {
+//        double radius = getCollisionRadius() + entity.getCollisionRadius();
+//        // push away... or something like that
+//        double dx = (entity.x - x);
+//        double dy = (entity.y - y) * 2;
+//        double dist = Math.sqrt(dx * dx + dy * dy);
+//        x = entity.x - dx / dist * radius;
+//        y = entity.y - dy / dist * radius * .5f;
     }
     
 }
