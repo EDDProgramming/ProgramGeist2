@@ -1,6 +1,5 @@
 package codeBlock;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.SlickException;
 
 import world.*;
@@ -31,10 +30,11 @@ public class CodeBlock extends Entity{
 		super(x, y, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		this((float)downBlock.getX(), (float)downBlock.getY()-20, world);
+		this(downBlock.getX(), downBlock.getY()-20, world);
 		this.downBlock = downBlock;
 	}
 	
+	@Override
 	public boolean update(int deltaMS) {
 		
 		

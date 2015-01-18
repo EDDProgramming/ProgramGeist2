@@ -13,6 +13,7 @@ public class WhenLevelStarts extends HatBlock {
 		super(downBlock, world);
 	}
 	
+	@Override
 	public boolean update(int deltaMS) {
 		
 		// TODO Integrate with Levels

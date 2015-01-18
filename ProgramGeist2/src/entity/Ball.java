@@ -9,8 +9,6 @@ import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
 	
-	
-	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world, mass);
 		image = new Image("res/Ball.png");

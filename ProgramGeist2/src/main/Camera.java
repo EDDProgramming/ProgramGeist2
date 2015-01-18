@@ -23,8 +23,8 @@ public class Camera {
 	}
 
 	public void update(int deltaMS) {
-		x += (targetX - x) * (float) deltaMS * .01f;
-		y += (targetY - y) * (float) deltaMS * .01f;
+		x += (targetX - x) * deltaMS * .01f;
+		y += (targetY - y) * deltaMS * .01f;
 		x = clamp(x, minX, maxX);
 		y = clamp(y, minY, maxY);
 		screenShakeAnim += deltaMS * .001f;

@@ -24,6 +24,7 @@ public class Tile extends Entity {
 	}
 	
 	// TODO 
+	@Override
 	public double getCollisionRadius() {
 		return 50;
 	}

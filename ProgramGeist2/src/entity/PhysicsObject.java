@@ -4,10 +4,7 @@ import world.EntityWorld;
 import codeBlock.CodeBlock;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
 
 
@@ -39,7 +36,8 @@ public class PhysicsObject extends Entity {
 		return false;
 	}
     
-    public void push(Vector3f push) {
+    @Override
+	public void push(Vector3f push) {
         velocity.x += push.x;
         velocity.y += push.y;
         velocity.z += push.z;
@@ -61,7 +59,8 @@ public class PhysicsObject extends Entity {
     	acceleration.y += forceY / mass;
     }
     
-    public void applyFriction(double MU) {
+    @Override
+	public void applyFriction(double MU) {
     	velocity.x -= velocity.x * MU;
     	velocity.y -= velocity.y * MU;
     }

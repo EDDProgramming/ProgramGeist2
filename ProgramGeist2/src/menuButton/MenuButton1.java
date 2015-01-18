@@ -1,11 +1,6 @@
 package menuButton;
 
-import java.net.URL;
-
-import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.*;
-
 import world.*;
 import entity.*;
 
