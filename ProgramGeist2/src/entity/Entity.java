@@ -60,8 +60,6 @@ public abstract class Entity {
 	protected double x, y, z;
     protected boolean removed = false;
 	protected Vector2f position = new Vector2f(0, 0);
-	protected Vector2f acceleration = new Vector2f(0, 0);
-    protected Vector2f velocity = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1;
     protected int team;
     protected int id;
@@ -167,16 +165,6 @@ public abstract class Entity {
     
     public double getCollisionRadius() {
         return 16;
-    }
-    
-    public void push(Vector3f push) {
-        velocity.x += push.x;
-        velocity.y += push.y;
-    }
-    
-    public void applyFriction(double MU) {
-    	velocity.x -= velocity.x * MU;
-    	velocity.y -= velocity.y * MU;
     }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {

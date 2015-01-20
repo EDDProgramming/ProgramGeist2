@@ -5,6 +5,7 @@ import codeBlock.CodeBlock;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
 
 
@@ -20,8 +21,8 @@ public class PhysicsObject extends Entity {
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
 	float mass = 1; 
-	protected Vector3f acceleration = new Vector3f(0, 0, 0);
-    protected Vector3f velocity = new Vector3f(0, 0, 0);
+	protected Vector2f acceleration = new Vector2f(0, 0);
+    protected Vector2f velocity = new Vector2f(0, 0);
 	
 
 	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
@@ -63,7 +64,8 @@ public class PhysicsObject extends Entity {
     }
     
     public void applyGravity() {
-    	applyForce(0f, 0.1f); // Remember that positives are down!
+    	applyForce(0f, 0.1f);
+    	//Positive is down
     }
     
     // Slows down an object
@@ -71,8 +73,8 @@ public class PhysicsObject extends Entity {
     public void applyFriction(double MU) {
     	// Fair = -MU*v^2/2
     	// Fdrag = 1/2p*v^2*C*A
-    	float forceX = (float) (-MU * (velocity.x*velocity.x)/ 2);
-    	float forceY = (float) (-MU * (velocity.y*velocity.y)/ 2);
+    	float forceX = (float) (-MU * (velocity.x));
+    	float forceY = (float) (-MU * (velocity.y));
     	applyForce(forceX, forceY);
     }
     
@@ -86,9 +88,12 @@ public class PhysicsObject extends Entity {
     
     @Override
     protected void onCollide(Entity other) {
-    	if(other.entityType == entityType.Tile) {
-    		applyForce(0f, 1/2 * mass * (velocity.y*velocity.y)); // impact force
-    		position.y = (float) ((float) (other.position.y-other.getCollisionRadius())-this.getCollisionRadius()-3);
+    	if(other.entityType == EntityType.Tile) {
+    		
+    		float forceNormal = -1/2 * mass * velocity.y*velocity.y;
+    		
+    		applyForce(0f, forceNormal); // impact force
+    		position.y = (float) ((float) (other.position.y-other.getCollisionRadius())-this.getCollisionRadius()-1);
     	}
     	
     }
