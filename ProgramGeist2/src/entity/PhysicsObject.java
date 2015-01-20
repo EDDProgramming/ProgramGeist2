@@ -4,6 +4,7 @@ import world.EntityWorld;
 import codeBlock.CodeBlock;
 
 import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
@@ -45,6 +46,7 @@ public class PhysicsObject extends Entity {
 		
 		applyGravity();
 		applyFriction(0.5f);
+		checkCollisions(world.entities);
 		
 		acceleration.x = sumForce.x / mass;
 		acceleration.y = sumForce.y / mass;
@@ -55,7 +57,8 @@ public class PhysicsObject extends Entity {
 		position.x += velocity.x;
 		position.y += velocity.y;
 		
-		checkCollisions(world.entities);
+		System.out.println("Position: "+this.position.y);
+		System.out.println("PrevPosition: "+this.prevPosition.y);
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
 		prevPosition = position;

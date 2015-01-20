@@ -19,8 +19,6 @@ public class Ball extends PhysicsObject {
 		super.update(deltaMS);
 		
 		System.out.println();
-		System.out.println("Position: "+this.position.y);
-		System.out.println("PrevPosition: "+this.prevPosition.y);
 		System.out.println("Velocity: "+this.velocity.y);
 		System.out.println("Acceleration: "+this.acceleration.y);
 		
