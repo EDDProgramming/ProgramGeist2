@@ -24,6 +24,9 @@ public class PhysicsObject extends Entity {
 	protected Vector2f sumForce = new Vector2f(0, 0);
 	protected Vector2f acceleration = new Vector2f(0, 0);
     protected Vector2f velocity = new Vector2f(0, 0);
+    
+    //Used for collisions, saves at the end of every frame
+    protected Vector2f prevPosition = new Vector2f(0, 0);
 	
 
 	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
@@ -40,16 +43,22 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 		
-		checkCollisions(world.entities);
+		applyGravity();
+		applyFriction(0.5f);
 		
-		acceleration.x += sumForce.x / mass;
-		acceleration.y += sumForce.y / mass;
+		acceleration.x = sumForce.x / mass;
+		acceleration.y = sumForce.y / mass;
 		
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
 		position.x += velocity.x;
 		position.y += velocity.y;
+		
+		checkCollisions(world.entities);
+		
+		//Keep this at the end. Is used to get the position of the object in the previous frame.
+		prevPosition = position;
 		
 		return !removed;
 	}
@@ -74,17 +83,22 @@ public class PhysicsObject extends Entity {
     }
     
     public void applyGravity() {
-    	applyForce(0f, 0.1f);
+    	
+    	float magnitude;
+    	
+    	magnitude = (float) (mass * .98);
+    	
+    	applyForce(0, magnitude);
     	//Positive is down
     }
     
     // Slows down an object
     // ONLY WORKS WITH AIR FRICTION
-    public void applyFriction(double MU) {
+    public void applyFriction(float MU) {
     	// Fair = -MU*v^2/2
     	// Fdrag = 1/2p*v^2*C*A
-    	float forceX = (float) (-MU * (velocity.x));
-    	float forceY = (float) (-MU * (velocity.y));
+    	float forceX = -MU * velocity.x;
+    	float forceY = -MU * velocity.y;
     	applyForce(forceX, forceY);
     }
     
@@ -100,10 +114,14 @@ public class PhysicsObject extends Entity {
     protected void onCollide(Entity other) {
     	if(other.entityType == EntityType.Tile) {
     		
-    		float forceNormal = -1/2 * mass * velocity.y*velocity.y;
+    		//Absolute value allows us to use the square value while maintaining the direction
+    		float forceNormal = -1/2 * mass * velocity.y*Math.abs(velocity.y);
     		
-    		applyForce(0f, forceNormal); // impact force
-    		position.y = (float) ((float) (other.position.y-other.getCollisionRadius())-this.getCollisionRadius()-1);
+    		System.out.println("Collide");
+    		
+    		//Bump the ball back up
+    		position.y = prevPosition.y - 3;
+    		applyForce(0, forceNormal); // impact force
     	}
     	
     }

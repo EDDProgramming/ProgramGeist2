@@ -17,17 +17,10 @@ public class Ball extends PhysicsObject {
 	@Override
 	public boolean update(int deltaMS) {
 		super.update(deltaMS);
-
-		//TODO remove test code
-		applyGravity();
-		applyFriction(0.1);
-		//applyForce(1, 0);
-		
-		//this.position.y = 200f;
-		//this.position.x += 1;
 		
 		System.out.println();
 		System.out.println("Position: "+this.position.y);
+		System.out.println("PrevPosition: "+this.prevPosition.y);
 		System.out.println("Velocity: "+this.velocity.y);
 		System.out.println("Acceleration: "+this.acceleration.y);
 		
@@ -44,7 +37,7 @@ public class Ball extends PhysicsObject {
 			applyForce(0, 5);
 		}
 		
-		applyFriction(0.1);
+		applyFriction(0.1f);
 		
 		return false;
 	}
