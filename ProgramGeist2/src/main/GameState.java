@@ -27,6 +27,7 @@ public class GameState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {	
 		gc.setMinimumLogicUpdateInterval(msPerUpdate);
 		gc.setMaximumLogicUpdateInterval(msPerUpdate);
+		System.out.println("Init GameState");
 	}
 
 	@Override
@@ -40,6 +41,7 @@ public class GameState extends BasicGameState {
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
 		super.enter(gc, game);
 		startGame(gc);
+		System.out.println("Enter GameState");
 	}
 
 	@Override

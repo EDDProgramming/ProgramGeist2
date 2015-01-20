@@ -18,8 +18,21 @@ public class Ball extends PhysicsObject {
 	public boolean update(int deltaMS) {
 		super.update(deltaMS);
 		
+		//TODO remove test code
+		applyGravity();
+		applyFriction(0.1);
+		//applyForce(1, 0);
+		
+		//this.position.y = 200f;
+		//this.position.x += 1;
+		
+		System.out.println();
+		System.out.println("Position: "+this.position.y);
+		System.out.println("Velocity: "+this.velocity.y);
+		System.out.println("Acceleration: "+this.acceleration.y);
+		
+		
 		return !removed;
-
 	}
 	
 	public boolean update(int deltaMS, GameContainer gc) {
@@ -28,12 +41,16 @@ public class Ball extends PhysicsObject {
 		
 		if(input.isKeyDown(Input.KEY_UP) == true)
 		{
-			applyForce(0, 5);
+			applyForce(0, -5);
 		}
 		
 		applyFriction(0.1);
 		
 		return false;
+	}
+	
+	public double getCollisionRadius() {
+		return 60.0/2;
 	}
 	
 	

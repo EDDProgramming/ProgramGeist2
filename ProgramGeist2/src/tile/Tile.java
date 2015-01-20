@@ -1,5 +1,6 @@
 package tile;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import entity.Entity;
@@ -14,6 +15,8 @@ public class Tile extends Entity {
 	public Tile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 		
+		image = new Image("res/CrappyTile.png");
+		
 		entityType = EntityType.Tile;
 	}
 
@@ -22,11 +25,12 @@ public class Tile extends Entity {
 		// TODO Tile update
 		return true;
 	}
-	
-	// TODO 
+
 	@Override
 	public double getCollisionRadius() {
-		return 50;
+		return 50; 
+		// assuming the tile is square. 
+		//We will run into problems if we want to make any that are not square.
 	}
 	
 }
