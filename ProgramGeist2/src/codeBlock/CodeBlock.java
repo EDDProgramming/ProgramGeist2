@@ -26,8 +26,7 @@ public class CodeBlock extends Entity{
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
-	public CodeBlock(float x, float y, EntityWorld world) throws SlickException {
-
+	public CodeBlock(float x, float y, EntityWorld world) {
 		super(x, y, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {

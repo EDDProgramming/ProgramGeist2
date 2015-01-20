@@ -17,7 +17,7 @@ public class Ball extends PhysicsObject {
 	@Override
 	public boolean update(int deltaMS) {
 		super.update(deltaMS);
-		
+
 		//TODO remove test code
 		applyGravity();
 		applyFriction(0.1);
@@ -41,7 +41,7 @@ public class Ball extends PhysicsObject {
 		
 		if(input.isKeyDown(Input.KEY_UP) == true)
 		{
-			applyForce(0, -5);
+			applyForce(0, 5);
 		}
 		
 		applyFriction(0.1);

@@ -59,7 +59,6 @@ public abstract class Entity {
 	protected static Random random = new Random();
 	protected double x, y, z;
     protected boolean removed = false;
-
 	protected Vector2f position = new Vector2f(0, 0);
 	protected Vector2f acceleration = new Vector2f(0, 0);
     protected Vector2f velocity = new Vector2f(0, 0);
@@ -104,7 +103,6 @@ public abstract class Entity {
     public void render(Graphics g, double camX, double camY) {
     	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
     }
-    
     public float getX() {
     	return position.x;
     }

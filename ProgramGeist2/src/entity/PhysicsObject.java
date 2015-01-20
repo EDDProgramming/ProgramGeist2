@@ -43,13 +43,8 @@ public class PhysicsObject extends Entity {
 		return !removed;
 	}
     
-    @Override
-	public void push(Vector3f push) {
-        velocity.x += push.x;
-        velocity.y += push.y;
-        velocity.z += push.z;
-    }
-    
+	
+	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
         acceleration.x += forceX / mass;
         acceleration.y += forceY / mass;
