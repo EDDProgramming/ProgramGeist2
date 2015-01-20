@@ -20,7 +20,8 @@ public class PhysicsObject extends Entity {
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
-	float mass = 1; 
+	float mass = 1;
+	protected Vector2f sumForce = new Vector2f(0, 0);
 	protected Vector2f acceleration = new Vector2f(0, 0);
     protected Vector2f velocity = new Vector2f(0, 0);
 	
@@ -35,6 +36,15 @@ public class PhysicsObject extends Entity {
 
 	@Override
 	public boolean update(int deltaMS) {
+		
+		sumForce.x = 0;
+		sumForce.y = 0;
+		
+		checkCollisions(world.entities);
+		
+		acceleration.x += sumForce.x / mass;
+		acceleration.y += sumForce.y / mass;
+		
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
@@ -47,8 +57,8 @@ public class PhysicsObject extends Entity {
 	
 	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
-        acceleration.x += forceX / mass;
-        acceleration.y += forceY / mass;
+        sumForce.x += forceX;
+        sumForce.y += forceY;
     }
     
     //Force with a direction and magnitude
@@ -59,8 +69,8 @@ public class PhysicsObject extends Entity {
     	forceX = (float) (magnitude * Math.sin(deg));
     	forceY = (float) (magnitude * Math.cos(deg));
     	
-    	acceleration.x += forceX / mass;
-    	acceleration.y += forceY / mass;
+    	sumForce.x += forceX;
+    	sumForce.y += forceY;
     }
     
     public void applyGravity() {

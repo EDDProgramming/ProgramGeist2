@@ -11,7 +11,7 @@ import tile.Tile;
 import entity.*;
 
 public class EntityWorld {
-	private List<Entity> entities = new ArrayList<Entity>();
+	public List<Entity> entities = new ArrayList<Entity>();
     private List<Entity> newEntities = new ArrayList<Entity>();
     private List<Entity> particles = new ArrayList<Entity>();
     private List<Entity> newParticles = new ArrayList<Entity>();
@@ -45,8 +45,8 @@ public class EntityWorld {
     public void update(int deltaMS) {
     	time += deltaMS;
     	
-    	updateEntityList(deltaMS, entities,  newEntities,  true);
-    	updateEntityList(deltaMS, particles, newParticles, false);
+    	updateEntityList(deltaMS, entities,  newEntities);
+    	updateEntityList(deltaMS, particles, newParticles);
     }
     
     // getEntitiesInRange
@@ -75,7 +75,7 @@ public class EntityWorld {
     	return out;
     }
     
-    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts, boolean checkCollisions) {
+    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts) {
     	Iterator<Entity> e = ents.iterator();
         while (e.hasNext()) {
             Entity entity = e.next();
@@ -83,8 +83,6 @@ public class EntityWorld {
             if (!entity.update(deltaMS) || entity.isRemoved()) {
                 entity.setRemoved();
                 e.remove();
-            } else if (checkCollisions) {
-                entity.checkCollisions(entities);
             }
         }
         ents.addAll(newEnts);
