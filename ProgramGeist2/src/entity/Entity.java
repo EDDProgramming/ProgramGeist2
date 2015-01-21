@@ -44,6 +44,7 @@ import java.util.*;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.*;
 
 import world.*;
 
@@ -109,11 +110,11 @@ public abstract class Entity {
     	return position.y;
     }
     
-    // get squared distance from entity other
-    public double distanceToSqr(Entity other) {
+    // Get distance from entity other
+    public double distanceTo(Entity other) {
         double dx = position.x - other.position.x;
         double dy = position.y - other.position.y;
-        return dx * dx + dy * dy;
+        return Math.sqrt(dx * dx + dy * dy);
     }
     
     // returns the perspective xy plane distance from entity other
@@ -145,7 +146,7 @@ public abstract class Entity {
         for (Entity e : entities) {
             if (collidesWith(e) && e.collidesWith(this)) {
                 double radius = thisRadius + e.getCollisionRadius();
-                if (distanceToSqr(e) < radius * radius) {
+                if (distanceTo(e) < radius) {
                     onCollide(e);
                 }
 //                // positions may have changed, so recalculate

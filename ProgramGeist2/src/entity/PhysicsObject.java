@@ -61,7 +61,8 @@ public class PhysicsObject extends Entity {
 		System.out.println("PrevPosition: "+this.prevPosition.y);
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
-		prevPosition = position;
+		prevPosition.x = position.x;
+		prevPosition.y = position.y;
 		
 		return !removed;
 	}
@@ -118,12 +119,14 @@ public class PhysicsObject extends Entity {
     	if(other.entityType == EntityType.Tile) {
     		
     		//Absolute value allows us to use the square value while maintaining the direction
-    		float forceNormal = -1/2 * mass * velocity.y*Math.abs(velocity.y);
+    		float forceNormal = -.045f * mass * velocity.y*Math.abs(velocity.y);
     		
     		System.out.println("Collide");
     		
+    		//velocity.y = velocity.y * .5f;
+    		
     		//Bump the ball back up
-    		position.y = prevPosition.y - 3;
+    		position.y = prevPosition.y - 4;
     		applyForce(0, forceNormal); // impact force
     	}
     	
