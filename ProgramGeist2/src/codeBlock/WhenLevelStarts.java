@@ -17,8 +17,13 @@ public class WhenLevelStarts extends HatBlock {
 	public boolean update(int deltaMS) {
 		
 		// TODO Integrate with Levels
-		downBlock.update(deltaMS);
+		call(deltaMS);
 		
+		return true;
+	}
+	
+	public boolean call(int deltaMS) {
+		downBlock.update(deltaMS);
 		return true;
 	}
 	

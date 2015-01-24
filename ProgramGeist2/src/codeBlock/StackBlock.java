@@ -12,4 +12,9 @@ public class StackBlock extends CodeBlock {
 	public StackBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		super(downBlock, world);
 	}
+	@Override
+	public boolean call(int deltaMS) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

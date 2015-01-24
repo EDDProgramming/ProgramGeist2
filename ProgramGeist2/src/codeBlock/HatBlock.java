@@ -17,4 +17,9 @@ public class HatBlock extends CodeBlock {
 		downBlock.update(deltaMS);
 	}
 	
+	public boolean call(int deltaMS) {
+		
+		return true;
+	}
+	
 }

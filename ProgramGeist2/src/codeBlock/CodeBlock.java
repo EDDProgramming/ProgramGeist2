@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 import world.*;
 import entity.*;
 
-public class CodeBlock extends Entity{
+public abstract class CodeBlock extends Entity {
 	
 	public enum BlockType {
 		Generic,
@@ -40,5 +40,7 @@ public class CodeBlock extends Entity{
 		
 		return true;
 	}
+	
+	public abstract boolean call(int deltaMS);
 	
 }

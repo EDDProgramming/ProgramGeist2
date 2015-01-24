@@ -17,5 +17,8 @@ public class CBlock extends CodeBlock {
 		super(downBlock, world);
 	}
 	
+	public boolean call(int deltaMS) {
+		return true;
+	}
 	
 }

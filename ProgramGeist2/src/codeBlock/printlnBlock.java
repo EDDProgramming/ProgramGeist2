@@ -18,6 +18,11 @@ public class printlnBlock extends StackBlock {
 	
 	@Override
 	public boolean update(int deltaMS) {
+		call(deltaMS);
+		return true;
+	}
+	
+	public boolean call(int deltaMS) {
 		System.out.println(printText);
 		return true;
 	}
