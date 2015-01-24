@@ -68,17 +68,22 @@ public abstract class Entity {
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
     protected Image image;
+    private Polygon hitbox;
+    private Circle radius;
+    protected boolean isCircle = false;
     
     // Constructors
-    public Entity(EntityWorld world) throws SlickException {
-    	this(0, 0, world);
+    public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
+    	this(0, 0, hitbox, radius, circle, world);
     	this.id = ++nextId;
     }
-    public Entity(float x, float y, EntityWorld world) {
+    public Entity(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
-    	
+    	this.hitbox = hitbox;
+    	this.radius = radius;
     	this.world = world;
+    	this.isCircle = circle;
     	
     	try {
     	image = new Image("res/Whoops.png");
@@ -89,6 +94,12 @@ public abstract class Entity {
     
     public EntityType getType() {
     	return entityType;
+    }
+    
+    public Polygon makeRectangle(float x, float y, float width, float height) {
+    	Polygon rectangle = new Polygon();
+    	Vector2f center = new Vector2f (position.x, position.y);
+    	return rectangle;
     }
     
     public boolean isFixedPosition() {
@@ -135,27 +146,52 @@ public abstract class Entity {
     public void setRemoved() {
         this.removed = true;
     }
-    
-    //
-    // Stuff that should probably be going into PhysicsObject
-    //
-    
- // check if entity has collided with anything
-    public void checkCollisions(List<Entity> entities) {
-        double thisRadius = getCollisionRadius();
-        for (Entity e : entities) {
-            if (collidesWith(e) && e.collidesWith(this)) {
-                double radius = thisRadius + e.getCollisionRadius();
-                if (distanceTo(e) < radius) {
-                    onCollide(e);
-                }
-//                // positions may have changed, so recalculate
-//                if (perspectiveDistanceToSqr(e) < radius * radius) {
-//                    e.onCollide(this);
+
+// // check if entity has collided with anything
+//    public void checkCollisions(List<Entity> entities) {
+//        double thisRadius = getCollisionRadius();
+//        for (Entity e : entities) {
+//            if (collidesWith(e) && e.collidesWith(this)) {
+//                double radius = thisRadius + e.getCollisionRadius();
+//                if (distanceTo(e) < radius) {
+//                    onCollide(e);
 //                }
-            }
-        }
+////                // positions may have changed, so recalculate
+////                if (perspectiveDistanceToSqr(e) < radius * radius) {
+////                    e.onCollide(this);
+////                }
+//            }
+//        }
+//    }
+    
+    public void checkCollisions(List<Entity> entities) {
+    	for (Entity e: entities) {
+    		if(isCircle) {
+    			//If both entities are circles
+    			if(e.isCircle && radius.intersects(e.radius)) {
+    				onCollide(e);
+    			}
+    			
+    			//If only this is a circle
+    			else if(!e.isCircle && radius.intersects(e.hitbox)) {
+    				onCollide(e);
+    			}	
+    		}
+    		
+    		else if(!isCircle) {
+    			//If only other is a circle
+    			if(e.isCircle && hitbox.intersects(e.radius)) {
+    				onCollide(e);
+    			}
+    			
+    			//If both are polygons
+    			else if(!e.isCircle && hitbox.intersects(e.hitbox)) {
+    				onCollide(e);
+    			}
+    		}
+    	}
     }
+
     
     public boolean collidesWith(Entity other) {
         return other != this;

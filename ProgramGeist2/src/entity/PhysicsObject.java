@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.*;
 
 
 public class PhysicsObject extends Entity {
@@ -18,6 +19,7 @@ public class PhysicsObject extends Entity {
 	protected boolean isObjective = false;
 	//Signifies that this is the gamepiece that must go to the goal
 	protected boolean isPlayer    = false;
+	//Signifies using circular or polygonal hitboxes
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
@@ -30,8 +32,8 @@ public class PhysicsObject extends Entity {
     protected Vector2f prevPosition = new Vector2f(0, 0);
 	
 
-	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, world);
+	public PhysicsObject(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world, float mass) throws SlickException {
+		super(x, y, hitbox, radius, circle, world);
 		
 		this.mass = mass;
 		

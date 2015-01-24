@@ -23,12 +23,13 @@ public abstract class CodeBlock extends Entity {
 	protected CodeBlock downBlock = null;
 	protected CodeBlock upBlock   = null;
 	
+	
 	// Constructors
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
 	public CodeBlock(float x, float y, EntityWorld world) {
-		super(x, y, world);
+		super(x, y, hitbox, radius, false, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20, world);
