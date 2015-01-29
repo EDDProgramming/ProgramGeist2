@@ -96,9 +96,9 @@ public abstract class Entity {
     	return entityType;
     }
     
-    public Polygon makeRectangle(float x, float y, float width, float height) {
+    public static Polygon makeRectangle(float x, float y, float width, float height) {
     	Polygon rectangle = new Polygon();
-    	Vector2f center = new Vector2f (position.x, position.y);
+    	Vector2f center = new Vector2f (x, y);
     	return rectangle;
     }
     

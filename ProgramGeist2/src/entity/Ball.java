@@ -10,10 +10,11 @@ import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
 
-	static Circle hitbox = new Circle(0, 0, 30);
+	static Circle radius = new Circle(0, 0, 30);
+	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, world, mass);
+		super(x, y, hitbox, radius, true, world, mass);
 		image = new Image("res/Ball.png");
 	}
 

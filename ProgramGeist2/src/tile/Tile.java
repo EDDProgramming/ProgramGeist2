@@ -2,6 +2,7 @@ package tile;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 
 import entity.Entity;
 import world.EntityWorld;
@@ -12,8 +13,10 @@ public class Tile extends Entity {
 		GenericTile
 	}
 	
+	static Circle radius = new Circle(0, 0, 50);
+	
 	public Tile(int x, int y, EntityWorld world) throws SlickException {
-		super(x, y, world);
+		super(x, y, makeRectangle(x, y, 50, 50), radius, false, world);
 		
 		image = new Image("res/CrappyTile.png");
 		
@@ -26,11 +29,5 @@ public class Tile extends Entity {
 		return true;
 	}
 
-	@Override
-	public double getCollisionRadius() {
-		return 50; 
-		// assuming the tile is square. 
-		//We will run into problems if we want to make any that are not square.
-	}
 	
 }

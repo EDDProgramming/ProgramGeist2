@@ -22,6 +22,7 @@ public class CodeBlock extends Entity{
 	
 	protected CodeBlock downBlock = null;
 	protected CodeBlock upBlock   = null;
+	protected static Circle radius = new Circle(0, 0, 10);
 	
 	
 	// Constructors
@@ -29,7 +30,8 @@ public class CodeBlock extends Entity{
 		this(0, 0, world);
 	}
 	public CodeBlock(float x, float y, EntityWorld world) {
-		super(x, y, hitbox, radius, false, world);
+		super(x, y, makeRectangle(x, y, 20, 50), radius, false, world);
+		//Make the makeRectangle the correct size
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20, world);
