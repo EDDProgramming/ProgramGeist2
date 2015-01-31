@@ -4,6 +4,7 @@ import world.EntityWorld;
 import codeBlock.CodeBlock;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector2f;
@@ -46,6 +47,12 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 		
+		//setX sets the position of the left side, setY sets the position of the top side
+		super.hitbox.setCenterX(position.x);
+		super.hitbox.setCenterY(position.y);
+		super.radius.setCenterX(position.x);
+		super.radius.setCenterY(position.y);
+		
 		applyGravity();
 		applyFriction(0.5f);
 		checkCollisions(world.entities);
@@ -59,8 +66,7 @@ public class PhysicsObject extends Entity {
 		position.x += velocity.x;
 		position.y += velocity.y;
 		
-		System.out.println("Position: "+this.position.y);
-		System.out.println("PrevPosition: "+this.prevPosition.y);
+		System.out.println("Position: "+super.hitbox.getCenterY());
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
 		prevPosition.x = position.x;
@@ -116,16 +122,44 @@ public class PhysicsObject extends Entity {
     	isPlayer = true;
     }
     
+    public void checkCollisions(List<Entity> entities) {
+    	for (Entity e: entities) {
+    		if(isCircle) {
+    			//If both entities are circles
+    			if(e.isCircle && radius.intersects(e.radius)) {
+    				onCollide(e);
+    			}
+    			
+    			//If only this is a circle
+    			else if(!e.isCircle && radius.intersects(e.hitbox)) {
+    				System.out.println("Collide");
+    				onCollide(e);
+    			}	
+    		}
+    		
+    		else if(!isCircle) {
+    			//If only other is a circle
+    			if(e.isCircle && hitbox.intersects(e.radius)) {
+    				onCollide(e);
+    			}
+    			
+    			//If both are polygons
+    			else if(!e.isCircle && hitbox.intersects(e.hitbox)) {
+    				onCollide(e);
+    			}
+    		}
+    	}
+    }
+    
     @Override
     protected void onCollide(Entity other) {
     	if(other.entityType == EntityType.Tile) {
     		
     		//Absolute value allows us to use the square value while maintaining the direction
+    		velocity.y = velocity.y * .5f;
     		float forceNormal = -.045f * mass * velocity.y*Math.abs(velocity.y);
     		
     		System.out.println("Collide");
-    		
-    		//velocity.y = velocity.y * .5f;
     		
     		//Bump the ball back up
     		position.y = prevPosition.y - 4;

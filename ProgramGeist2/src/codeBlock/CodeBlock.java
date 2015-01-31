@@ -22,17 +22,20 @@ public abstract class CodeBlock extends Entity {
 	
 	protected CodeBlock downBlock = null;
 	protected CodeBlock upBlock   = null;
+	protected static Circle radius = new Circle(0, 0, 10);
 	
 	
 	// Constructors
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
+	public CodeBlock(float x, float y, EntityWorld world) {
+		super(x, y, makeRectangle(x, y, 20, 50), radius, false, world);
+		//Make the makeRectangle the correct size
+	}
+
 	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
 		super(x, y, hitbox, radius, false, world);
-	}
-	public CodeBlock(float x, float y, EntityWorld world) {
-		this(x, y, new Polygon(), new Circle(10, 10, 10), world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);

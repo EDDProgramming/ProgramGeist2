@@ -9,11 +9,11 @@ import org.newdawn.slick.geom.*;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
-
-	static Circle hitbox = new Circle(0, 0, 30);
+	
+	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, world, mass);
+		super(x, y, hitbox, new Circle(x, y, 30), true, world, mass);
 		image = new Image("res/Ball.png");
 	}
 

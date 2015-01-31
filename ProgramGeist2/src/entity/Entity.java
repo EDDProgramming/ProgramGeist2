@@ -68,8 +68,8 @@ public abstract class Entity {
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
     protected Image image;
-    private Polygon hitbox;
-    private Circle radius;
+    protected Polygon hitbox;
+    protected Circle radius;
     protected boolean isCircle = false;
     
     // Constructors
@@ -96,9 +96,9 @@ public abstract class Entity {
     	return entityType;
     }
     
-    public Polygon makeRectangle(float x, float y, float width, float height) {
+    public static Polygon makeRectangle(float x, float y, float width, float height) {
     	Polygon rectangle = new Polygon();
-    	Vector2f center = new Vector2f (position.x, position.y);
+    	Vector2f center = new Vector2f (x, y);
     	return rectangle;
     }
     
@@ -164,33 +164,6 @@ public abstract class Entity {
 //        }
 //    }
     
-    public void checkCollisions(List<Entity> entities) {
-    	for (Entity e: entities) {
-    		if(isCircle) {
-    			//If both entities are circles
-    			if(e.isCircle && radius.intersects(e.radius)) {
-    				onCollide(e);
-    			}
-    			
-    			//If only this is a circle
-    			else if(!e.isCircle && radius.intersects(e.hitbox)) {
-    				onCollide(e);
-    			}	
-    		}
-    		
-    		else if(!isCircle) {
-    			//If only other is a circle
-    			if(e.isCircle && hitbox.intersects(e.radius)) {
-    				onCollide(e);
-    			}
-    			
-    			//If both are polygons
-    			else if(!e.isCircle && hitbox.intersects(e.hitbox)) {
-    				onCollide(e);
-    			}
-    		}
-    	}
-    }
 
     
     public boolean collidesWith(Entity other) {
