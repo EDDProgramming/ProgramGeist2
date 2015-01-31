@@ -33,7 +33,7 @@ public class GameState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		if(world != null) {
-			world.render(g, camera.getX(), camera.getY());
+			world.render(gc, g, camera.getX(), camera.getY());
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class GameState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
 		if(world != null) {
 			camera.update(deltaMS);
-			world.update(deltaMS);
+			world.update(gc, deltaMS);
 		}
 		// TODO add isGameOver code
 	}

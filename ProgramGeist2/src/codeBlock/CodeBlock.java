@@ -28,11 +28,14 @@ public abstract class CodeBlock extends Entity {
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
-	public CodeBlock(float x, float y, EntityWorld world) {
+	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
 		super(x, y, hitbox, radius, false, world);
 	}
+	public CodeBlock(float x, float y, EntityWorld world) {
+		this(x, y, new Polygon(), new Circle(10, 10, 10), world);
+	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		this(downBlock.getX(), downBlock.getY()-20, world);
+		this(downBlock.getX(), downBlock.getY()-20,  world);
 		this.downBlock = downBlock;
 	}
 	

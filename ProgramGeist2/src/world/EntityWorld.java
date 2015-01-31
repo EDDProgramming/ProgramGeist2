@@ -4,11 +4,14 @@ import java.util.*;
 
 import main.Camera;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import tile.Tile;
 import entity.*;
+import gui.CatalogMenu;
 
 public class EntityWorld {
 	public List<Entity> entities = new ArrayList<Entity>();
@@ -25,6 +28,9 @@ public class EntityWorld {
 	
 	private Camera camera;
 	
+	private CatalogMenu catalogMenu = new CatalogMenu();
+	private boolean Edown = false;
+	
 	public EntityWorld(Camera c) throws SlickException {
 		Random random = new Random();
 		
@@ -34,19 +40,34 @@ public class EntityWorld {
 		
 		addEntity(new Ball(50.0f, 50.0f, this, 100.0f));
 		
-		for(int i = 0; i<10; i++) {
-			addEntity(new Tile(100*i, 400, this));
-		}
+//		for(int i = 0; i<10; i++) {
+//			addEntity(new Tile(100*i, 400, this));
+//		}
 		
 		// end test code
 		
 	}
     
-    public void update(int deltaMS) {
+    public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
+    	Input input = gc.getInput();
     	
     	updateEntityList(deltaMS, entities,  newEntities);
     	updateEntityList(deltaMS, particles, newParticles);
+    	
+    	if(catalogMenu.isVisible()) {
+    		catalogMenu.update(gc, deltaMS);
+    	}
+    	
+    	if(Edown == true) {
+    		if(!input.isKeyDown(Input.KEY_E)) {
+    			Edown = false;
+    		}
+    	}
+    	if(input.isKeyDown(Input.KEY_E) && Edown == false) {
+    		catalogMenu.setVisible(!catalogMenu.isVisible());
+    		Edown = true;
+    	}
     }
     
     // getEntitiesInRange
@@ -89,7 +110,7 @@ public class EntityWorld {
         newEnts.clear();
     }
     
-    public void render(Graphics g, double camX, double camY) {
+    public void render(GameContainer gc, Graphics g, double camX, double camY) {
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
@@ -100,6 +121,8 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
+        
+        catalogMenu.render(gc, g);
     }
     
     public double[] getPathing(Entity ent, Entity target) {

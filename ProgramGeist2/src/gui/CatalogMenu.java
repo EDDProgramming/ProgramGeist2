@@ -6,7 +6,7 @@ public class CatalogMenu {
 	
 	boolean visible = true;
 	
-	private static final Color background = new Color(0, 0, 0);
+	private static final Color background = new Color(129, 169, 247);
 	
 	private static final int width = 200;
 	private static int height;
@@ -16,8 +16,7 @@ public class CatalogMenu {
 	private static Image[] images;
 	
 	public CatalogMenu() {
-		images = loadImages();
-		
+		//images = loadImages();
 	}
 	
 	public void update(GameContainer gc, int deltaMS) {
@@ -34,17 +33,16 @@ public class CatalogMenu {
 		
 		// figure out position
 		// position from top left corner
-		int yPos = 0;
-		int xPos = 0;
+		int yPos = 40;
+		int xPos = 50;
 		
 		// draw background
 		g.setColor(background);
 		g.fillRect(0, 0, width, height);
 		
-		
 		// render text
 		g.setColor(Color.white);
-		g.drawString("Code Blocks", 0, 0);
+		g.drawString("Code Blocks", xPos, yPos);
 		
 		// draw code blocks
 		for(int i = 0; i<numImages; i++) {
@@ -57,12 +55,13 @@ public class CatalogMenu {
 	}
 
 	public Image[] loadImages() {
+		// TODO load images
 		Image[] out = new Image[2];
 		
 		try {
-		out[0] = new Image("");
+			//out[0] = new Image("");
 		} catch(SlickException e) {
-			
+			e.printStackTrace();
 		}
 		
 		return out;
