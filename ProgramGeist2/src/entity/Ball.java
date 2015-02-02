@@ -24,7 +24,7 @@ public class Ball extends PhysicsObject {
 		System.out.println();
 		System.out.println("Velocity: "+this.velocity.y);
 		System.out.println("Acceleration: "+this.acceleration.y);
-		
+		System.out.println("Position: "+radius.getCenterY());
 		
 		return !removed;
 	}
@@ -42,6 +42,7 @@ public class Ball extends PhysicsObject {
 		
 		return false;
 	}
+	
 	
 	public double getCollisionRadius() {
 		return 60.0/2;

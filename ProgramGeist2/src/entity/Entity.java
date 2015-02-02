@@ -42,7 +42,6 @@ package entity;
 import java.util.*;
 
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 

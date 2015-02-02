@@ -6,7 +6,6 @@ import codeBlock.CodeBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
@@ -47,11 +46,10 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 		
-		//setX sets the position of the left side, setY sets the position of the top side
-		super.hitbox.setCenterX(position.x);
-		super.hitbox.setCenterY(position.y);
-		super.radius.setCenterX(position.x);
-		super.radius.setCenterY(position.y);
+		hitbox.setCenterX(position.x);
+		hitbox.setCenterY(position.y);
+		radius.setCenterX(position.x);
+		radius.setCenterY(position.y);
 		
 		applyGravity();
 		applyFriction(0.5f);
@@ -66,7 +64,6 @@ public class PhysicsObject extends Entity {
 		position.x += velocity.x;
 		position.y += velocity.y;
 		
-		System.out.println("Position: "+super.hitbox.getCenterY());
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
 		prevPosition.x = position.x;

@@ -38,11 +38,11 @@ public class EntityWorld {
 		
 		//TODO remove test code
 		
-		addEntity(new Ball(50.0f, 50.0f, this, 100.0f));
+		addEntity(new Ball(300f, 50f, this, 100.0f));
 		
-//		for(int i = 0; i<10; i++) {
-//			addEntity(new Tile(100*i, 400, this));
-//		}
+		for(int i = 0; i<10; i++) {
+		addEntity(new Tile(100*i, 400, this));
+		}
 		
 		// end test code
 		
