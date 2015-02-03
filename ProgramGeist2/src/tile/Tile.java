@@ -19,7 +19,7 @@ public class Tile extends Entity {
 	public Tile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, makeRectangle(x, y, 50, 50), radius, false, world);
 		
-		image = new Image("res/CrappyTile.png");
+		image = new Image("res/BetterTile.png");
 		
 		entityType = EntityType.Tile;
 	}
