@@ -45,7 +45,7 @@ public class PhysicsObject extends Entity {
 		
 		sumForce.x = 0;
 		sumForce.y = 0;
-		
+
 		hitbox.setCenterX(position.x);
 		hitbox.setCenterY(position.y);
 		radius.setCenterX(position.x);
@@ -66,6 +66,7 @@ public class PhysicsObject extends Entity {
 		
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
+		
 		prevPosition.x = position.x;
 		prevPosition.y = position.y;
 		
@@ -129,7 +130,6 @@ public class PhysicsObject extends Entity {
     			
     			//If only this is a circle
     			else if(!e.isCircle && radius.intersects(e.hitbox)) {
-    				System.out.println("Collide");
     				onCollide(e);
     			}	
     		}

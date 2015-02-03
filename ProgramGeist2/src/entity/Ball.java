@@ -21,10 +21,12 @@ public class Ball extends PhysicsObject {
 	public boolean update(int deltaMS) {
 		super.update(deltaMS);
 		
+		
 		System.out.println();
 		System.out.println("Velocity: "+this.velocity.y);
 		System.out.println("Acceleration: "+this.acceleration.y);
 		System.out.println("Position: "+radius.getCenterY());
+		System.out.println("RealPos: "+this.position.y);
 		
 		return !removed;
 	}
@@ -35,17 +37,17 @@ public class Ball extends PhysicsObject {
 		
 		if(input.isKeyDown(Input.KEY_UP) == true)
 		{
-			applyForce(0, -500);
+			applyForce(0, 500);
+		}
+		
+		if(input.isKeyDown(Input.KEY_LEFT) == true)
+		{
+			applyForce(-50, 0);
 		}
 		
 		applyFriction(0.1f);
 		
 		return false;
-	}
-	
-	
-	public double getCollisionRadius() {
-		return 60.0/2;
 	}
 	
 	

@@ -57,7 +57,6 @@ public abstract class Entity {
 	}
 	
 	protected static Random random = new Random();
-	protected double x, y, z;
     protected boolean removed = false;
 	protected Vector2f position = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1;
@@ -76,13 +75,14 @@ public abstract class Entity {
     	this(0, 0, hitbox, radius, circle, world);
     	this.id = ++nextId;
     }
-    public Entity(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world) {
+    public Entity(float x, float y, Polygon hitbox, Circle circle, boolean isCircle, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
     	this.hitbox = hitbox;
-    	this.radius = radius;
+        hitbox.setClosed(true);
+    	this.radius = circle;
     	this.world = world;
-    	this.isCircle = circle;
+    	this.isCircle = isCircle;
     	
     	try {
     	image = new Image("res/Whoops.png");
@@ -96,8 +96,12 @@ public abstract class Entity {
     }
     
     public static Polygon makeRectangle(float x, float y, float width, float height) {
-    	Polygon rectangle = new Polygon();
-    	Vector2f center = new Vector2f (x, y);
+    	Polygon rectangle;
+    	width /= 2;
+    	height /= 2;
+    	float[] coordinates = {	x + width, y + height, x + width, y - height, 
+    							x - width, y- height, x - width, y - height};
+    	rectangle = new Polygon(coordinates);
     	return rectangle;
     }
     
