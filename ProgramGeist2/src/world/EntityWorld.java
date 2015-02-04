@@ -9,8 +9,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import codeBlock.StackBlock;
 import tile.Tile;
 import entity.*;
+import entity.Entity.EntityType;
 import gui.CatalogMenu;
 
 public class EntityWorld {
@@ -38,7 +40,7 @@ public class EntityWorld {
 		
 		//TODO remove test code
 		
-		addEntity(new Ball(50.0f, 50.0f, this, 100.0f));
+		//addEntity(new Ball(50.0f, 50.0f, this, 100.0f));
 		
 //		for(int i = 0; i<10; i++) {
 //			addEntity(new Tile(100*i, 400, this));
@@ -46,14 +48,16 @@ public class EntityWorld {
 		
 		// end test code
 		
+		addEntity(new StackBlock(300, 200, this));
+		
 	}
     
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
     	Input input = gc.getInput();
     	
-    	updateEntityList(deltaMS, entities,  newEntities);
-    	updateEntityList(deltaMS, particles, newParticles);
+    	updateEntityList(deltaMS, entities,  newEntities, gc);
+    	updateEntityList(deltaMS, particles, newParticles, gc);
     	
     	if(catalogMenu.isVisible()) {
     		catalogMenu.update(gc, deltaMS);
@@ -96,12 +100,20 @@ public class EntityWorld {
     	return out;
     }
     
-    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts) {
+    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts, GameContainer gc) {
     	Iterator<Entity> e = ents.iterator();
         while (e.hasNext()) {
             Entity entity = e.next();
-
-            if (!entity.update(deltaMS) || entity.isRemoved()) {
+            
+            boolean entityAlive;
+            
+            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
+            	entityAlive = entity.update(deltaMS, gc.getInput());
+            }else {
+            	entityAlive = entity.update(deltaMS);
+            }
+            
+            if (!entityAlive || entity.isRemoved()) {
                 entity.setRemoved();
                 e.remove();
             }

@@ -58,7 +58,6 @@ public abstract class Entity {
 	}
 	
 	protected static Random random = new Random();
-	protected double x, y, z;
     protected boolean removed = false;
 	protected Vector2f position = new Vector2f(0, 0);
     protected double frictionCoeffecient = 0.1;
@@ -108,6 +107,9 @@ public abstract class Entity {
     
     // Entities will have their own update code
     public abstract boolean update(int deltaMS);
+    public boolean update(int deltaMS, Input input) {
+    	return false;
+    }
     
     
     public void render(Graphics g, double camX, double camY) {
@@ -175,6 +177,10 @@ public abstract class Entity {
     
     public double getCollisionRadius() {
         return 16;
+    }
+    
+    public EntityType getEntityType() {
+    	return entityType;
     }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {
