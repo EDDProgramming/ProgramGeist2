@@ -6,6 +6,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
 
+import entity.Entity.EntityType;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
@@ -28,27 +29,29 @@ public class Ball extends PhysicsObject {
 		System.out.println("Position: "+radius.getCenterY());
 		System.out.println("RealPos: "+this.position.y);
 		
+		updateInit();
+		
+		updateForces(0.5f);
+		
+		updatePosition();
+		
 		return !removed;
 	}
 	
-	public boolean update(int deltaMS, GameContainer gc) {
-		
-		Input input = gc.getInput();
-		
-		if(input.isKeyDown(Input.KEY_UP) == true)
-		{
-			applyForce(0, 500);
-		}
-		
-		if(input.isKeyDown(Input.KEY_LEFT) == true)
-		{
-			applyForce(-50, 0);
-		}
-		
-		applyFriction(0.1f);
-		
-		return false;
-	}
+	protected void onCollide(Entity other) {
+    	if(other.entityType == EntityType.Tile) {
+    		
+    		//Absolute value allows us to use the square value while maintaining the direction
+    		float forceNormal = -.045f * mass * velocity.y*Math.abs(velocity.y);
+    		
+    		System.out.println("Collide");
+    		
+    		//Bump the ball back up
+    		position.y = prevPosition.y - velocity.y;
+    		applyForce(0, forceNormal); // impact force
+    	}
+    	
+    }
 	
 	
 }
