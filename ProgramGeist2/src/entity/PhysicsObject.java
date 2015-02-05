@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
 
@@ -81,7 +82,11 @@ public class PhysicsObject extends Entity {
 		prevPosition.x = position.x;
 		prevPosition.y = position.y;
 	}
+<<<<<<< HEAD
 	
+=======
+    
+>>>>>>> refs/remotes/origin/CodeBlockDevelopment
 	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
         sumForce.x += forceX;
@@ -187,6 +192,4 @@ public class PhysicsObject extends Entity {
     public boolean isPlayer() {
     	return isPlayer;
     }
-    
-    
 }
