@@ -112,6 +112,7 @@ public abstract class Entity {
     // Entities will have their own update code
     public abstract boolean update(int deltaMS);
     
+    public abstract boolean update(int deltaMS, Input input);
     
     public void render(Graphics g, double camX, double camY) {
     	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
@@ -176,8 +177,8 @@ public abstract class Entity {
     protected void onCollide(Entity entity) {
     }
     
-    public double getCollisionRadius() {
-        return 16;
+    public EntityType getEntityType() {
+    	return this.entityType;
     }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {

@@ -14,12 +14,12 @@ public class Ball extends PhysicsObject {
 	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, new Circle(x, y, 30), true, world, mass);
+		super(x, y, hitbox, new Circle(x, y, 33), true, world, mass);
 		image = new Image("res/Ball.png");
 	}
 
 	@Override
-	public boolean update(int deltaMS) {
+	public boolean update(int deltaMS, Input input) {
 		super.update(deltaMS);
 		
 		

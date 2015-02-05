@@ -44,6 +44,10 @@ public class PhysicsObject extends Entity {
 	public boolean update(int deltaMS) {
 		return !removed;
 	}
+	
+	public boolean update(int deltaMS, Input input) {
+		return !removed;
+	}
     
 	//Reset step of physics update, for use in subclasses
 	public void updateInit() {
@@ -82,11 +86,7 @@ public class PhysicsObject extends Entity {
 		prevPosition.x = position.x;
 		prevPosition.y = position.y;
 	}
-<<<<<<< HEAD
-	
-=======
-    
->>>>>>> refs/remotes/origin/CodeBlockDevelopment
+
 	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
         sumForce.x += forceX;

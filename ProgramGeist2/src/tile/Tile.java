@@ -1,6 +1,7 @@
 package tile;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.ShapeRenderer;
@@ -28,6 +29,12 @@ public class Tile extends Entity {
 	public boolean update(int deltaMS) {
 		// TODO Tile update
 		return true;
+	}
+
+	@Override
+	public boolean update(int deltaMS, Input input) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

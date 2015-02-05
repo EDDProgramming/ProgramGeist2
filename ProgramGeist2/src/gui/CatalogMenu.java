@@ -84,8 +84,6 @@ public class CatalogMenu {
 	public CodeBlock[] loadBlocks() {
 		CodeBlock[] out = new CodeBlock[6];
 		
-		out[0] = new CodeBlock()
-		
 		
 		return out;
 	}
