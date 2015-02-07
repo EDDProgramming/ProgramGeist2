@@ -92,26 +92,32 @@ public class PhysicsObject extends Entity {
         sumForce.x += forceX;
         sumForce.y += forceY;
     }
+
+    //Direction doesn't work right, removed.
     
+    /*
     //Force with a direction and magnitude
-    public void applyForce(double deg, double magnitude) {
+    //0 degrees is up
+    //90 degrees is right
+    public void applyForce(float deg, int magnitude) {
     	float forceX;
     	float forceY;
     	
-    	forceX = (float) (magnitude * Math.sin(deg));
-    	forceY = (float) (magnitude * Math.cos(deg));
+    	forceX =  (float) (magnitude * Math.sin(deg));
+    	forceY = -(float) (magnitude * Math.cos(deg));
     	
     	sumForce.x += forceX;
     	sumForce.y += forceY;
     }
-    
+    */
+ 
     public void applyGravity() {
     	
     	float magnitude;
     	
     	magnitude = (float) (mass * .98);
     	
-    	applyForce(0, magnitude);
+    	applyForce(0.0f, magnitude);
     	//Positive is down
     }
     

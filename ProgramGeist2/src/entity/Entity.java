@@ -132,13 +132,6 @@ public abstract class Entity {
         return Math.sqrt(dx * dx + dy * dy);
     }
     
-    // returns the perspective xy plane distance from entity other
-    public double perspectiveDistanceToSqr(Entity other) {
-        double dx = position.x - other.position.x;
-        double dy = (position.y - other.position.y) * 2;
-        return dx * dx + dy * dy;
-    }
-    
     public int getID() {
     	return id;
     }

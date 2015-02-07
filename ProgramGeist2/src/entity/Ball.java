@@ -18,6 +18,28 @@ public class Ball extends PhysicsObject {
 		image = new Image("res/Ball.png");
 	}
 
+	public void movement(Input input) {
+		//Apply forces using the <x, y> method
+		
+		int mag = 100;
+		
+		if(input.isKeyDown(Input.KEY_UP)) {
+			applyForce(0.0f, -mag + 50);
+		}
+				
+		if(input.isKeyPressed(Input.KEY_DOWN)) {
+			applyForce(0.0f, mag);
+		}
+				
+		if(input.isKeyDown(Input.KEY_LEFT)) {
+			applyForce(-mag, 0.0f);
+		}
+				
+		if(input.isKeyDown(Input.KEY_RIGHT)) {
+			applyForce(mag, 0.0f);
+		}
+	}
+	
 	@Override
 	public boolean update(int deltaMS, Input input) {
 		super.update(deltaMS);
@@ -30,6 +52,8 @@ public class Ball extends PhysicsObject {
 		System.out.println("RealPos: "+this.position.y);
 		
 		updateInit();
+		
+		movement(input);
 		
 		updateForces(0.5f);
 		
@@ -48,7 +72,7 @@ public class Ball extends PhysicsObject {
     		
     		//Bump the ball back up
     		position.y = prevPosition.y - velocity.y;
-    		applyForce(0, forceNormal); // impact force
+    		applyForce(0.0f, forceNormal); // impact force
     	}
     	
     }
