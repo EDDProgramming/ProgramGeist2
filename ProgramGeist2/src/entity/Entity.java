@@ -125,11 +125,56 @@ public abstract class Entity {
     	return position.y;
     }
     
-    // Get distance from entity other
+    //Get distance from entity other
     public double distanceTo(Entity other) {
         double dx = position.x - other.position.x;
         double dy = position.y - other.position.y;
         return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    //Get a vector in unit form
+    public Vector2f normalizeVector(Vector2f vector) {
+    	Vector2f unitVector = new Vector2f();
+    	float length = (float) Math.sqrt(vector.x * vector.x + vector.y * vector.y); 
+    	unitVector.x = vector.x / length;
+    	unitVector.y = vector.y / length;
+    	
+    	return unitVector;
+    }
+    
+    //Get the normal of a vector
+    public Vector2f getNormal(Vector2f vector) {
+    	Vector2f normal = new Vector2f();
+    	normal.x = -vector.y;
+    	normal.y = -vector.x;
+    	
+    	return normal;
+    }
+    
+    //Get the lines comprising the hitbox
+    public Vector2f[] getOutline(Polygon hitbox) {
+    	//Get a list of points making up the polygon in the form x0, y0... xn, yn
+		float[] points = hitbox.getPoints();
+		//Set the number of lines that we will get to be the number of coordinate pairs in the shape.
+		int length = points.length / 2;
+		//Create a new array of Vector2f's to be created
+		Vector2f[] outline = new Vector2f[length];
+		
+		//i is increased by 2 each time to increment by one coordinate pair
+		//When i is equal to or greater than the number of points in the array, this loop ends
+		//This will return all of the lines except the one connecting the last point to the first one.
+		for(int i = 3, j = 0; i < points.length; i += 2, j++) {
+			//i-3 is x0, i-2 is y0, i-1 is x2, i is y2
+			outline[j] = new Vector2f(points[i-1] - points[i-3], points[i] - points[i-2]);
+		}
+		
+		//This gets the last line
+		int lastX = points.length - 1;
+		int lastY = points.length;
+		
+		outline[length] = new Vector2f(points[1] - points[lastX], points[2] - points[lastY]);
+    	
+    	return outline;
     }
     
     public int getID() {
