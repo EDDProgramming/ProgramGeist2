@@ -41,7 +41,6 @@ package entity;
 
 import java.util.*;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 
@@ -132,49 +131,54 @@ public abstract class Entity {
         return Math.sqrt(dx * dx + dy * dy);
     }
     
-    //Get a vector in unit form
-    public Vector2f normalizeVector(Vector2f vector) {
-    	Vector2f unitVector = new Vector2f();
-    	float length = (float) Math.sqrt(vector.x * vector.x + vector.y * vector.y); 
-    	unitVector.x = vector.x / length;
-    	unitVector.y = vector.y / length;
-    	
-    	return unitVector;
-    }
-    
-    //Get the normal of a vector
-    public Vector2f getNormal(Vector2f vector) {
-    	Vector2f normal = new Vector2f();
-    	normal.x = -vector.y;
-    	normal.y = -vector.x;
-    	
-    	return normal;
-    }
-    
     //Get the lines comprising the hitbox
-    public Vector2f[] getOutline(Polygon hitbox) {
+    public static Line[] getOutline(Polygon hitbox) {
+    	
     	//Get a list of points making up the polygon in the form x0, y0... xn, yn
 		float[] points = hitbox.getPoints();
+		
 		//Set the number of lines that we will get to be the number of coordinate pairs in the shape.
 		int length = points.length / 2;
-		//Create a new array of Vector2f's to be created
-		Vector2f[] outline = new Vector2f[length];
+		
+		//Create a new array of Lines to be created
+		Line[] outline = new Line[length];
 		
 		//i is increased by 2 each time to increment by one coordinate pair
 		//When i is equal to or greater than the number of points in the array, this loop ends
 		//This will return all of the lines except the one connecting the last point to the first one.
 		for(int i = 3, j = 0; i < points.length; i += 2, j++) {
-			//i-3 is x0, i-2 is y0, i-1 is x2, i is y2
-			outline[j] = new Vector2f(points[i-1] - points[i-3], points[i] - points[i-2]);
+			
+			//i-3 = x0, i-2 = y0, i-1 = x1, i = y1
+			outline[j] = new Line(points[i-3], points[i-1], points[i-2], points[i]);
 		}
 		
 		//This gets the last line
-		int lastX = points.length - 1;
-		int lastY = points.length;
+		int lastX = points.length - 2;
+		int lastY = points.length - 1;
 		
-		outline[length] = new Vector2f(points[1] - points[lastX], points[2] - points[lastY]);
+		outline[length - 1] = new Line(points[lastX], points[1], points[lastY], points[2]);
     	
     	return outline;
+    }
+    
+    //Convert a line into a vector
+    public static org.newdawn.slick.geom.Vector2f lineToVector(Line line) {
+    	//1 = x0, 2 = y0, 3 = x1, 4 = y1
+    	float[] points = line.getPoints();
+    	Vector2f vector = new Vector2f(points[3] - points[1], points[4] - points[2]);
+    	
+    	return vector;
+    }
+    
+    public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
+    	//Steps of what is going on here
+    	//1. Get the dot product of 2 * dir and reflector
+    	//2. Divide this value by the squared magnitude of reflector
+    	//3. Scale reflector by this value
+    	//4. Subtract the new value of reflector from dir to get reflection
+    	Vector2f reflection = dir.sub(reflector.scale(dir.scale(2).dot(reflector) / reflector.lengthSquared()));
+    	
+    	return reflection;
     }
     
     public int getID() {

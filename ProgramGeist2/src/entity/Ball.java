@@ -21,22 +21,22 @@ public class Ball extends PhysicsObject {
 	public void movement(Input input) {
 		//Apply forces using the <x, y> method
 		
-		int mag = 100;
+		float mag = 100;
 		
 		if(input.isKeyDown(Input.KEY_UP)) {
-			applyForce(0.0f, -mag + 50);
+			applyForce(0, -mag - 50);
 		}
 				
 		if(input.isKeyPressed(Input.KEY_DOWN)) {
-			applyForce(0.0f, mag);
+			applyForce(0, mag);
 		}
 				
 		if(input.isKeyDown(Input.KEY_LEFT)) {
-			applyForce(-mag, 0.0f);
+			applyForce(-mag, 0);
 		}
 				
 		if(input.isKeyDown(Input.KEY_RIGHT)) {
-			applyForce(mag, 0.0f);
+			applyForce(mag, 0);
 		}
 	}
 	
@@ -66,13 +66,30 @@ public class Ball extends PhysicsObject {
     	if(other.entityType == EntityType.Tile) {
     		
     		//Absolute value allows us to use the square value while maintaining the direction
-    		float forceNormal = -.045f * mass * velocity.y*Math.abs(velocity.y);
+    		float forceScalar = .045f * mass;
+    		
+    		Line[] outline = getOutline(other.hitbox);
+    		Line collided = new Line(0, 0);
+    		
+    		for(int i = 0; i < outline.length; i++) {
+    			if(radius.intersects(outline[i])) {
+    				System.out.println("Collided");
+    				collided = outline[i];
+    				return;
+    			}
+    		}
+    		
+    		Vector2f normal = lineToVector(collided).getNormal();
+    		
+    		Vector2f bounceDir = getReflectionVector(velocity, normal);
+    		
+    		Vector2f forceNormal = bounceDir.scale(forceScalar);
     		
     		System.out.println("Collide");
     		
     		//Bump the ball back up
     		position.y = prevPosition.y - velocity.y;
-    		applyForce(0.0f, forceNormal); // impact force
+    		applyForce(forceNormal.x, forceNormal.y); // impact force
     	}
     	
     }
