@@ -69,9 +69,12 @@ public class Ball extends PhysicsObject {
     		float forceScalar = .045f * mass;
     		
     		Line[] outline = getOutline(other.hitbox);
-    		Line collided = new Line(0, 0);
+    		Line collided = new Line(1, 1);
+    		
+    		System.out.println("Collide");
     		
     		for(int i = 0; i < outline.length; i++) {
+    			System.out.println("For Loop");
     			if(radius.intersects(outline[i])) {
     				System.out.println("Collided");
     				collided = outline[i];
@@ -84,8 +87,6 @@ public class Ball extends PhysicsObject {
     		Vector2f bounceDir = getReflectionVector(velocity, normal);
     		
     		Vector2f forceNormal = bounceDir.scale(forceScalar);
-    		
-    		System.out.println("Collide");
     		
     		//Bump the ball back up
     		position.y = prevPosition.y - velocity.y;

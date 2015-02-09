@@ -44,6 +44,7 @@ public class EntityWorld {
 		
 		for(int i = 0; i<10; i++) {
 		addEntity(new Tile(100*i, 400, this));
+		
 		}
 		
 		// end test code

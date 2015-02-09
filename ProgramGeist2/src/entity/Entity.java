@@ -163,9 +163,9 @@ public abstract class Entity {
     
     //Convert a line into a vector
     public static org.newdawn.slick.geom.Vector2f lineToVector(Line line) {
-    	//1 = x0, 2 = y0, 3 = x1, 4 = y1
+    	//0 = x0, 1 = y0, 2 = x1, 3 = y1
     	float[] points = line.getPoints();
-    	Vector2f vector = new Vector2f(points[3] - points[1], points[4] - points[2]);
+    	Vector2f vector = new Vector2f(points[2] - points[0], points[3] - points[1]);
     	
     	return vector;
     }
