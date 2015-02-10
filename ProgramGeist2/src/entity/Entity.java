@@ -180,6 +180,24 @@ public abstract class Entity {
     	return reflection;
     }
     
+    public static Vector2f lineToPointDirection(Line line, float pointX, float pointY) {
+    	Vector2f dir = new Vector2f();
+    	
+    	System.out.println("Line X0, Y0: "+line.getStart());
+    	System.out.println("Line X1, Y1: "+line.getEnd());
+    	
+    	float[] points = line.getPoints();
+    	
+    	for(int i = 0; i < points.length; i++) {
+    		System.out.println("Point: "+points[i]);
+    	}
+    	
+    	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
+    	dir.y = pointY - ((line.getEnd().y + line.getStart().y) / 2);
+    	
+    	return dir;
+    }
+    
     public int getID() {
     	return id;
     }
