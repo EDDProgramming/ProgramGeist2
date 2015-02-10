@@ -147,9 +147,8 @@ public abstract class Entity {
 		//When i is equal to or greater than the number of points in the array, this loop ends
 		//This will return all of the lines except the one connecting the last point to the first one.
 		for(int i = 3, j = 0; i < points.length; i += 2, j++) {
-			
 			//i-3 = x0, i-2 = y0, i-1 = x1, i = y1
-			outline[j] = new Line(points[i-3], points[i-1], points[i-2], points[i]);
+			outline[j] = new Line(points[i-3], points[i-2], points[i-1], points[i]);
 		}
 		
 		//This gets the last line
@@ -163,20 +162,20 @@ public abstract class Entity {
     
     //Convert a line into a vector
     public static org.newdawn.slick.geom.Vector2f lineToVector(Line line) {
-    	//0 = x0, 1 = y0, 2 = x1, 3 = y1
-    	float[] points = line.getPoints();
-    	Vector2f vector = new Vector2f(points[2] - points[0], points[3] - points[1]);
+    	Vector2f vector = new Vector2f(line.getEnd().sub(line.getStart()));
     	
     	return vector;
     }
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
     	//Steps of what is going on here
-    	//1. Get the dot product of 2 * dir and reflector
-    	//2. Divide this value by the squared magnitude of reflector
-    	//3. Scale reflector by this value
-    	//4. Subtract the new value of reflector from dir to get reflection
-    	Vector2f reflection = dir.sub(reflector.scale(dir.scale(2).dot(reflector) / reflector.lengthSquared()));
+    	//1. Get two times the projection of dir onto the unit of reflector
+    	Vector2f projection = new Vector2f();
+    	dir.projectOntoUnit(reflector, projection);
+    	projection = projection.scale(2);
+    	//2. Subtract this value from dir
+    	Vector2f reflection = dir.sub(projection);
+    	System.out.println(reflection);
     	
     	return reflection;
     }

@@ -46,10 +46,9 @@ public class Ball extends PhysicsObject {
 		
 		
 		System.out.println();
-		System.out.println("Velocity: "+this.velocity.y);
-		System.out.println("Acceleration: "+this.acceleration.y);
-		System.out.println("Position: "+radius.getCenterY());
-		System.out.println("RealPos: "+this.position.y);
+		System.out.println("Velocity: "+this.velocity);
+		System.out.println("Acceleration: "+this.acceleration);
+		System.out.println("Position: "+this.position);
 		
 		updateInit();
 		
@@ -78,18 +77,24 @@ public class Ball extends PhysicsObject {
     			if(radius.intersects(outline[i])) {
     				System.out.println("Collided");
     				collided = outline[i];
-    				return;
+    				break;
     			}
     		}
     		
-    		Vector2f normal = lineToVector(collided).getNormal();
+    		Vector2f surface = lineToVector(collided);
+    		
+    		Vector2f normal = surface.getNormal();
     		
     		Vector2f bounceDir = getReflectionVector(velocity, normal);
     		
     		Vector2f forceNormal = bounceDir.scale(forceScalar);
     		
-    		//Bump the ball back up
-    		position.y = prevPosition.y - velocity.y;
+    		System.out.println("Direction X: "+forceNormal.x);
+    		System.out.println("Direction Y: "+forceNormal.y);
+    		
+    		//Bump the ball out
+    		position.y = prevPosition.y - (velocity.y * 2);
+    		
     		applyForce(forceNormal.x, forceNormal.y); // impact force
     	}
     	
