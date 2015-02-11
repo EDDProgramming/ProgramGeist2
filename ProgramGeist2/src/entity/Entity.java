@@ -198,6 +198,16 @@ public abstract class Entity {
     	return dir;
     }
     
+    public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
+		//x, y is the center
+		Polygon triangle = new Polygon();
+		triangle.addPoint(x + x0, y + y0);
+		triangle.addPoint(x + x1, y + y1);
+		triangle.addPoint(x + x2, y + y2);
+		
+		return triangle;
+	}
+    
     public int getID() {
     	return id;
     }

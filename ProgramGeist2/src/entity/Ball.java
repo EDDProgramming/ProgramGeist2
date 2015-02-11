@@ -65,49 +65,47 @@ public class Ball extends PhysicsObject {
     	if(other.entityType == EntityType.Tile) {
     		
     		//Absolute value allows us to use the square value while maintaining the direction
-    		float forceScalar = .02f * mass;
+    		float forceScalar = .009f * mass;
     		
     		Line[] outline = getOutline(other.hitbox);
-    		Line collided = new Line(1, 1);
+    		Line[] collided = new Line[outline.length];
+    		
+    		for(int i = 0; i < collided.length; i++) {
+    			collided[i] = new Line(0, 0);
+    		}
+    		
+    		int collisions = 0;
     		
     		System.out.println("Collide");
     		
     		for(int i = 0; i < outline.length; i++) {
     			if(radius.intersects(outline[i])) {
     				System.out.println("Collided");
-    				collided = outline[i];
-    				break;
+    				collided[i] = outline[i];
+    				collisions++;
     			}
     		}
     		
-    		Vector2f surface = lineToVector(collided);
+    		for(int i = 0; i < collisions; i++) {
     		
-    		Vector2f normal = surface.getNormal();
+    			Vector2f surface = lineToVector(collided[i]);
     		
-    		Vector2f oppositeNormal = lineToPointDirection(collided, other.getX(), other.getY());
-    		
-    		System.out.println("Opposite Normal: "+oppositeNormal);
-   		
-    		if((normal.x < 0 && oppositeNormal.x < 0) || (normal.x > 0 && oppositeNormal.x > 0)) {
-    			normal.x *= -1;
-    		}
-    		
-    		if((normal.y < 0 && oppositeNormal.y < 0) || (normal.y > 0 && oppositeNormal.y > 0)) {
-    			normal.y *= -1;
-    			System.out.println("Flipped");
-    		}
+    			Vector2f normal = surface.getNormal();
     		    		
-    		Vector2f bounceDir = getReflectionVector(velocity, normal);
+    			Vector2f bounceDir = getReflectionVector(velocity, normal);
     		
-    		Vector2f forceNormal = bounceDir.scale(forceScalar);
+    			Vector2f forceNormal = bounceDir.scale(forceScalar);
+    			
+    			//Bump the ball out
+    			
+    			position.y = prevPosition.y + normal.y;
+        		position.x = prevPosition.x + normal.x;
+
+        		// impact force
+        		
+        		applyForce(forceNormal.x, forceNormal.y); 
+    		}
     		
-    		System.out.println("Direction X: "+forceNormal.x);
-    		System.out.println("Direction Y: "+forceNormal.y);
-    		
-    		//Bump the ball out
-    		position.y = prevPosition.y - velocity.y;
-    		
-    		applyForce(forceNormal.x, forceNormal.y); // impact force
     	}
     	
     }

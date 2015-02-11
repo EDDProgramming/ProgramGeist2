@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 
 import codeBlock.StackBlock;
 import tile.Tile;
+import tile.TriangleTile;
 import entity.*;
 import entity.Entity.EntityType;
 import gui.CatalogMenu;
@@ -46,6 +47,8 @@ public class EntityWorld {
 		addEntity(new Tile(100*i, 400, this));
 		
 		}
+		
+		addEntity(new TriangleTile(700, 300, this));
 		
 		// end test code
 		
