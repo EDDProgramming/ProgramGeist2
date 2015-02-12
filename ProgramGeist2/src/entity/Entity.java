@@ -193,17 +193,15 @@ public abstract class Entity {
     	}
     	
     	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
-    	dir.y = pointY - ((line.getEnd().y + line.getStart().y) / 2);
+    	dir.y = pointY - ((line.getPoints()[3] + line.getPoints()[1]) / 2);
     	
     	return dir;
     }
     
     public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
 		//x, y is the center
-		Polygon triangle = new Polygon();
-		triangle.addPoint(x + x0, y + y0);
-		triangle.addPoint(x + x1, y + y1);
-		triangle.addPoint(x + x2, y + y2);
+    	float[] points = new float[] {x + x0, y + y0, x + x1, y + y1, x + x2, y + y2};
+		Polygon triangle = new Polygon(points);
 		
 		return triangle;
 	}

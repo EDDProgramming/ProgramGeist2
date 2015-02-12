@@ -4,8 +4,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.ShapeRenderer;
-
 import entity.Entity;
 import world.EntityWorld;
 

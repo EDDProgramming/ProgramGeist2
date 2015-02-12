@@ -2,7 +2,6 @@ package main;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-import org.newdawn.slick.state.transition.*;
 
 public class StartScreenState extends BasicGameState {
 	public static final int ID = 1;

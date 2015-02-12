@@ -1,17 +1,16 @@
 package entity;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
 
-import entity.Entity.EntityType;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
 	
 	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
+	boolean physicsEnabled = true;
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, hitbox, new Circle(x, y, 33), true, world, mass);
@@ -27,7 +26,7 @@ public class Ball extends PhysicsObject {
 			applyForce(0, -mag - 50);
 		}
 				
-		if(input.isKeyPressed(Input.KEY_DOWN)) {
+		if(input.isKeyDown(Input.KEY_DOWN)) {
 			applyForce(0, mag);
 		}
 				
@@ -44,28 +43,37 @@ public class Ball extends PhysicsObject {
 	public boolean update(int deltaMS, Input input) {
 		super.update(deltaMS);
 		
+		if(input.isKeyPressed(Input.KEY_SPACE)) {
+			if(physicsEnabled == true) {
+				physicsEnabled = false;
+			}
+			
+			else {
+				physicsEnabled = true;
+			}
+		}
 		
-		System.out.println();
-		System.out.println("Velocity: "+this.velocity);
-		System.out.println("Acceleration: "+this.acceleration);
-		System.out.println("Position: "+this.position);
+		if(physicsEnabled == true) {
 		
-		updateInit();
+			System.out.println();
+			System.out.println("Velocity: "+this.velocity);
+			System.out.println("Acceleration: "+this.acceleration);
+			System.out.println("Position: "+this.position);
 		
-		movement(input);
+			updateInit();
 		
-		updateForces(0.5f);
+			movement(input);
 		
-		updatePosition();
+			updateForces(0.5f);
+		
+			updatePosition();
+		}
 		
 		return !removed;
 	}
 	
 	protected void onCollide(Entity other) {
     	if(other.entityType == EntityType.Tile) {
-    		
-    		//Absolute value allows us to use the square value while maintaining the direction
-    		float forceScalar = .009f * mass;
     		
     		Line[] outline = getOutline(other.hitbox);
     		Line[] collided = new Line[outline.length];
@@ -87,21 +95,24 @@ public class Ball extends PhysicsObject {
     		}
     		
     		for(int i = 0; i < collisions; i++) {
+    			
+    			//Absolute value allows us to use the square value while maintaining the direction
+        		float forceScalar = velocity.length() * .009f * mass;
     		
     			Vector2f surface = lineToVector(collided[i]);
     		
     			Vector2f normal = surface.getNormal();
     		    		
-    			Vector2f bounceDir = getReflectionVector(velocity, normal);
+    			Vector2f bounceDir = getReflectionVector(velocity, normal).normalise();
     		
     			Vector2f forceNormal = bounceDir.scale(forceScalar);
     			
     			//Bump the ball out
     			
-    			position.y = prevPosition.y + normal.y;
-        		position.x = prevPosition.x + normal.x;
+    			position.y = prevPosition.y + forceNormal.y;
+        		position.x = prevPosition.x + forceNormal.x;
 
-        		// impact force
+        		//Impact force
         		
         		applyForce(forceNormal.x, forceNormal.y); 
     		}

@@ -3,8 +3,6 @@ package world;
 import java.util.*;
 
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Vector2f;
-
 import entity.*;
 import main.Camera;
 
