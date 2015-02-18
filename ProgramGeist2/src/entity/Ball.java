@@ -80,6 +80,7 @@ public class Ball extends PhysicsObject {
     		
     		for(int i = 0; i < collided.length; i++) {
     			collided[i] = new Line(0, 0);
+    			System.out.println(outline[i]);
     		}
     		
     		int collisions = 0;
@@ -89,7 +90,7 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < outline.length; i++) {
     			if(radius.intersects(outline[i])) {
     				System.out.println("Collided");
-    				collided[i] = outline[i];
+    				collided[collisions] = outline[i];
     				collisions++;
     			}
     		}
@@ -100,8 +101,10 @@ public class Ball extends PhysicsObject {
         		float forceScalar = velocity.length() * .009f * mass;
     		
     			Vector2f surface = lineToVector(collided[i]);
-    		
+    			
     			Vector2f normal = surface.getNormal();
+    			
+    			System.out.println(normal);
     		    		
     			Vector2f bounceDir = getReflectionVector(velocity, normal).normalise();
     		

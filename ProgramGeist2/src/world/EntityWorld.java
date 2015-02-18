@@ -39,8 +39,6 @@ public class EntityWorld {
 		
 		camera = c;
 		
-		//TODO remove test code
-		
 		addEntity(new Ball(300f, 50f, this, 100.0f));
 		
 		for(int i = 0; i<10; i++) {
@@ -54,8 +52,11 @@ public class EntityWorld {
 		
 		addEntity(new StackBlock(300, 200, this));
 		
+		//TODO remove test code
 	}
     
+	
+	
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
     	Input input = gc.getInput();
