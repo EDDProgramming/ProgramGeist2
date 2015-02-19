@@ -4,10 +4,13 @@ import java.util.*;
 
 import main.Camera;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.fills.GradientFill;
 
 import codeBlock.StackBlock;
 import tile.Tile;
@@ -63,6 +66,7 @@ public class EntityWorld {
     	
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
+    	drawHitboxes(entities, gc.getGraphics());
     	
     	if(catalogMenu.isVisible()) {
     		catalogMenu.update(gc, deltaMS);
@@ -152,6 +156,23 @@ public class EntityWorld {
     	// TEMPORARY
     	
     	return out;
+    }
+    
+    
+    //For rendering hitboxes
+    public void drawHitboxes(List<Entity> entities, Graphics g) {
+    	Iterator<Entity> iterator = entities.iterator();
+    	while (iterator.hasNext()) {
+    		Entity r = iterator.next();
+    		if(r.isCircle == true) {
+    	    	ShapeFill red = new GradientFill(r.radius.getMaxX(), r.radius.getMaxY(), Color.red, r.radius.getMinX(), r.radius.getMinY(), Color.red);
+    			g.draw(r.radius, red);
+    		}
+    		
+    		else {
+    			g.draw(r.hitbox);
+    		}
+    	}
     }
     
     public boolean isGameOver() {

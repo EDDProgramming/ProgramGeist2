@@ -78,11 +78,6 @@ public class Ball extends PhysicsObject {
     		Line[] outline = getOutline(other.hitbox);
     		Line[] collided = new Line[outline.length];
     		
-    		for(int i = 0; i < collided.length; i++) {
-    			collided[i] = new Line(0, 0);
-    			System.out.println(outline[i]);
-    		}
-    		
     		int collisions = 0;
     		
     		System.out.println("Collide");
@@ -98,7 +93,7 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < collisions; i++) {
     			
     			//Absolute value allows us to use the square value while maintaining the direction
-        		float forceScalar = velocity.length() * .009f * mass;
+        		float forceScalar = .009f * mass;
     		
     			Vector2f surface = lineToVector(collided[i]);
     			
@@ -106,7 +101,7 @@ public class Ball extends PhysicsObject {
     			
     			System.out.println(normal);
     		    		
-    			Vector2f bounceDir = getReflectionVector(velocity, normal).normalise();
+    			Vector2f bounceDir = getReflectionVector(velocity, normal);
     		
     			Vector2f forceNormal = bounceDir.scale(forceScalar);
     			

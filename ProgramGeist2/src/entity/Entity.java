@@ -65,9 +65,9 @@ public abstract class Entity {
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
     protected Image image;
-    protected Polygon hitbox;
-    protected Circle radius;
-    protected boolean isCircle = false;
+    public Polygon hitbox;
+    public Circle radius;
+    public boolean isCircle = false;
     
     // Constructors
     public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
@@ -99,7 +99,7 @@ public abstract class Entity {
     	width /= 2;
     	height /= 2;
     	float[] coordinates = {	x + width, y + height, x + width, y - height, 
-    							x - width, y- height, x - width, y - height};
+    							x - width, y - height, x - width, y + height};
     	rectangle = new Polygon(coordinates);
     	return rectangle;
     }
@@ -155,7 +155,7 @@ public abstract class Entity {
 		int lastX = points.length - 2;
 		int lastY = points.length - 1;
 		
-		outline[length - 1] = new Line(points[lastX], points[1], points[lastY], points[2]);
+		outline[length - 1] = new Line(points[lastX], points[lastY], points[0], points[1]);
     	
     	return outline;
     }
@@ -170,15 +170,8 @@ public abstract class Entity {
     }
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
-    	//Steps of what is going on here
-    	//1. Get two times the projection of dir onto the unit of reflector
-    	Vector2f projection = new Vector2f();
-    	dir.projectOntoUnit(reflector, projection);
-    	projection = projection.scale(2);
-    	//2. Subtract this value from dir
-    	Vector2f reflection = dir.sub(projection);
-    	System.out.println(reflection);
-    	
+    	Vector2f reflection = new Vector2f();
+    	reflection = dir.sub(reflector.scale(2 * dir.dot(reflector)));
     	return reflection;
     }
     
