@@ -1,5 +1,8 @@
 package codeBlock;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -26,10 +29,23 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	
 	protected CodeBlock downBlock = null;
 	protected CodeBlock upBlock   = null;
+	protected CodeBlock inBlock   = null;
+	
+	protected Boolean canConnectUp   = false;
+	protected Boolean canConnectDown = false;
+	
+	protected Boolean connected   = false;
+	protected Boolean fullyConnected = false; // maybe we don't need this
+	
 	protected static Circle radius = new Circle(0, 0, 10);
 	
 	protected boolean menuMode = false;
-	protected boolean onMouse = false;
+	protected static boolean onMouse = false;
+	protected static int mouseID = -1;
+	protected boolean mouseDown = false;
+	
+	protected float mouseOnX;
+	protected float mouseOnY;
 	
 	// Constructors
 	public CodeBlock(EntityWorld world) throws SlickException {
@@ -37,7 +53,7 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	}
 	public CodeBlock(float x, float y, EntityWorld world) {
 		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
-		//Make the makeRectangle the correct size
+		// TODO Make the makeRectangle the correct size
 	}
 	public CodeBlock(float x, float y, EntityWorld world, boolean menu) {
 		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
@@ -67,32 +83,108 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	
 	@Override
 	public boolean update(int deltaMS, Input input) {
+		
+		mouseUpdate(deltaMS, input);
+		
+		return true;
+	}
+	
+	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
+		this.update(deltaMS, input);
+		
+		if(!menuMode) {
+			checkConnections(input, blocks);
+		}
+		
+		return true;
+	}
+	
+	/*
+	 * checkConnections
+	 * 
+	 * this method will check:
+	 * 1- if the block is in a position to make a connection
+	 * 
+	 */
+	public void checkConnections(Input input, List<CodeBlock> blocks) {
+		Iterator<CodeBlock> c = blocks.iterator();
+		
+		if(canConnectUp || canConnectDown) {
+			while(c.hasNext()) {
+				CodeBlock block = c.next();
+
+				if(block != this) {
+					// TODO Fix code block connections
+
+					// check for up block
+					if(canConnectUp) {
+						if(position.x >= block.getX()-100
+								&& position.x <= block.getX()+100
+								&& position.y >= block.getY()
+								&& position.y <= block.getY()+50) {
+
+							setUpBlock(block);
+							block.setDownBlock(this);
+							canConnectUp = false;
+						}
+					}
+					if(canConnectDown) {
+						// TODO check for down block
+						if(position.x >= block.getX()-100
+								&& position.x <= block.getX()+100
+								&& position.y >= block.getY()-50
+								&& position.y <= block.getY()) {
+
+							setDownBlock(block);
+							block.setUpBlock(this);
+							canConnectDown = false;
+						}
+					}
+				}
+			}
+		}
+		
+		if(upBlock != null) {
+			position.x = upBlock.getX();
+			position.y = upBlock.getY()+50;
+		}
+		
+	}
+	
+	public void mouseUpdate(int deltaMS, Input input) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
 		if(input.isMouseButtonDown(0)) {
 			if(onMouse) {
-				// TODO make the code block stick where the mouse originally clicked on it.
-				position.x = mouseX-50;
-				position.y = mouseY-20;
+				if(mouseID == this.id) {
+					position.x = mouseX-mouseOnX;
+					position.y = mouseY-mouseOnY;
+				}
 			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+40) {
 				if(menuMode) {
-					CodeBlock spawn = (CodeBlock) this.clone();
-					
+						try {
+							world.addEntity(clone());
+						} catch (Exception e) {
+							System.out.println("Menu Clone Exception");
+							e.printStackTrace();
+						}
 				}else {
+					mouseOnX = mouseX-position.x;
+					mouseOnY = mouseY-position.y;
 					onMouse = true;
+					mouseID = this.id;
 				}
-			}else {
-				onMouse = false;
 			}
+			mouseDown = true;
+		}else {
+			onMouse = false;
+			mouseDown = false;
 		}
-			return true;
 	}
 	
 	@Override
-	public CodeBlock clone() {
-		
-	}
+	public abstract CodeBlock clone();
 	
 	@Override
 	public void render(Graphics g, double camX, double camY) {
@@ -105,4 +197,11 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 		menuMode = true;
 	}
 	
+	public void setDownBlock(CodeBlock newDownBlock) {
+		downBlock = newDownBlock;
+	}
+	
+	public void setUpBlock(CodeBlock newUpBlock) {
+		downBlock = newUpBlock;
+	}
 }

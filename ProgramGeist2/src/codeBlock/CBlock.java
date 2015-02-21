@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 
 import world.*;
 
-public class CBlock extends CodeBlock {
+public abstract class CBlock extends CodeBlock {
 	
 	protected ArrayList<CodeBlock> stack = new ArrayList<CodeBlock>();
 	
@@ -20,5 +20,4 @@ public class CBlock extends CodeBlock {
 	public boolean call(int deltaMS) {
 		return true;
 	}
-	
 }
