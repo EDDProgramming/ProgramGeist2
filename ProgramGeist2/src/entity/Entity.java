@@ -175,22 +175,19 @@ public abstract class Entity {
     	return reflection;
     }
     
-    public static Vector2f lineToPointDirection(Line line, float pointX, float pointY) {
-    	Vector2f dir = new Vector2f();
-    	
-    	System.out.println("Line X0, Y0: "+line.getStart());
-    	System.out.println("Line X1, Y1: "+line.getEnd());
+    public static float getPerpendicularDistance(Line line, float x0, float y0) {
+    	float dist = 0;
     	
     	float[] points = line.getPoints();
+    	float x1 = points[0];
+    	float y1 = points[1];
+    	float x2 = points[2];
+    	float y2 = points[3];
     	
-    	for(int i = 0; i < points.length; i++) {
-    		System.out.println("Point: "+points[i]);
-    	}
+    	dist = (float) (Math.abs((y2- y1) * x0 - (x2 - x1) * y0 + (x2 * y1) - (y2 * x1))
+    			/ Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
     	
-    	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
-    	dir.y = pointY - ((line.getPoints()[3] + line.getPoints()[1]) / 2);
-    	
-    	return dir;
+    	return dist;
     }
     
     public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {

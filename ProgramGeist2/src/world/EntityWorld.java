@@ -11,6 +11,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Polygon;
 
 import codeBlock.StackBlock;
 import tile.Tile;
@@ -164,13 +166,17 @@ public class EntityWorld {
     	Iterator<Entity> iterator = entities.iterator();
     	while (iterator.hasNext()) {
     		Entity r = iterator.next();
+    		g.setColor(Color.red);
     		if(r.isCircle == true) {
     	    	ShapeFill red = new GradientFill(r.radius.getMaxX(), r.radius.getMaxY(), Color.red, r.radius.getMinX(), r.radius.getMinY(), Color.red);
-    			g.draw(r.radius, red);
+    			Circle circle = r.radius;
+    	    	g.draw(circle, red);
     		}
     		
     		else {
-    			g.draw(r.hitbox);
+    			ShapeFill red = new GradientFill(r.hitbox.getMaxX(), r.hitbox.getMaxY(), Color.red, r.hitbox.getMinX(), r.hitbox.getMinY(), Color.red);
+    			Polygon box = r.hitbox;
+    			g.draw(box, red);
     		}
     	}
     }

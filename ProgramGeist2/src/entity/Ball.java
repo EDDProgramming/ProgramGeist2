@@ -85,6 +85,7 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < outline.length; i++) {
     			if(radius.intersects(outline[i])) {
     				System.out.println("Collided");
+    				System.out.println(outline[i]);
     				collided[collisions] = outline[i];
     				collisions++;
     			}
@@ -107,8 +108,12 @@ public class Ball extends PhysicsObject {
     			
     			//Bump the ball out
     			
-    			position.y = prevPosition.y + forceNormal.y;
-        		position.x = prevPosition.x + forceNormal.x;
+    			System.out.println(getPerpendicularDistance(collided[i], position.y, position.y));
+    			
+    			Vector2f positionReset = new Vector2f();
+    			positionReset = normal.scale(getPerpendicularDistance(collided[i], position.x, position.y));
+    			position.x += positionReset.x;
+    			position.y += positionReset.y;
 
         		//Impact force
         		
