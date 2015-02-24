@@ -34,7 +34,7 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	protected Boolean canConnectUp   = false;
 	protected Boolean canConnectDown = false;
 	
-	protected Boolean connected   = false;
+	protected Boolean connectedUp   = false;
 	protected Boolean fullyConnected = false; // maybe we don't need this
 	
 	protected static Circle radius = new Circle(0, 0, 10);
@@ -103,7 +103,8 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	 * checkConnections
 	 * 
 	 * this method will check:
-	 * 1- if the block is in a position to make a connection
+	 * 1 - if the block is in a position to make a connection
+	 * 2 - if the block has a connection it will move the block to stick on its upBlock.
 	 * 
 	 */
 	public void checkConnections(Input input, List<CodeBlock> blocks) {
@@ -112,45 +113,51 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 		if(canConnectUp || canConnectDown) {
 			while(c.hasNext()) {
 				CodeBlock block = c.next();
-
-				if(block != this) {
+				
+				if(block != this && block.getMenu() == false) {
 					// TODO Fix code block connections
-
+					
 					// check for up block
 					if(canConnectUp) {
-						if(position.x >= block.getX()-100
-								&& position.x <= block.getX()+100
-								&& position.y >= block.getY()
-								&& position.y <= block.getY()+50) {
-
-							setUpBlock(block);
-							block.setDownBlock(this);
-							canConnectUp = false;
+						if(block != downBlock) {
+							if(position.x >= block.getX()-100
+									&& position.x <= block.getX()+100
+									&& position.y >= block.getY()
+									&& position.y <= block.getY()+24) {
+								setUpBlock(block);
+								block.setDownBlock(this);
+							}
 						}
 					}
 					if(canConnectDown) {
-						// TODO check for down block
-						if(position.x >= block.getX()-100
-								&& position.x <= block.getX()+100
-								&& position.y >= block.getY()-50
-								&& position.y <= block.getY()) {
+						if(block != upBlock) {
+							if(position.x >= block.getX()-100
+									&& position.x <= block.getX()+100
+									&& position.y >= block.getY()-24
+									&& position.y <= block.getY()) {
 
-							setDownBlock(block);
-							block.setUpBlock(this);
-							canConnectDown = false;
+								setDownBlock(block);
+								block.setUpBlock(this);
+								canConnectDown = false;
+							}
 						}
 					}
 				}
 			}
 		}
-		
-		if(upBlock != null) {
+		if(connectedUp) {
 			position.x = upBlock.getX();
-			position.y = upBlock.getY()+50;
+			position.y = upBlock.getY()+24;
 		}
 		
 	}
 	
+	/*
+	 * mouseUpdate
+	 * 
+	 * handles interactions between code blocks and the mouse.
+	 * 
+	 */
 	public void mouseUpdate(int deltaMS, Input input) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
@@ -163,12 +170,15 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 				}
 			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+40) {
 				if(menuMode) {
+					if(mouseDown == false) {
 						try {
-							world.addEntity(clone());
+							CodeBlock c = this.clone();
+							world.addEntity(c);
 						} catch (Exception e) {
 							System.out.println("Menu Clone Exception");
 							e.printStackTrace();
 						}
+					}
 				}else {
 					mouseOnX = mouseX-position.x;
 					mouseOnY = mouseY-position.y;
@@ -197,11 +207,22 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 		menuMode = true;
 	}
 	
+	public boolean getMenu() {
+		return menuMode;
+	}
+	
 	public void setDownBlock(CodeBlock newDownBlock) {
 		downBlock = newDownBlock;
+		canConnectDown = false;
+	}
+	
+	public void setX(float newX) {
+		position.x = newX;
 	}
 	
 	public void setUpBlock(CodeBlock newUpBlock) {
-		downBlock = newUpBlock;
+		upBlock = newUpBlock;
+		canConnectUp = false;
+		connectedUp = true;
 	}
 }

@@ -55,6 +55,9 @@ public class EntityWorld {
 		
 		addEntity(add);
 		addEntity(new printlnBlock(500, 200, this));
+		addEntity(new printlnBlock(300, 400, this));
+		
+		addEntity(new Ball(300, 400, this, 0));
 		
 		CatalogMenu cm = new CatalogMenu(this);
 		
