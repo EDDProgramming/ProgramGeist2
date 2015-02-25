@@ -30,12 +30,12 @@ public abstract class CodeBlock extends Entity {
 		this(0, 0, world);
 	}
 	public CodeBlock(float x, float y, EntityWorld world) {
-		super(x, y, makeRectangle(x, y, 20, 50), radius, false, world);
+		super(x, y, makeRectangle(x, y, 20, 50), world);
 		//Make the makeRectangle the correct size
 	}
 
 	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
-		super(x, y, hitbox, radius, false, world);
+		super(x, y, hitbox, world);
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
