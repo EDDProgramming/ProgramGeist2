@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.*;
 import world.*;
 import entity.*;
 
-public abstract class CodeBlock extends Entity implements Cloneable{
+public abstract class CodeBlock extends Entity {
 	
 	public enum BlockType {
 		Generic,
@@ -55,20 +55,9 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
 		// TODO Make the makeRectangle the correct size
 	}
-	public CodeBlock(float x, float y, EntityWorld world, boolean menu) {
-		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
-		menuMode = menu;
-	}
+
 	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
 		super(x, y, hitbox, radius, false, world);
-		entityType = Entity.EntityType.CodeBlock;
-		
-		try {
-			image = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
-		} catch(SlickException e) {
-			e.printStackTrace();
-			System.out.println("IMAGE NOT FOUND");
-		}
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
@@ -78,9 +67,10 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	@Override
 	public boolean update(int deltaMS) {
 		
+		
 		return true;
 	}
-	
+
 	@Override
 	public boolean update(int deltaMS, Input input) {
 		
@@ -203,12 +193,12 @@ public abstract class CodeBlock extends Entity implements Cloneable{
 	
 	public abstract boolean call(int deltaMS);
 	
-	public void setMenu() {
-		menuMode = true;
-	}
-	
 	public boolean getMenu() {
 		return menuMode;
+	}
+	
+	public void setMenu() {
+		menuMode = true;
 	}
 	
 	public void setDownBlock(CodeBlock newDownBlock) {

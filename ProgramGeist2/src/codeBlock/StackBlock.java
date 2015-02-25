@@ -1,5 +1,6 @@
 package codeBlock;
 
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import world.EntityWorld;
@@ -18,4 +19,9 @@ public abstract class StackBlock extends CodeBlock {
 		return false;
 	}
 	
+	@Override
+	public boolean update(int deltaMS, Input input) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

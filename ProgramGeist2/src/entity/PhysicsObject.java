@@ -6,8 +6,6 @@ import codeBlock.CodeBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
@@ -21,7 +19,6 @@ public class PhysicsObject extends Entity {
 	protected boolean isObjective = false;
 	//Signifies that this is the gamepiece that must go to the goal
 	protected boolean isPlayer    = false;
-	//Signifies using circular or polygonal hitboxes
 	
 	protected ArrayList<CodeBlock> code = new ArrayList<CodeBlock>(); // Code controlling this object in game
 	
@@ -44,63 +41,82 @@ public class PhysicsObject extends Entity {
 
 	@Override
 	public boolean update(int deltaMS) {
-		
+		return !removed;
+	}
+	
+	public boolean update(int deltaMS, Input input) {
+		return !removed;
+	}
+    
+	//Reset step of physics update, for use in subclasses
+	public void updateInit() {
 		sumForce.x = 0;
 		sumForce.y = 0;
-		
-		//setX sets the position of the left side, setY sets the position of the top side
-		super.hitbox.setCenterX(position.x);
-		super.hitbox.setCenterY(position.y);
-		super.radius.setCenterX(position.x);
-		super.radius.setCenterY(position.y);
-		
+
+		hitbox.setCenterX(position.x);
+		hitbox.setCenterY(position.y);
+		radius.setCenterX(position.x);
+		radius.setCenterY(position.y);
+	}
+	
+	//Regular force checks of physics update, for use in subclasses
+	public void updateForces(float friction) {
 		applyGravity();
-		applyFriction(0.5f);
+		applyFriction(friction);
 		checkCollisions(world.entities);
-		
-		acceleration.x = sumForce.x / mass;
-		acceleration.y = sumForce.y / mass;
-		
+	}
+	
+	//Calculates acceleration, velocity and position based on force, plus some cleanup.
+	public void updatePosition() {
+		if(mass != 0) {
+			acceleration.x = sumForce.x / mass;
+			acceleration.y = sumForce.y / mass;
+		}
+			
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
 		position.x += velocity.x;
 		position.y += velocity.y;
 		
-		System.out.println("Position: "+super.hitbox.getCenterY());
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
+		
 		prevPosition.x = position.x;
 		prevPosition.y = position.y;
-		
-		return !removed;
 	}
-    
+
 	//Force in an X and Y Vector pair
     public void applyForce(float forceX, float forceY) {
         sumForce.x += forceX;
         sumForce.y += forceY;
     }
+
+    //Direction doesn't work right, removed.
     
+    /*
     //Force with a direction and magnitude
-    public void applyForce(double deg, double magnitude) {
+    //0 degrees is up
+    //90 degrees is right
+    public void applyForce(float deg, int magnitude) {
     	float forceX;
     	float forceY;
     	
-    	forceX = (float) (magnitude * Math.sin(deg));
-    	forceY = (float) (magnitude * Math.cos(deg));
+    	forceX =  (float) (magnitude * Math.sin(deg));
+    	forceY = -(float) (magnitude * Math.cos(deg));
     	
     	sumForce.x += forceX;
     	sumForce.y += forceY;
     }
-    
+    */
+ 
     public void applyGravity() {
     	
     	float magnitude;
     	
     	magnitude = (float) (mass * .98);
     	
-    	applyForce(0, magnitude);
+    	applyForce(0.0f, magnitude);
     	//Positive is down
     }
     
@@ -132,7 +148,6 @@ public class PhysicsObject extends Entity {
     			
     			//If only this is a circle
     			else if(!e.isCircle && radius.intersects(e.hitbox)) {
-    				System.out.println("Collide");
     				onCollide(e);
     			}	
     		}
@@ -152,21 +167,8 @@ public class PhysicsObject extends Entity {
     }
     
     @Override
-    protected void onCollide(Entity other) {
-    	if(other.entityType == EntityType.Tile) {
-    		
-    		//Absolute value allows us to use the square value while maintaining the direction
-    		velocity.y = velocity.y * .5f;
-    		float forceNormal = -.045f * mass * velocity.y*Math.abs(velocity.y);
-    		
-    		System.out.println("Collide");
-    		
-    		//Bump the ball back up
-    		position.y = prevPosition.y - 4;
-    		applyForce(0, forceNormal); // impact force
-    	}
-    	
-    }
+    protected void onCollide(Entity other){};
+    
     protected void onCollide(PhysicsObject other) {
     	// TODO test if this is ever called by world. The code might not register that what it is contacting is a physics object as well as an entity.
     	if(isPlayer) {

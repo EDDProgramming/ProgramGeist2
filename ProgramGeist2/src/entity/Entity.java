@@ -41,8 +41,6 @@ package entity;
 
 import java.util.*;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 
@@ -67,21 +65,22 @@ public abstract class Entity {
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
     protected Image image;
-    protected Polygon hitbox;
-    protected Circle radius;
-    protected boolean isCircle = false;
+    public Polygon hitbox;
+    public Circle radius;
+    public boolean isCircle = false;
     
     // Constructors
     public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
     	this(0, 0, hitbox, radius, circle, world);
     }
-    public Entity(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world) {
+    public Entity(float x, float y, Polygon hitbox, Circle circle, boolean isCircle, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
     	this.hitbox = hitbox;
-    	this.radius = radius;
+        hitbox.setClosed(true);
+    	this.radius = circle;
     	this.world = world;
-    	this.isCircle = circle;
+    	this.isCircle = isCircle;
     	
     	try {
     	image = new Image("res/Whoops.png");
@@ -97,8 +96,12 @@ public abstract class Entity {
     }
     
     public static Polygon makeRectangle(float x, float y, float width, float height) {
-    	Polygon rectangle = new Polygon();
-    	Vector2f center = new Vector2f (x, y);
+    	Polygon rectangle;
+    	width /= 2;
+    	height /= 2;
+    	float[] coordinates = {	x + width, y + height, x + width, y - height, 
+    							x - width, y - height, x - width, y + height};
+    	rectangle = new Polygon(coordinates);
     	return rectangle;
     }
     
@@ -108,10 +111,8 @@ public abstract class Entity {
     
     // Entities will have their own update code
     public abstract boolean update(int deltaMS);
-    public boolean update(int deltaMS, Input input) {
-    	return false;
-    }
     
+    public abstract boolean update(int deltaMS, Input input);
     
     public void render(Graphics g, double camX, double camY) {
     	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
@@ -132,19 +133,82 @@ public abstract class Entity {
     	return hitbox.getHeight();
     }
     
-    // Get distance from entity other
+    //Get distance from entity other
     public double distanceTo(Entity other) {
         double dx = position.x - other.position.x;
         double dy = position.y - other.position.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
     
-    // returns the perspective xy plane distance from entity other
-    public double perspectiveDistanceToSqr(Entity other) {
-        double dx = position.x - other.position.x;
-        double dy = (position.y - other.position.y) * 2;
-        return dx * dx + dy * dy;
+    //Get the lines comprising the hitbox
+    public static Line[] getOutline(Polygon hitbox) {
+    	
+    	//Get a list of points making up the polygon in the form x0, y0... xn, yn
+		float[] points = hitbox.getPoints();
+		
+		//Set the number of lines that we will get to be the number of coordinate pairs in the shape.
+		int length = points.length / 2;
+		
+		//Create a new array of Lines to be created
+		Line[] outline = new Line[length];
+		
+		//i is increased by 2 each time to increment by one coordinate pair
+		//When i is equal to or greater than the number of points in the array, this loop ends
+		//This will return all of the lines except the one connecting the last point to the first one.
+		for(int i = 3, j = 0; i < points.length; i += 2, j++) {
+			//i-3 = x0, i-2 = y0, i-1 = x1, i = y1
+			outline[j] = new Line(points[i-3], points[i-2], points[i-1], points[i]);
+		}
+		
+		//This gets the last line
+		int lastX = points.length - 2;
+		int lastY = points.length - 1;
+		
+		outline[length - 1] = new Line(points[lastX], points[lastY], points[0], points[1]);
+    	
+    	return outline;
     }
+    
+    //Convert a line into a vector
+    public static Vector2f lineToVector(Line line) {
+    	Vector2f vector = new Vector2f();
+    	vector.x = line.getPoints()[2] - line.getPoints()[0];
+    	vector.y = line.getPoints()[3] - line.getPoints()[1];
+    	
+    	return vector;
+    }
+    
+    public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
+    	Vector2f reflection = new Vector2f();
+    	reflection = dir.sub(reflector.scale(2 * dir.dot(reflector)));
+    	return reflection;
+    }
+    
+    public static Vector2f lineToPointDirection(Line line, float pointX, float pointY) {
+    	Vector2f dir = new Vector2f();
+    	
+    	System.out.println("Line X0, Y0: "+line.getStart());
+    	System.out.println("Line X1, Y1: "+line.getEnd());
+    	
+    	float[] points = line.getPoints();
+    	
+    	for(int i = 0; i < points.length; i++) {
+    		System.out.println("Point: "+points[i]);
+    	}
+    	
+    	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
+    	dir.y = pointY - ((line.getPoints()[3] + line.getPoints()[1]) / 2);
+    	
+    	return dir;
+    }
+    
+    public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
+		//x, y is the center
+    	float[] points = new float[] {x + x0, y + y0, x + x1, y + y1, x + x2, y + y2};
+		Polygon triangle = new Polygon(points);
+		
+		return triangle;
+	}
     
     public int getID() {
     	return id;
@@ -182,12 +246,8 @@ public abstract class Entity {
     protected void onCollide(Entity entity) {
     }
     
-    public double getCollisionRadius() {
-        return 16;
-    }
-    
     public EntityType getEntityType() {
-    	return entityType;
+    	return this.entityType;
     }
     
     public void resolveCollisionWithFixedEntity(Entity entity) {

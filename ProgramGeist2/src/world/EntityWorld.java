@@ -4,14 +4,18 @@ import java.util.*;
 
 import main.Camera;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.fills.GradientFill;
 
 import codeBlock.CodeBlock;
 import codeBlock.printlnBlock;
 import tile.Tile;
+import tile.TriangleTile;
 import entity.*;
 import entity.Entity.EntityType;
 import gui.CatalogMenu;
@@ -41,13 +45,14 @@ public class EntityWorld {
 		
 		camera = c;
 		
-		//TODO remove test code
+		addEntity(new Ball(300f, 50f, this, 100.0f));
 		
-		//addEntity(new Ball(50.0f, 50.0f, this, 100.0f));
+		for(int i = 0; i<10; i++) {
+		addEntity(new Tile(100*i, 400, this));
 		
-//		for(int i = 0; i<10; i++) {
-//			addEntity(new Tile(100*i, 400, this));
-//		}
+		}
+		
+		addEntity(new TriangleTile(700, 300, this));
 		
 		// end test code
 		
@@ -63,8 +68,11 @@ public class EntityWorld {
 		
 		catalogMenu = cm;
 		
+		//TODO remove test code
 	}
     
+	
+	
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
     	Input input = gc.getInput();
@@ -72,6 +80,7 @@ public class EntityWorld {
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
     	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
+    	drawHitboxes(entities, gc.getGraphics());
     	
     	if(catalogMenu.isVisible()) {
     		catalogMenu.update(gc, deltaMS);
@@ -173,6 +182,23 @@ public class EntityWorld {
         }
         
         
+    }
+    
+    
+    //For rendering hitboxes
+    public void drawHitboxes(List<Entity> entities, Graphics g) {
+    	Iterator<Entity> iterator = entities.iterator();
+    	while (iterator.hasNext()) {
+    		Entity r = iterator.next();
+    		if(r.isCircle == true) {
+    	    	ShapeFill red = new GradientFill(r.radius.getMaxX(), r.radius.getMaxY(), Color.red, r.radius.getMinX(), r.radius.getMinY(), Color.red);
+    			g.draw(r.radius, red);
+    		}
+    		
+    		else {
+    			g.draw(r.hitbox);
+    		}
+    	}
     }
     
     public boolean isGameOver() {

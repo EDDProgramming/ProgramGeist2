@@ -102,7 +102,6 @@ public class CatalogMenu {
 		ArrayList<CodeBlock> out = new ArrayList<CodeBlock>();
 
 //		TODO make file loader
-		
 		try {
 			float totalHeight = 0;
 
@@ -120,7 +119,6 @@ public class CatalogMenu {
 			for(int i = 0; i<out.size(); i++) {
 				out.get(i).setMenu();
 			}
-
 		}catch (SlickException e) {
 			System.out.println("COULD NOT LOAD BLOCKS");
 			e.printStackTrace();
