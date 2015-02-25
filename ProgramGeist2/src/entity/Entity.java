@@ -72,7 +72,6 @@ public abstract class Entity {
     // Constructors
     public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
     	this(0, 0, hitbox, radius, circle, world);
-    	this.id = ++nextId;
     }
     public Entity(float x, float y, Polygon hitbox, Circle circle, boolean isCircle, EntityWorld world) {
     	this.position.x = x;
@@ -88,6 +87,8 @@ public abstract class Entity {
     	} catch (SlickException e) {
     		e.printStackTrace();
     	}
+    	
+    	this.id = ++nextId;
     }
     
     public EntityType getType() {
@@ -122,6 +123,14 @@ public abstract class Entity {
     
     public float getY() {
     	return position.y;
+    }
+    
+    public float getWidth() {
+    	return hitbox.getWidth();
+    }
+    
+    public float getHeight() {
+    	return hitbox.getHeight();
     }
     
     //Get distance from entity other
@@ -226,8 +235,6 @@ public abstract class Entity {
 //            }
 //        }
 //    }
-    
-
     
     public boolean collidesWith(Entity other) {
         return other != this;

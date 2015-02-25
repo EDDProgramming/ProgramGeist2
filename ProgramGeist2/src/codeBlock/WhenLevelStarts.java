@@ -27,4 +27,13 @@ public class WhenLevelStarts extends HatBlock {
 		return true;
 	}
 	
+	public CodeBlock clone() {
+		try {
+			return new WhenLevelStarts(position.x, position.y, world);
+		} catch (SlickException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

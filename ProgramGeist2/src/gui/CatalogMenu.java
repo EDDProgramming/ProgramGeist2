@@ -1,7 +1,13 @@
 package gui;
 
+import java.awt.List;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+
 import org.newdawn.slick.*;
 
+import world.EntityWorld;
 import codeBlock.*;
 
 public class CatalogMenu {
@@ -13,15 +19,20 @@ public class CatalogMenu {
 	private static final int WIDTH = 200;
 	private static int height;
 	private static final int SPACING = 10;
-	private static final int NUM_IMAGES = 6;
+	private static final int NUM_BLOCKS = 6;
 	
 	private static Image[] images;
 	
-	private static CodeBlock[] codeBlocks;
+	private ArrayList<CodeBlock> codeBlocks;
 	
-	public CatalogMenu() {
+	public EntityWorld world;
+	
+	public CatalogMenu(EntityWorld _world) {
 		images = loadImages();
+		world = _world;
 		codeBlocks = loadBlocks();
+		
+		
 	}
 	
 	public void update(GameContainer gc, int deltaMS) {
@@ -30,6 +41,10 @@ public class CatalogMenu {
 		height = gc.getHeight();
 		
 		// check if any code blocks have been clicked.
+		
+		for(int i = 0; i<codeBlocks.size(); i++) {
+			codeBlocks.get(i).update(deltaMS, input);
+		}
 		
 	}
 	
@@ -51,18 +66,20 @@ public class CatalogMenu {
 		g.setColor(Color.white);
 		g.drawString("Code Blocks", xPos, yPos);
 		
-		// draw code blocks
-		int totalHeight = 0;
-		for(int i = 0; i<NUM_IMAGES; i++) {
-			g.drawImage(images[i], xPos, yPos+20+totalHeight+SPACING*(i+1));
-			totalHeight += images[i].getHeight();
-		}
+//		// draw code blocks
+//		int totalHeight = 0;
+//		for(int i = 0; i<NUM_BLOCKS; i++) {
+//			g.drawImage(images[i], xPos, yPos+20+totalHeight+SPACING*(i+1));
+//			totalHeight += images[i].getHeight();
+//		}
+		
+//		for(int i = 0; i<codeBlocks.size(); i++) {
+//			codeBlocks.get(i).render(g, 0, 0); // TODO will run into problems later with camera panning
+//		}
 		
 	}
 	
-	private int getNumImages() {
-		return NUM_IMAGES;
-	}
+	private int getNumImages() { return NUM_BLOCKS;	}
 
 	public Image[] loadImages() {
 		Image[] out = new Image[6];
@@ -81,9 +98,31 @@ public class CatalogMenu {
 		return out;
 	}
 	
-	public CodeBlock[] loadBlocks() {
-		CodeBlock[] out = new CodeBlock[6];
-		
+	public ArrayList<CodeBlock> loadBlocks() {
+		ArrayList<CodeBlock> out = new ArrayList<CodeBlock>();
+
+//		TODO make file loader
+		try {
+			float totalHeight = 0;
+
+			//out.add(new printlnBlock(50, 100, world));
+			//totalHeight += out.get(0).getHeight();
+			
+			CodeBlock add = new printlnBlock(50, 100, world);
+			add.setMenu();
+			
+			world.addEntity(add);
+			
+//			out.add(new WhenLevelStarts(50, 100+totalHeight+SPACING, world));
+//			totalHeight += out.get(1).getHeight();
+			
+			for(int i = 0; i<out.size(); i++) {
+				out.get(i).setMenu();
+			}
+		}catch (SlickException e) {
+			System.out.println("COULD NOT LOAD BLOCKS");
+			e.printStackTrace();
+		}
 		
 		return out;
 	}

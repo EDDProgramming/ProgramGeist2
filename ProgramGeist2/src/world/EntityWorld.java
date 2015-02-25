@@ -14,7 +14,8 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
 
-import codeBlock.StackBlock;
+import codeBlock.CodeBlock;
+import codeBlock.printlnBlock;
 import tile.Tile;
 import tile.TriangleTile;
 import entity.*;
@@ -26,6 +27,8 @@ public class EntityWorld {
     private List<Entity> newEntities = new ArrayList<Entity>();
     private List<Entity> particles = new ArrayList<Entity>();
     private List<Entity> newParticles = new ArrayList<Entity>();
+    private List<CodeBlock> blocks = new ArrayList<CodeBlock>();
+    private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
 	
 	private double width;
 	private double height;
@@ -36,7 +39,7 @@ public class EntityWorld {
 	
 	private Camera camera;
 	
-	private CatalogMenu catalogMenu = new CatalogMenu();
+	private CatalogMenu catalogMenu;
 	private boolean Edown = false;
 	
 	public EntityWorld(Camera c) throws SlickException {
@@ -55,7 +58,17 @@ public class EntityWorld {
 		
 		// end test code
 		
-		addEntity(new StackBlock(300, 200, this));
+		CodeBlock add = new printlnBlock(300, 200, this);
+		
+		addEntity(add);
+		addEntity(new printlnBlock(500, 200, this));
+		addEntity(new printlnBlock(300, 400, this));
+		
+		addEntity(new Ball(300, 400, this, 0));
+		
+		CatalogMenu cm = new CatalogMenu(this);
+		
+		catalogMenu = cm;
 		
 		//TODO remove test code
 	}
@@ -68,6 +81,7 @@ public class EntityWorld {
     	
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
+    	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
     	drawHitboxes(entities, gc.getGraphics());
     	
     	if(catalogMenu.isVisible()) {
@@ -132,11 +146,35 @@ public class EntityWorld {
         ents.addAll(newEnts);
         newEnts.clear();
     }
+    private void updateEntityList(int deltaMS, List<CodeBlock> blocks, List<CodeBlock> newBlocks, GameContainer gc, boolean b) {
+    	Iterator<CodeBlock> e = blocks.iterator();
+        while (e.hasNext()) {
+            CodeBlock entity = e.next();
+            
+            boolean entityAlive;
+            
+            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
+            	entityAlive = entity.update(deltaMS, gc.getInput(), blocks);
+            }else {
+            	entityAlive = entity.update(deltaMS);
+            }
+            
+            if (!entityAlive || entity.isRemoved()) {
+                entity.setRemoved();
+                e.remove();
+            }
+        }
+        blocks.addAll(newBlocks);
+        newBlocks.clear();
+    }
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
+    	catalogMenu.render(gc, g);
+    	
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
+        renderableEntities.addAll(blocks);
         
         Iterator<Entity> iterator = renderableEntities.iterator();
         while (iterator.hasNext()) {
@@ -145,19 +183,7 @@ public class EntityWorld {
             iterator.remove();
         }
         
-        catalogMenu.render(gc, g);
-    }
-    
-    public double[] getPathing(Entity ent, Entity target) {
-    	double[] out = new double[2];
-    	// ???
-    	
-    	// TEMPORARY
-    	out[0] = target.getX();
-    	out[1] = target.getY();
-    	// TEMPORARY
-    	
-    	return out;
+        
     }
     
     
@@ -183,8 +209,7 @@ public class EntityWorld {
     
     public boolean isGameOver() {
     	return false;
-    }
-    
+    }   
     
     public long getTime() {
     	return time;
@@ -201,6 +226,9 @@ public class EntityWorld {
     
     public void addEntity(Entity e) {
         newEntities.add(e);
+    }
+    public void addEntity(CodeBlock e) {
+    	newBlocks.add(e);
     }
     
     public void addParticle(Entity e) {
