@@ -21,6 +21,7 @@ public abstract class StackBlock extends CodeBlock {
 	
 	@Override
 	public boolean update(int deltaMS, Input input) {
+		super.update(deltaMS, input);
 		// TODO Auto-generated method stub
 		return false;
 	}

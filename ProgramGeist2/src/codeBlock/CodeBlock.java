@@ -53,11 +53,15 @@ public abstract class CodeBlock extends Entity {
 	}
 	public CodeBlock(float x, float y, EntityWorld world) {
 		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
-		// TODO Make the makeRectangle the correct size
 	}
 
 	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
 		super(x, y, hitbox, radius, false, world);
+		try {
+			image = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
@@ -153,12 +157,19 @@ public abstract class CodeBlock extends Entity {
 		int mouseY = input.getMouseY();
 		
 		if(input.isMouseButtonDown(0)) {
-			if(onMouse) {
-				if(mouseID == this.id) {
+			if(onMouse && mouseID == this.id) {
+				if(connectedUp) {
+					if(mouseX > position.x+mouseOnX+50
+							|| mouseX < position.x+mouseOnX-50
+							|| mouseY > position.y+mouseOnY+50
+							|| mouseY < position.y+mouseOnY-50) {
+						disconnectUp();
+					}
+				}else {
 					position.x = mouseX-mouseOnX;
 					position.y = mouseY-mouseOnY;
 				}
-			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+40) {
+			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
 				if(menuMode) {
 					if(mouseDown == false) {
 						try {
@@ -214,5 +225,11 @@ public abstract class CodeBlock extends Entity {
 		upBlock = newUpBlock;
 		canConnectUp = false;
 		connectedUp = true;
+	}
+	
+	public void disconnectUp() {
+		upBlock = null;
+		canConnectUp = true;
+		connectedUp = false;
 	}
 }

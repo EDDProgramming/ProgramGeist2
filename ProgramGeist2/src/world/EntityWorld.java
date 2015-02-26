@@ -50,8 +50,7 @@ public class EntityWorld {
 		addEntity(new Ball(300f, 50f, this, 100.0f));
 		
 		for(int i = 0; i<10; i++) {
-		addEntity(new Tile(100*i, 400, this));
-		
+			addEntity(new Tile(100*i, 400, this));
 		}
 		
 		addEntity(new TriangleTile(700, 300, this));
@@ -63,8 +62,6 @@ public class EntityWorld {
 		addEntity(add);
 		addEntity(new printlnBlock(500, 200, this));
 		addEntity(new printlnBlock(300, 400, this));
-		
-		addEntity(new Ball(300, 400, this, 0));
 		
 		CatalogMenu cm = new CatalogMenu(this);
 		
@@ -153,11 +150,7 @@ public class EntityWorld {
             
             boolean entityAlive;
             
-            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
-            	entityAlive = entity.update(deltaMS, gc.getInput(), blocks);
-            }else {
-            	entityAlive = entity.update(deltaMS);
-            }
+            entityAlive = entity.update(deltaMS, gc.getInput(), blocks);
             
             if (!entityAlive || entity.isRemoved()) {
                 entity.setRemoved();
@@ -182,8 +175,6 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
-        
-        
     }
     
     
