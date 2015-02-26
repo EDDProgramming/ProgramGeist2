@@ -51,7 +51,22 @@ public class EntityWorld {
 		
 		}
 		
-		addEntity(new TriangleTile(700, 300, this));
+		for(int i = 0; i<10; i++) {
+			addEntity(new Tile(100*i, -100, this));
+			
+		}
+		
+		for(int i = 0; i<5; i++) {
+			addEntity(new Tile(700, 400 - i*100, this));
+			
+		}
+		
+		for(int i = 0; i<5; i++) {
+			addEntity(new Tile(100, 400 - i*100, this));
+			
+		}
+		
+		addEntity(new TriangleTile(600, 300, this));
 		
 		// end test code
 		
@@ -117,7 +132,8 @@ public class EntityWorld {
             
             boolean entityAlive;
             
-            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
+            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object ||
+            	entity.getEntityType() == EntityType.Ball) {
             	entityAlive = entity.update(deltaMS, gc.getInput());
             }else {
             	entityAlive = entity.update(deltaMS);
