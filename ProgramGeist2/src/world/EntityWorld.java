@@ -175,6 +175,10 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
+
+    	drawHitboxes(entities, g);
+        
+        catalogMenu.render(gc, g);
     }
     
     
@@ -184,17 +188,7 @@ public class EntityWorld {
     	while (iterator.hasNext()) {
     		Entity r = iterator.next();
     		g.setColor(Color.red);
-    		if(r.isCircle == true) {
-    	    	ShapeFill red = new GradientFill(r.radius.getMaxX(), r.radius.getMaxY(), Color.red, r.radius.getMinX(), r.radius.getMinY(), Color.red);
-    			Circle circle = r.radius;
-    	    	g.draw(circle, red);
-    		}
-    		
-    		else {
-    			ShapeFill red = new GradientFill(r.hitbox.getMaxX(), r.hitbox.getMaxY(), Color.red, r.hitbox.getMinX(), r.hitbox.getMinY(), Color.red);
-    			Polygon box = r.hitbox;
-    			g.draw(box, red);
-    		}
+    		g.draw(r.hitbox);
     	}
     }
     
