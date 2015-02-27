@@ -9,11 +9,9 @@ import entity.Entity;
 import world.EntityWorld;
 
 public class TriangleTile extends Entity {
-
-	static Circle radius = new Circle(0, 0, 50);
 	
 	public TriangleTile(int x, int y, EntityWorld world) throws SlickException {
-		super(x, y, makeTriangle(x, y, -25, 25, 25, 25, 25, -25), radius, false, world);
+		super(x, y, makeTriangle(x + 50, y + 50, -50, 50, 50, 50, 50, -50), world);
 		
 		image = new Image("res/TriangleTile.png");
 		

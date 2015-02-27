@@ -31,8 +31,8 @@ public class PhysicsObject extends Entity {
     protected Vector2f prevPosition = new Vector2f(0, 0);
 	
 
-	public PhysicsObject(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, radius, circle, world);
+	public PhysicsObject(float x, float y, Shape hitbox, EntityWorld world, float mass) throws SlickException {
+		super(x, y, hitbox, world);
 		
 		this.mass = mass;
 		
@@ -53,10 +53,8 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 
-		hitbox.setCenterX(position.x);
-		hitbox.setCenterY(position.y);
-		radius.setCenterX(position.x);
-		radius.setCenterY(position.y);
+		hitbox.setCenterX(position.x + hitbox.getWidth() / 2);
+		hitbox.setCenterY(position.y + hitbox.getHeight() / 2);
 	}
 	
 	//Regular force checks of physics update, for use in subclasses
@@ -68,14 +66,18 @@ public class PhysicsObject extends Entity {
 	
 	//Calculates acceleration, velocity and position based on force, plus some cleanup.
 	public void updatePosition() {
+		
+		//Calculate the acceleration based on F = MA
 		if(mass != 0) {
 			acceleration.x = sumForce.x / mass;
 			acceleration.y = sumForce.y / mass;
 		}
-			
+		
+		//Increment the velocity by acceleration
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
+		//Move the object based on its current velocity
 		position.x += velocity.x;
 		position.y += velocity.y;
 		
@@ -140,28 +142,8 @@ public class PhysicsObject extends Entity {
     
     public void checkCollisions(List<Entity> entities) {
     	for (Entity e: entities) {
-    		if(isCircle) {
-    			//If both entities are circles
-    			if(e.isCircle && radius.intersects(e.radius)) {
+    			if(hitbox.intersects(e.hitbox)) {
     				onCollide(e);
-    			}
-    			
-    			//If only this is a circle
-    			else if(!e.isCircle && radius.intersects(e.hitbox)) {
-    				onCollide(e);
-    			}	
-    		}
-    		
-    		else if(!isCircle) {
-    			//If only other is a circle
-    			if(e.isCircle && hitbox.intersects(e.radius)) {
-    				onCollide(e);
-    			}
-    			
-    			//If both are polygons
-    			else if(!e.isCircle && hitbox.intersects(e.hitbox)) {
-    				onCollide(e);
-    			}
     		}
     	}
     }

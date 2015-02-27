@@ -4,10 +4,15 @@ import java.util.*;
 
 import main.Camera;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Polygon;
 
 import codeBlock.StackBlock;
 import tile.Tile;
@@ -39,8 +44,6 @@ public class EntityWorld {
 		
 		camera = c;
 		
-		//TODO remove test code
-		
 		addEntity(new Ball(300f, 50f, this, 100.0f));
 		
 		for(int i = 0; i<10; i++) {
@@ -48,14 +51,32 @@ public class EntityWorld {
 		
 		}
 		
-		addEntity(new TriangleTile(700, 300, this));
+		for(int i = 0; i<10; i++) {
+			addEntity(new Tile(100*i, -100, this));
+			
+		}
+		
+		for(int i = 0; i<5; i++) {
+			addEntity(new Tile(700, 400 - i*100, this));
+			
+		}
+		
+		for(int i = 0; i<5; i++) {
+			addEntity(new Tile(100, 400 - i*100, this));
+			
+		}
+		
+		addEntity(new TriangleTile(600, 300, this));
 		
 		// end test code
 		
 		addEntity(new StackBlock(300, 200, this));
 		
+		//TODO remove test code
 	}
     
+	
+	
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
     	Input input = gc.getInput();
@@ -111,7 +132,8 @@ public class EntityWorld {
             
             boolean entityAlive;
             
-            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
+            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object ||
+            	entity.getEntityType() == EntityType.Ball) {
             	entityAlive = entity.update(deltaMS, gc.getInput());
             }else {
             	entityAlive = entity.update(deltaMS);
@@ -138,6 +160,9 @@ public class EntityWorld {
             iterator.remove();
         }
         
+
+    	drawHitboxes(entities, g);
+        
         catalogMenu.render(gc, g);
     }
     
@@ -151,6 +176,17 @@ public class EntityWorld {
     	// TEMPORARY
     	
     	return out;
+    }
+    
+    
+    //For rendering hitboxes
+    public void drawHitboxes(List<Entity> entities, Graphics g) {
+    	Iterator<Entity> iterator = entities.iterator();
+    	while (iterator.hasNext()) {
+    		Entity r = iterator.next();
+    		g.setColor(Color.red);
+    		g.draw(r.hitbox);
+    	}
     }
     
     public boolean isGameOver() {

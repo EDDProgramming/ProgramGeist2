@@ -52,7 +52,8 @@ public abstract class Entity {
 		GenericEntity, 
 		CodeBlock,
 		Object,
-		Tile
+		Tile,
+		Ball
 	}
 	
 	protected static Random random = new Random();
@@ -65,23 +66,18 @@ public abstract class Entity {
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
     protected Image image;
-    protected Polygon hitbox;
-    protected Circle radius;
-    protected boolean isCircle = false;
+    public Shape hitbox;
     
     // Constructors
-    public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
-    	this(0, 0, hitbox, radius, circle, world);
+    public Entity(Shape hitbox, EntityWorld world) throws SlickException {
+    	this(0, 0, hitbox, world);
     	this.id = ++nextId;
     }
-    public Entity(float x, float y, Polygon hitbox, Circle circle, boolean isCircle, EntityWorld world) {
+    public Entity(float x, float y, Shape hitbox, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
     	this.hitbox = hitbox;
-        hitbox.setClosed(true);
-    	this.radius = circle;
     	this.world = world;
-    	this.isCircle = isCircle;
     	
     	try {
     	image = new Image("res/Whoops.png");
@@ -94,12 +90,12 @@ public abstract class Entity {
     	return entityType;
     }
     
-    public static Polygon makeRectangle(float x, float y, float width, float height) {
-    	Polygon rectangle;
+    public static Shape makeRectangle(float x, float y, float width, float height) {
+    	Shape rectangle;
     	width /= 2;
     	height /= 2;
     	float[] coordinates = {	x + width, y + height, x + width, y - height, 
-    							x - width, y- height, x - width, y - height};
+    							x - width, y - height, x - width, y + height};
     	rectangle = new Polygon(coordinates);
     	return rectangle;
     }
@@ -132,7 +128,7 @@ public abstract class Entity {
     }
     
     //Get the lines comprising the hitbox
-    public static Line[] getOutline(Polygon hitbox) {
+    public static Line[] getOutline(Shape hitbox) {
     	
     	//Get a list of points making up the polygon in the form x0, y0... xn, yn
 		float[] points = hitbox.getPoints();
@@ -155,53 +151,52 @@ public abstract class Entity {
 		int lastX = points.length - 2;
 		int lastY = points.length - 1;
 		
-		outline[length - 1] = new Line(points[lastX], points[1], points[lastY], points[2]);
+		outline[length - 1] = new Line(points[lastX], points[lastY], points[0], points[1]);
     	
     	return outline;
     }
     
     //Convert a line into a vector
-    public static org.newdawn.slick.geom.Vector2f lineToVector(Line line) {
-    	Vector2f vector = new Vector2f(line.getEnd().sub(line.getStart()));
+    public static Vector2f lineToVector(Line line) {
+    	Vector2f vector = new Vector2f();
+    	vector.x = line.getPoints()[2] - line.getPoints()[0];
+    	vector.y = line.getPoints()[3] - line.getPoints()[1];
     	
     	return vector;
     }
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
-    	//Steps of what is going on here
-    	//1. Get two times the projection of dir onto the unit of reflector
-    	Vector2f projection = new Vector2f();
-    	dir.projectOntoUnit(reflector, projection);
-    	projection = projection.scale(2);
-    	//2. Subtract this value from dir
-    	Vector2f reflection = dir.sub(projection);
-    	System.out.println(reflection);
+    	reflector.scale(-2 * (dir.dot(reflector)));
     	
+    	dir.add(reflector);
+    	
+    	Vector2f reflection = new Vector2f();
+    	float dot = 2 * dir.dot(reflector);
+    	Vector2f proj = reflector;
+    	proj.scale(dot);
+    	reflection = dir.sub(proj);
     	return reflection;
     }
     
-    public static Vector2f lineToPointDirection(Line line, float pointX, float pointY) {
-    	Vector2f dir = new Vector2f();
-    	
-    	System.out.println("Line X0, Y0: "+line.getStart());
-    	System.out.println("Line X1, Y1: "+line.getEnd());
+    public static float getPerpendicularDistance(Line line, float x0, float y0) {
+    	float dist = 0;
     	
     	float[] points = line.getPoints();
+    	float x1 = points[0];
+    	float y1 = points[1];
+    	float x2 = points[2];
+    	float y2 = points[3];
     	
-    	for(int i = 0; i < points.length; i++) {
-    		System.out.println("Point: "+points[i]);
-    	}
+    	dist = (float) (Math.abs((y2- y1) * x0 - (x2 - x1) * y0 + (x2 * y1) - (y2 * x1))
+    			/ Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
     	
-    	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
-    	dir.y = pointY - ((line.getPoints()[3] + line.getPoints()[1]) / 2);
-    	
-    	return dir;
+    	return dist;
     }
     
-    public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
+    public static Shape makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
 		//x, y is the center
     	float[] points = new float[] {x + x0, y + y0, x + x1, y + y1, x + x2, y + y2};
-		Polygon triangle = new Polygon(points);
+		Shape triangle = new Polygon(points);
 		
 		return triangle;
 	}

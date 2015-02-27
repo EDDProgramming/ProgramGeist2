@@ -8,13 +8,13 @@ import org.newdawn.slick.geom.*;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
-	
-	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
 	boolean physicsEnabled = true;
+	static Shape hitbox = new Circle(0, 0, 30);
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, new Circle(x, y, 33), true, world, mass);
+		super(x, y, hitbox, world, mass);
 		image = new Image("res/Ball.png");
+		entityType = EntityType.Ball;
 	}
 
 	public void movement(Input input) {
@@ -78,18 +78,15 @@ public class Ball extends PhysicsObject {
     		Line[] outline = getOutline(other.hitbox);
     		Line[] collided = new Line[outline.length];
     		
-    		for(int i = 0; i < collided.length; i++) {
-    			collided[i] = new Line(0, 0);
-    		}
-    		
     		int collisions = 0;
     		
     		System.out.println("Collide");
     		
     		for(int i = 0; i < outline.length; i++) {
-    			if(radius.intersects(outline[i])) {
+    			if(hitbox.intersects(outline[i])) {
     				System.out.println("Collided");
-    				collided[i] = outline[i];
+    				System.out.println(outline[i]);
+    				collided[collisions] = outline[i];
     				collisions++;
     			}
     		}
@@ -97,26 +94,78 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < collisions; i++) {
     			
     			//Absolute value allows us to use the square value while maintaining the direction
-        		float forceScalar = velocity.length() * .009f * mass;
-    		
+        		float forceScalar = .008f * mass;
+        		
     			Vector2f surface = lineToVector(collided[i]);
-    		
-    			Vector2f normal = surface.getNormal();
+    			
+    			Vector2f normal = surface.getPerpendicular();
+    			
+    			Vector2f tileCenter = new Vector2f(other.hitbox.getCenter());
+    			
+    			Vector2f normalDir = new Vector2f();
+    			normalDir.x = position.x - tileCenter.x;
+    			normalDir.y = position.y - tileCenter.y;
+    			
+    			//Make sure the normal is pointing outwards
+    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
+    				normal.x *= -1;
+    			}
+    			
+    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
+    				normal.y *= -1;
+    			}
+    			
+    			normal.normalise();
+    			
+    			System.out.println(normal);
     		    		
-    			Vector2f bounceDir = getReflectionVector(velocity, normal).normalise();
+    			Vector2f bounceDir = getReflectionVector(velocity, normal);
     		
     			Vector2f forceNormal = bounceDir.scale(forceScalar);
     			
+    			System.out.println(forceNormal);
+    			
     			//Bump the ball out
     			
-    			position.y = prevPosition.y + forceNormal.y;
-        		position.x = prevPosition.x + forceNormal.x;
+    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
+    				normal.x *= -1;
+    			}
+    			
+    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
+    				normal.y *= -1;
+    			}
+    			
+    			normal.normalise();
+    			Vector2f positionReset = new Vector2f();
+    			System.out.println(normal);
+    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - getPerpendicularDistance(collided[i], hitbox.getCenterX(), hitbox.getCenterY()));
+    			System.out.println(positionReset);
+    			
+    			position.x += positionReset.x;
+    			position.y += positionReset.y;
 
         		//Impact force
         		
         		applyForce(forceNormal.x, forceNormal.y); 
     		}
     		
+    	}
+    	
+    	if(other.entityType == EntityType.Ball) {
+    		//Bumps the ball away
+    		Vector2f positionReset = new Vector2f();
+    		positionReset.x = position.x - other.getX();
+    		positionReset.y = position.y - other.getY();
+    		
+    		float scalar = (hitbox.getBoundingCircleRadius() + other.hitbox.getBoundingCircleRadius()) - positionReset.length();
+    		scalar /= 2;
+    		positionReset.normalise();
+    		positionReset.scale(scalar);
+    		
+    		//Adds a new bounce force
+    		Vector2f force = new Vector2f();
+    		force.x = position.x - other.getX();
+    		force.y = position.y - other.getY();
     	}
     	
     }

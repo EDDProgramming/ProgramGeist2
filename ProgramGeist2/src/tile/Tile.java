@@ -13,10 +13,8 @@ public class Tile extends Entity {
 		GenericTile
 	}
 	
-	static Circle radius = new Circle(300, 50, 50);
-	
 	public Tile(int x, int y, EntityWorld world) throws SlickException {
-		super(x, y, makeRectangle(x, y, 50, 50), radius, false, world);
+		super(x, y, makeRectangle(x + 50, y + 50, 100, 100), world);
 		
 		image = new Image("res/BetterTile.png");
 		
