@@ -37,6 +37,7 @@ public abstract class CodeBlock extends Entity {
 	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
 		super(x, y, hitbox, world);
 	}
+	
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
 		this.downBlock = downBlock;
