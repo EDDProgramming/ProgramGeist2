@@ -166,10 +166,6 @@ public abstract class Entity {
     }
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
-    	reflector.scale(-2 * (dir.dot(reflector)));
-    	
-    	dir.add(reflector);
-    	
     	Vector2f reflection = new Vector2f();
     	float dot = 2 * dir.dot(reflector);
     	Vector2f proj = reflector;

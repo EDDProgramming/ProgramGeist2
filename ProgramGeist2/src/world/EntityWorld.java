@@ -15,8 +15,7 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
 
 import codeBlock.StackBlock;
-import tile.Tile;
-import tile.TriangleTile;
+import tile.*;
 import entity.*;
 import entity.Entity.EntityType;
 import gui.CatalogMenu;
@@ -43,36 +42,6 @@ public class EntityWorld {
 		Random random = new Random();
 		
 		camera = c;
-		
-		addEntity(new Ball(300f, 50f, this, 100.0f));
-		
-		for(int i = 0; i<10; i++) {
-		addEntity(new Tile(100*i, 400, this));
-		
-		}
-		
-		for(int i = 0; i<10; i++) {
-			addEntity(new Tile(100*i, -100, this));
-			
-		}
-		
-		for(int i = 0; i<5; i++) {
-			addEntity(new Tile(700, 400 - i*100, this));
-			
-		}
-		
-		for(int i = 0; i<5; i++) {
-			addEntity(new Tile(100, 400 - i*100, this));
-			
-		}
-		
-		addEntity(new TriangleTile(600, 300, this));
-		
-		// end test code
-		
-		addEntity(new StackBlock(300, 200, this));
-		
-		//TODO remove test code
 	}
     
 	
