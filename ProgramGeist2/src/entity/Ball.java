@@ -8,12 +8,11 @@ import org.newdawn.slick.geom.*;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
-	
-	static Polygon hitbox = makeRectangle(0, 0, 15, 15);
 	boolean physicsEnabled = true;
+	static Shape hitbox = new Circle(0, 0, 30);
 	
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, new Circle(x, y, 33), true, world, mass);
+		super(x, y, hitbox, world, mass);
 		image = new Image("res/Ball.png");
 	}
 
@@ -83,7 +82,7 @@ public class Ball extends PhysicsObject {
     		System.out.println("Collide");
     		
     		for(int i = 0; i < outline.length; i++) {
-    			if(radius.intersects(outline[i])) {
+    			if(hitbox.intersects(outline[i])) {
     				System.out.println("Collided");
     				System.out.println(outline[i]);
     				collided[collisions] = outline[i];
@@ -94,11 +93,28 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < collisions; i++) {
     			
     			//Absolute value allows us to use the square value while maintaining the direction
-        		float forceScalar = .009f * mass;
+        		float forceScalar = .01f * mass;
     		
     			Vector2f surface = lineToVector(collided[i]);
     			
-    			Vector2f normal = surface.getNormal();
+    			Vector2f normal = surface.getPerpendicular();
+    			
+    			Vector2f tileCenter = new Vector2f(other.hitbox.getCenter());
+    			
+    			Vector2f normalDir = new Vector2f();
+    			normalDir.x = ((collided[i].getX1() + collided[i].getX2()) / 2) - tileCenter.x;
+    			normalDir.y = ((collided[i].getY1() + collided[i].getY2()) / 2) - tileCenter.y;
+    			
+    			//Make sure the normal is pointing outwards
+    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
+    				normal.x *= -1;
+    			}
+    			
+    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
+    				normal.y *= -1;
+    			}
+    			
+    			normal.normalise();
     			
     			System.out.println(normal);
     		    		
@@ -106,12 +122,16 @@ public class Ball extends PhysicsObject {
     		
     			Vector2f forceNormal = bounceDir.scale(forceScalar);
     			
+    			System.out.println(forceNormal);
+    			
     			//Bump the ball out
     			
-    			System.out.println(getPerpendicularDistance(collided[i], position.y, position.y));
-    			
     			Vector2f positionReset = new Vector2f();
-    			positionReset = normal.scale(getPerpendicularDistance(collided[i], position.x, position.y));
+    			normal.normalise();
+    			System.out.println(normal);
+    			positionReset = normal.scale(getPerpendicularDistance(collided[i], hitbox.getCenterX(), hitbox.getCenterY()));
+    			System.out.println(positionReset);
+    			
     			position.x += positionReset.x;
     			position.y += positionReset.y;
 

@@ -51,17 +51,20 @@ public abstract class CodeBlock extends Entity {
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
+	
 	public CodeBlock(float x, float y, EntityWorld world) {
-		this(x, y, makeRectangle(x, y, 50, 20), radius, world);
+		super(x, y, makeRectangle(x, y, 20, 50), world);
+		//Make the makeRectangle the correct size
 	}
 
-	public CodeBlock(float x, float y,Polygon hitbox, Circle radius, EntityWorld world) {
-		super(x, y, hitbox, radius, false, world);
+	public CodeBlock(float x, float y, Shape hitbox, EntityWorld world) {
+		super(x, y, hitbox, world);
 		try {
 			image = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);

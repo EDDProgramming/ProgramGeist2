@@ -79,7 +79,6 @@ public class EntityWorld {
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
     	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
-    	drawHitboxes(entities, gc.getGraphics());
     	
     	if(catalogMenu.isVisible()) {
     		catalogMenu.update(gc, deltaMS);
@@ -175,6 +174,9 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
+
+    	drawHitboxes(entities, g);
+        
 
     	drawHitboxes(entities, g);
         
