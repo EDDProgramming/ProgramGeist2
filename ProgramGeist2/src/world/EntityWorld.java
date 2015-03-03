@@ -128,7 +128,8 @@ public class EntityWorld {
             
             boolean entityAlive;
             
-            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
+            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object ||
+            	entity.getEntityType() == EntityType.Ball) {
             	entityAlive = entity.update(deltaMS, gc.getInput());
             }else {
             	entityAlive = entity.update(deltaMS);

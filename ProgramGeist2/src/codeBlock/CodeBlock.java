@@ -64,8 +64,8 @@ public abstract class CodeBlock extends Entity {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
 	}
+	
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
 		this.downBlock = downBlock;

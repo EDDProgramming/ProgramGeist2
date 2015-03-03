@@ -52,7 +52,8 @@ public abstract class Entity {
 		GenericEntity, 
 		CodeBlock,
 		Object,
-		Tile
+		Tile,
+		Ball
 	}
 	
 	protected static Random random = new Random();

@@ -5,24 +5,23 @@ import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import world.EntityWorld;
-import world.TestWorld;
+import world.TestWorld2;
 
 
-public class GameState extends BasicGameState {
-	public static final int ID = 2;
+public class Level2State extends BasicGameState {
+	public static final int ID = 5;
 	
-	private TestWorld world;
+	private TestWorld2 world;
 	private final int updatesPerSecond = 40;
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	
-	public GameState() {
+	public Level2State() {
 	}
 	
 	void startGame(GameContainer gc) throws SlickException {
 		camera = new Camera();
-		world = new TestWorld(camera);
+		world = new TestWorld2(camera);
 	}
 	
 	@Override
@@ -59,8 +58,8 @@ public class GameState extends BasicGameState {
 			world.update(gc, deltaMS);
 		}
 		
-		if(gc.getInput().isKeyPressed(Input.KEY_F2)) {
-			game.enterState(5, new FadeOutTransition(), new FadeInTransition());
+		if(gc.getInput().isKeyPressed(Input.KEY_F1)) {
+			game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 		// TODO add isGameOver code
 	}
