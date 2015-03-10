@@ -53,8 +53,8 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 
-		hitbox.setCenterX(position.x + hitbox.getWidth() / 2);
-		hitbox.setCenterY(position.y + hitbox.getHeight() / 2);
+		hitbox.setX(position.x);
+		hitbox.setY(position.y);
 	}
 	
 	//Regular force checks of physics update, for use in subclasses
