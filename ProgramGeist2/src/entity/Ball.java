@@ -10,7 +10,7 @@ import world.EntityWorld;
 public class Ball extends PhysicsObject {
 	boolean physicsEnabled = true;
 	static Shape hitbox = new Circle(0, 0, 26);
-	
+
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, hitbox, world, mass);
 		image = new Image("res/Ball.png");

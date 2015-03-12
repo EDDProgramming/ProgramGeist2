@@ -5,15 +5,14 @@ import org.newdawn.slick.SlickException;
 import world.EntityWorld;
 
 
-public class printlnBlock extends StackBlock {
+public class printlnBlock extends StackBlock implements Cloneable {
 	
 	String printText    = "";
 	
 	public printlnBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
-	}
-	public printlnBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		super(downBlock, world);
+		canConnectUp = true;
+		canConnectDown = true;
 	}
 	
 	@Override
@@ -25,5 +24,16 @@ public class printlnBlock extends StackBlock {
 	public boolean call(int deltaMS) {
 		System.out.println(printText);
 		return true;
+	}
+	@Override
+	public CodeBlock clone() {
+		try {
+			System.out.println("CLONING PRINTLN BLOCK");
+			return new printlnBlock(position.x, position.y, world);
+		} catch (SlickException e) {
+			System.out.println("ERROR CLONING PRINTLN BLOCK");
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
