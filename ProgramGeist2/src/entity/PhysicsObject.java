@@ -61,7 +61,7 @@ public class PhysicsObject extends Entity {
 	public void updateForces(float friction) {
 		applyGravity();
 		applyFriction(friction);
-		checkCollisions(world.entities);
+		checkCollisions(world.getEntities());
 	}
 	
 	//Calculates acceleration, velocity and position based on force, plus some cleanup.
@@ -141,7 +141,7 @@ public class PhysicsObject extends Entity {
     }
     
     public void checkCollisions(List<Entity> entities) {
-    	for (Entity e: entities) {
+    	for (Entity e : entities) {
     			if(hitbox.intersects(e.hitbox)) {
     				onCollide(e);
     		}

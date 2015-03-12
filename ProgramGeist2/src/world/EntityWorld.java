@@ -39,60 +39,20 @@ public class EntityWorld {
 	
 	private Camera camera;
 	
-	private CatalogMenu catalogMenu;
-	private boolean Edown = false;
-	
 	public EntityWorld(Camera c) throws SlickException {
 		Random random = new Random();
 		
 		camera = c;
-		
-		addEntity(new Ball(300f, 50f, this, 100.0f));
-		
-		for(int i = 0; i<10; i++) {
-			addEntity(new Tile(100*i, 400, this));
-		}
-		
-		addEntity(new TriangleTile(700, 300, this));
-		
-		// end test code
-		
-		CodeBlock add = new printlnBlock(300, 200, this);
-		
-		addEntity(add);
-		addEntity(new printlnBlock(500, 200, this));
-		addEntity(new printlnBlock(300, 400, this));
-		
-		CatalogMenu cm = new CatalogMenu(this);
-		
-		catalogMenu = cm;
-		
-		//TODO remove test code
 	}
     
 	
 	
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
-    	Input input = gc.getInput();
     	
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
     	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
-    	
-    	if(catalogMenu.isVisible()) {
-    		catalogMenu.update(gc, deltaMS);
-    	}
-    	
-    	if(Edown == true) {
-    		if(!input.isKeyDown(Input.KEY_E)) {
-    			Edown = false;
-    		}
-    	}
-    	if(input.isKeyDown(Input.KEY_E) && Edown == false) {
-    		catalogMenu.setVisible(!catalogMenu.isVisible());
-    		Edown = true;
-    	}
     }
     
     // getEntitiesInRange
@@ -110,7 +70,8 @@ public class EntityWorld {
     	Iterator<Entity> e = entities.iterator();
     	while(e.hasNext()) {
     		Entity entity = e.next();
-    		if(entity.getX() >= x && entity.getX() <= x+width && entity.getY() >= y && entity.getY() <= y+height ) {
+    		if(entity.getX() >= x && entity.getX() <= x + width && entity.getY() >= y
+    				&& entity.getY() <= y + height ) {
     			temp.add(entity);
     		}
     	}
@@ -143,6 +104,7 @@ public class EntityWorld {
         ents.addAll(newEnts);
         newEnts.clear();
     }
+    
     private void updateEntityList(int deltaMS, List<CodeBlock> blocks, List<CodeBlock> newBlocks, GameContainer gc, boolean b) {
     	Iterator<CodeBlock> e = blocks.iterator();
         while (e.hasNext()) {
@@ -162,8 +124,10 @@ public class EntityWorld {
     }
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
-    	catalogMenu.render(gc, g);
-    	
+    	standardRender(gc, g, camX, camY);
+    }
+    
+    public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
@@ -176,12 +140,6 @@ public class EntityWorld {
             iterator.remove();
         }
 
-    	drawHitboxes(entities, g);
-        
-
-    	drawHitboxes(entities, g);
-        
-        catalogMenu.render(gc, g);
     }
     
     
