@@ -107,8 +107,8 @@ public class Ball extends PhysicsObject {
     			
     			//Bump the ball out
     			
-    			position.y = prevPosition.y + forceNormal.y;
-        		position.x = prevPosition.x + forceNormal.x;
+    			position.y = prevPosition.y + velocity.y;
+        		position.x = prevPosition.x + velocity.x;
 
         		//Impact force
         		

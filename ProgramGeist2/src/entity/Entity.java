@@ -131,6 +131,12 @@ public abstract class Entity {
         return Math.sqrt(dx * dx + dy * dy);
     }
     
+    public float getSqrDistance(Vector2f v, Vector2f w) {
+    	
+    	
+    	return null;
+    }
+    
     //Get the lines comprising the hitbox
     public static Line[] getOutline(Polygon hitbox) {
     	
@@ -175,20 +181,13 @@ public abstract class Entity {
     	return reflection;
     }
     
-    public static Vector2f lineToPointDirection(Line line, float pointX, float pointY) {
+    public static Vector2f distancePointToLine(Line line, Vector2f point) {
     	Vector2f dir = new Vector2f();
     	
-    	System.out.println("Line X0, Y0: "+line.getStart());
-    	System.out.println("Line X1, Y1: "+line.getEnd());
+    	Vector2f lineStart = new Vector2f(line.getPoints()[0], line.getPoints()[1]);
+    	Vector2f lineEnd = new Vector2f(line.getPoints()[2], line.getPoints()[3]);
     	
-    	float[] points = line.getPoints();
-    	
-    	for(int i = 0; i < points.length; i++) {
-    		System.out.println("Point: "+points[i]);
-    	}
-    	
-    	dir.x =	pointX - ((line.getPoints()[2] + line.getPoints()[0]) / 2);
-    	dir.y = pointY - ((line.getPoints()[3] + line.getPoints()[1]) / 2);
+    	lengthSqr = 
     	
     	return dir;
     }
