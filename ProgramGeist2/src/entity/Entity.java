@@ -239,7 +239,7 @@ public abstract class Entity {
         return other != this;
     }
     
-    protected void onCollide(Entity entity) {
+    protected void onCollide(Entity entity, List<Entity> entities) {
     }
     
     public EntityType getEntityType() {

@@ -70,9 +70,8 @@ public class TestWorld extends EntityWorld {
     }
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
-    	standardRender(gc, g, camX, camY);
+    	super.render(gc, g, camX, camY);
         catalogMenu.render(gc, g);
-        drawHitboxes(entities, g);
     }
 
 }
