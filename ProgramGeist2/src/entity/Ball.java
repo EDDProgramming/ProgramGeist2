@@ -92,6 +92,7 @@ public class Ball extends PhysicsObject {
     				collisions++;
     			}
     		}
+    		
     		boolean[] ignore = new boolean[collisions];
     		
     		for(int i = 0; i < ignore.length; i++) {
@@ -100,7 +101,7 @@ public class Ball extends PhysicsObject {
     		
     		//determines what collisions to ignore
     		for(int i = 0; i < collisions; i++) {
-    			Shape projected = hitbox;
+    			Shape projected = new Circle(hitbox.getCenterX(), hitbox.getCenterY(), hitbox.getBoundingCircleRadius());
     			
     			Vector2f surface = lineToVector(collided[i]);
     			
@@ -125,20 +126,26 @@ public class Ball extends PhysicsObject {
     			positionReset =  normal.scale(projected.getBoundingCircleRadius() - 
     										  getPerpendicularDistance(collided[i], 
     										  projected.getCenterX(), projected.getCenterY()));
-    			System.out.println("Transform"+positionReset);
-    			projected.transform(Transform.createTranslateTransform(positionReset.x, positionReset.y));
+
+    			projected.setX(projected.getX() + positionReset.x);
+    			projected.setY(projected.getY() + positionReset.y);
+    			
+    			System.out.println("Transform:" +positionReset);
+    			System.out.println("Hitbox:" +hitbox.getX() +", " +hitbox.getY());
+    			System.out.println("Projected:" +projected.getX() +", " +projected.getY());
     			
     			for (Entity e : entities) {
-        			if(projected.intersects(e.hitbox) && ignore[i] == false) {
+        			if(projected.intersects(e.hitbox) && ignore[i] == false && e != this) {
         				ignore[i] = true;
         				System.out.println("ignore");
         			}
     			}
     		}
     		
+    		//Calculates the result of collision
     		for(int i = 0; i < collisions; i++) {
     			
-    			if(ignore[i] = false) {
+    			if(ignore[i] == false) {
 	    			
 	    			//Absolute value allows us to use the square value while maintaining the direction
 	        		float forceScalar = .008f * mass;

@@ -58,6 +58,8 @@ public class TestWorld extends EntityWorld {
 	}
 	
     public void update(GameContainer gc, int deltaMS) {
+    	super.update(gc, deltaMS);
+    	
     	Input input = gc.getInput();
     	
     	if(catalogMenu.isVisible()) {
