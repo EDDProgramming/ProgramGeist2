@@ -2,8 +2,6 @@ package main;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import world.EntityWorld;
 import world.TestWorld;
@@ -57,10 +55,6 @@ public class GameState extends BasicGameState {
 		if(world != null) {
 			camera.update(deltaMS);
 			world.update(gc, deltaMS);
-		}
-		
-		if(gc.getInput().isKeyPressed(Input.KEY_F2)) {
-			game.enterState(5, new FadeOutTransition(), new FadeInTransition());
 		}
 		// TODO add isGameOver code
 	}

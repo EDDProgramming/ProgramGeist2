@@ -40,7 +40,6 @@ public abstract class CodeBlock extends Entity {
 	protected static Circle radius = new Circle(0, 0, 10);
 	
 	protected boolean menuMode = false;
-	protected static boolean onMouse = false;
 	protected static int mouseID = -1;
 	protected boolean mouseDown = false;
 	
@@ -53,7 +52,7 @@ public abstract class CodeBlock extends Entity {
 	}
 	
 	public CodeBlock(float x, float y, EntityWorld world) {
-		super(x, y, makeRectangle(x, y, 20, 50), world);
+		this(x, y, makeRectangle(x, y, 100, 20), world);
 		//Make the makeRectangle the correct size
 	}
 
@@ -64,8 +63,8 @@ public abstract class CodeBlock extends Entity {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
 	}
-	
 	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
 		this(downBlock.getX(), downBlock.getY()-20,  world);
 		this.downBlock = downBlock;
@@ -75,12 +74,15 @@ public abstract class CodeBlock extends Entity {
 	public boolean update(int deltaMS) {
 		
 		
+		
 		return true;
 	}
 
 	@Override
 	public boolean update(int deltaMS, Input input) {
+		this.update(deltaMS);
 		
+		centerHitbox();
 		mouseUpdate(deltaMS, input);
 		
 		return true;
@@ -94,6 +96,11 @@ public abstract class CodeBlock extends Entity {
 		}
 		
 		return true;
+	}
+	
+	public void centerHitbox() {
+		hitbox.setX(position.x);
+		hitbox.setY(position.y);
 	}
 	
 	/*
@@ -111,7 +118,7 @@ public abstract class CodeBlock extends Entity {
 			while(c.hasNext()) {
 				CodeBlock block = c.next();
 				
-				if(block != this && block.getMenu() == false) {
+				if(block != this && !block.getMenu()) {
 					// TODO Fix code block connections
 					
 					// check for up block
@@ -126,6 +133,7 @@ public abstract class CodeBlock extends Entity {
 							}
 						}
 					}
+					// check for down block
 					if(canConnectDown) {
 						if(block != upBlock) {
 							if(position.x >= block.getX()-100
@@ -144,9 +152,8 @@ public abstract class CodeBlock extends Entity {
 		}
 		if(connectedUp) {
 			position.x = upBlock.getX();
-			position.y = upBlock.getY()+24;
+			position.y = upBlock.getY()+20;
 		}
-		
 	}
 	
 	/*
@@ -159,8 +166,31 @@ public abstract class CodeBlock extends Entity {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
-		if(input.isMouseButtonDown(0)) {
-			if(onMouse && mouseID == this.id) {
+		if(input.isMouseButtonDown(0) && !mouseDown) {
+			if(hitbox.contains(mouseX, mouseY)) {
+			//if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
+				mouseDown = true;
+				if(menuMode) {
+					try {
+						CodeBlock c = this.clone();
+						world.addEntity(c);
+						mouseOnX = mouseX-c.position.x;
+						mouseOnY = mouseY-c.position.y;
+						mouseID = c.id;
+					} catch (Exception e) {
+						System.out.println("Menu Clone Exception");
+						e.printStackTrace();
+					}
+				} else {
+					mouseOnX = mouseX-position.x;
+					mouseOnY = mouseY-position.y;
+					mouseID = this.id;
+				}
+			}
+		}
+		
+		if(input.isMouseButtonDown(0)){
+			if(mouseID == this.id) {
 				if(connectedUp) {
 					if(mouseX > position.x+mouseOnX+50
 							|| mouseX < position.x+mouseOnX-50
@@ -168,32 +198,14 @@ public abstract class CodeBlock extends Entity {
 							|| mouseY < position.y+mouseOnY-50) {
 						disconnectUp();
 					}
-				}else {
+				} else {
 					position.x = mouseX-mouseOnX;
 					position.y = mouseY-mouseOnY;
 				}
-			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
-				if(menuMode) {
-					if(mouseDown == false) {
-						try {
-							CodeBlock c = this.clone();
-							world.addEntity(c);
-						} catch (Exception e) {
-							System.out.println("Menu Clone Exception");
-							e.printStackTrace();
-						}
-					}
-				}else {
-					mouseOnX = mouseX-position.x;
-					mouseOnY = mouseY-position.y;
-					onMouse = true;
-					mouseID = this.id;
-				}
 			}
-			mouseDown = true;
 		}else {
-			onMouse = false;
 			mouseDown = false;
+			mouseID = -1;
 		}
 	}
 	
@@ -234,5 +246,6 @@ public abstract class CodeBlock extends Entity {
 		upBlock = null;
 		canConnectUp = true;
 		connectedUp = false;
+		position.y+=100;
 	}
 }

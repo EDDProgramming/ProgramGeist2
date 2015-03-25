@@ -13,7 +13,6 @@ public class TriangleTile extends Entity {
 	public TriangleTile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, makeTriangle(x + 50, y + 50, -50, 50, 50, 50, 50, -50), world);
 		
-		//Slope faces up-left
 		image = new Image("res/TriangleTile.png");
 		
 		entityType = EntityType.Tile;

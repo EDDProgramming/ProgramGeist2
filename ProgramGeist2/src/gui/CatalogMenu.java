@@ -32,7 +32,6 @@ public class CatalogMenu {
 		world = _world;
 		codeBlocks = loadBlocks();
 		
-		
 	}
 	
 	public void update(GameContainer gc, int deltaMS) {
@@ -73,9 +72,9 @@ public class CatalogMenu {
 //			totalHeight += images[i].getHeight();
 //		}
 		
-//		for(int i = 0; i<codeBlocks.size(); i++) {
-//			codeBlocks.get(i).render(g, 0, 0); // TODO will run into problems later with camera panning
-//		}
+		for(int i = 0; i<codeBlocks.size(); i++) {
+			codeBlocks.get(i).render(g, 0, 0);
+		}
 		
 	}
 	
@@ -109,9 +108,9 @@ public class CatalogMenu {
 			//totalHeight += out.get(0).getHeight();
 			
 			CodeBlock add = new printlnBlock(50, 100, world);
-			add.setMenu();
+			out.add(add);
 			
-			world.addEntity(add);
+			//world.addEntity(add);
 			
 //			out.add(new WhenLevelStarts(50, 100+totalHeight+SPACING, world));
 //			totalHeight += out.get(1).getHeight();

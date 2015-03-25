@@ -1,5 +1,9 @@
 package codeBlock;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
@@ -14,10 +18,6 @@ public abstract class HatBlock extends CodeBlock {
 		super(downBlock, world);
 	}
 	
-	public void onTrigger(int deltaMS) {
-		downBlock.update(deltaMS);
-	}
-	
 	public boolean call(int deltaMS) {
 		
 		return true;
@@ -26,6 +26,11 @@ public abstract class HatBlock extends CodeBlock {
 	public boolean update(int deltaMS, Input input) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
+		return super.update(deltaMS, input, blocks);
 	}
 	
 }
