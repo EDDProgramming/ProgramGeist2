@@ -67,6 +67,7 @@ public abstract class Entity {
     protected EntityWorld world;
     protected Image image;
     public Shape hitbox;
+    protected Vector2f midpoint;
     
     // Constructors
     public Entity(Shape hitbox, EntityWorld world) throws SlickException {
@@ -77,6 +78,7 @@ public abstract class Entity {
     	this.position.y = y;
     	this.hitbox = hitbox;
     	this.world = world;
+    	midpoint = position;
     	
     	try {
     	image = new Image("res/Whoops.png");

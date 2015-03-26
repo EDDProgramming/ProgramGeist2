@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.newdawn.slick.Image;
@@ -101,45 +102,20 @@ public class Ball extends PhysicsObject {
     		
     		//determines what collisions to ignore
     		for(int i = 0; i < collisions; i++) {
-    			Shape projected = new Circle(hitbox.getCenterX(), hitbox.getCenterY(), hitbox.getBoundingCircleRadius());
-    			
-    			Vector2f surface = lineToVector(collided[i]);
-    			
-    			Vector2f normal = surface.getPerpendicular();
-    			
-    			Vector2f tileCenter = new Vector2f(other.hitbox.getCenter());
-    			
-    			Vector2f normalDir = new Vector2f();
-    			normalDir.x = position.x - tileCenter.x;
-    			normalDir.y = position.y - tileCenter.y;
-    			
-    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
-    				normal.x *= -1;
+    			for(Entity e : entities) {
+    				if(e.entityType == EntityType.Tile && e != other) {
+    					Line[] lines = Entity.getOutline(e.hitbox);
+    					for(int j = 0; j < lines.length; j++) {
+    						float[] line1 = lines[j].getPoints();
+    						float[] line2 = collided[i].getPoints();
+    						if(Arrays.equals(line1, line2)) {
+    							System.out.println("Ignore");
+    							ignore[i] = true;
+    						}
+    					}
+    				}
     			}
     			
-    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
-    				normal.y *= -1;
-    			}
-    			
-    			normal.normalise();
-    			Vector2f positionReset = new Vector2f();
-    			positionReset =  normal.scale(projected.getBoundingCircleRadius() - 
-    										  getPerpendicularDistance(collided[i], 
-    										  projected.getCenterX(), projected.getCenterY()));
-
-    			projected.setX(projected.getX() + positionReset.x);
-    			projected.setY(projected.getY() + positionReset.y);
-    			
-    			System.out.println("Transform:" +positionReset);
-    			System.out.println("Hitbox:" +hitbox.getX() +", " +hitbox.getY());
-    			System.out.println("Projected:" +projected.getX() +", " +projected.getY());
-    			
-    			for (Entity e : entities) {
-        			if(projected.intersects(e.hitbox) && ignore[i] == false && e != this) {
-        				ignore[i] = true;
-        				System.out.println("ignore");
-        			}
-    			}
     		}
     		
     		//Calculates the result of collision
@@ -154,7 +130,7 @@ public class Ball extends PhysicsObject {
 	    			
 	    			Vector2f normal = surface.getPerpendicular();
 	    			
-	    			Vector2f tileCenter = new Vector2f(other.hitbox.getCenter());
+	    			Vector2f tileCenter = other.midpoint;
 	    			
 	    			Vector2f normalDir = new Vector2f();
 	    			normalDir.x = position.x - tileCenter.x;
