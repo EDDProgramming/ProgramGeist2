@@ -102,20 +102,24 @@ public class Ball extends PhysicsObject {
     		
     		//determines what collisions to ignore
     		for(int i = 0; i < collisions; i++) {
+    			float[] line1 = collided[i].getPoints();
+    			
     			for(Entity e : entities) {
     				if(e.entityType == EntityType.Tile && e != other) {
     					Line[] lines = Entity.getOutline(e.hitbox);
+    					
     					for(int j = 0; j < lines.length; j++) {
-    						float[] line1 = lines[j].getPoints();
-    						float[] line2 = collided[i].getPoints();
-    						if(Arrays.equals(line1, line2)) {
+    						float[] line2 = lines[j].getPoints();
+    						
+    						float pointDiff = Math.abs(line1[0] - line2[0]) + Math.abs(line1[1] - line2[1]) + Math.abs(line1[2] - line2[2]) + Math.abs(line1[3] - line2[3]);
+    						float pointDiff2 = Math.abs(line1[0] - line2[2]) + Math.abs(line1[1] - line2[3]) + Math.abs(line1[2] - line2[0]) + Math.abs(line1[3] - line2[1]);
+    						if(pointDiff <= .0001f || pointDiff2 <= .0001f) {
     							System.out.println("Ignore");
     							ignore[i] = true;
     						}
     					}
     				}
     			}
-    			
     		}
     		
     		//Calculates the result of collision

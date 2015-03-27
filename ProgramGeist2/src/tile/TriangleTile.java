@@ -11,7 +11,7 @@ import world.EntityWorld;
 
 public class TriangleTile extends Entity {
 	
-	public Vector2f midpoint = new Vector2f(position.x + 25, position.y + 25);
+	public Vector2f midpoint = new Vector2f(position.x + 75, position.y + 75);
 	
 	public TriangleTile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, makeTriangle(x + 50, y + 50, -50, 50, 50, 50, 50, -50), world);
