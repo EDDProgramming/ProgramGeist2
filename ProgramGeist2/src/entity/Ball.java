@@ -1,5 +1,8 @@
 package entity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -72,7 +75,7 @@ public class Ball extends PhysicsObject {
 		return !removed;
 	}
 	
-	protected void onCollide(Entity other) {
+	protected void onCollide(Entity other, List<Entity> entities) {
     	if(other.entityType == EntityType.Tile) {
     		
     		Line[] outline = getOutline(other.hitbox);
@@ -91,62 +94,90 @@ public class Ball extends PhysicsObject {
     			}
     		}
     		
+    		boolean[] ignore = new boolean[collisions];
+    		
+    		for(int i = 0; i < ignore.length; i++) {
+				ignore[i] = false;
+			}
+    		
+    		//determines what collisions to ignore
+    		for(int i = 0; i < collisions; i++) {
+    			for(Entity e : entities) {
+    				if(e.entityType == EntityType.Tile && e != other) {
+    					Line[] lines = Entity.getOutline(e.hitbox);
+    					for(int j = 0; j < lines.length; j++) {
+    						float[] line1 = lines[j].getPoints();
+    						float[] line2 = collided[i].getPoints();
+    						if(Arrays.equals(line1, line2)) {
+    							System.out.println("Ignore");
+    							ignore[i] = true;
+    						}
+    					}
+    				}
+    			}
+    			
+    		}
+    		
+    		//Calculates the result of collision
     		for(int i = 0; i < collisions; i++) {
     			
-    			//Absolute value allows us to use the square value while maintaining the direction
-        		float forceScalar = .008f * mass;
-        		
-    			Vector2f surface = lineToVector(collided[i]);
-    			
-    			Vector2f normal = surface.getPerpendicular();
-    			
-    			Vector2f tileCenter = new Vector2f(other.hitbox.getCenter());
-    			
-    			Vector2f normalDir = new Vector2f();
-    			normalDir.x = position.x - tileCenter.x;
-    			normalDir.y = position.y - tileCenter.y;
-    			
-    			//Make sure the normal is pointing outwards
-    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
-    				normal.x *= -1;
+    			if(ignore[i] == false) {
+	    			
+	    			//Absolute value allows us to use the square value while maintaining the direction
+	        		float forceScalar = .008f * mass;
+	        		
+	    			Vector2f surface = lineToVector(collided[i]);
+	    			
+	    			Vector2f normal = surface.getPerpendicular();
+	    			
+	    			Vector2f tileCenter = other.midpoint;
+	    			
+	    			Vector2f normalDir = new Vector2f();
+	    			normalDir.x = position.x - tileCenter.x;
+	    			normalDir.y = position.y - tileCenter.y;
+	    			
+	    			//Make sure the normal is pointing outwards
+	    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
+	    				normal.x *= -1;
+	    			}
+	    			
+	    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
+	    				normal.y *= -1;
+	    			}
+	    			
+	    			normal.normalise();
+	    			
+	    			System.out.println(normal);
+	    		    		
+	    			Vector2f bounceDir = getReflectionVector(velocity, normal);
+	    		
+	    			Vector2f forceNormal = bounceDir.scale(forceScalar);
+	    			
+	    			System.out.println(forceNormal);
+	    			
+	    			//Bump the ball out
+	    			
+	    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
+	    				normal.x *= -1;
+	    			}
+	    			
+	    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
+	    				normal.y *= -1;
+	    			}
+	    			
+	    			normal.normalise();
+	    			Vector2f positionReset = new Vector2f();
+	    			System.out.println(normal);
+	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - getPerpendicularDistance(collided[i], hitbox.getCenterX(), hitbox.getCenterY()));
+	    			System.out.println(positionReset);
+	    			
+	    			position.x += positionReset.x;
+	    			position.y += positionReset.y;
+	
+	        		//Impact force
+	        		
+	        		applyForce(forceNormal.x, forceNormal.y);
     			}
-    			
-    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
-    				normal.y *= -1;
-    			}
-    			
-    			normal.normalise();
-    			
-    			System.out.println(normal);
-    		    		
-    			Vector2f bounceDir = getReflectionVector(velocity, normal);
-    		
-    			Vector2f forceNormal = bounceDir.scale(forceScalar);
-    			
-    			System.out.println(forceNormal);
-    			
-    			//Bump the ball out
-    			
-    			if((normalDir.x > 0 && normal.x < 0) || (normalDir.x < 0 && normal.x > 0)) {
-    				normal.x *= -1;
-    			}
-    			
-    			if((normalDir.y > 0 && normal.y < 0) || (normalDir.y < 0 && normal.y > 0)) {
-    				normal.y *= -1;
-    			}
-    			
-    			normal.normalise();
-    			Vector2f positionReset = new Vector2f();
-    			System.out.println(normal);
-    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - getPerpendicularDistance(collided[i], hitbox.getCenterX(), hitbox.getCenterY()));
-    			System.out.println(positionReset);
-    			
-    			position.x += positionReset.x;
-    			position.y += positionReset.y;
-
-        		//Impact force
-        		
-        		applyForce(forceNormal.x, forceNormal.y); 
     		}
     		
     	}

@@ -143,13 +143,13 @@ public class PhysicsObject extends Entity {
     public void checkCollisions(List<Entity> entities) {
     	for (Entity e : entities) {
     			if(hitbox.intersects(e.hitbox)) {
-    				onCollide(e);
+    				onCollide(e, entities);
     		}
     	}
     }
     
     @Override
-    protected void onCollide(Entity other){};
+    protected void onCollide(Entity other, List<Entity> entities){};
     
     protected void onCollide(PhysicsObject other) {
     	// TODO test if this is ever called by world. The code might not register that what it is contacting is a physics object as well as an entity.
