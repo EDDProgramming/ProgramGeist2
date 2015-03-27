@@ -125,7 +125,11 @@ public class EntityWorld {
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
     	standardRender(gc, g, camX, camY);
+<<<<<<< HEAD
         drawHitboxes(entities, g);
+=======
+    	drawHitboxes(entities, g);
+>>>>>>> refs/remotes/origin/master
     }
     
     public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {
