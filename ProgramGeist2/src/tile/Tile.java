@@ -3,8 +3,6 @@ package tile;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Vector2f;
 
 import entity.Entity;
 import world.EntityWorld;
@@ -14,8 +12,6 @@ public class Tile extends Entity {
 	public enum TileType {
 		GenericTile
 	}
-	
-	public Vector2f midpoint = position;
 	
 	public Tile(int x, int y, EntityWorld world) throws SlickException {
 		super(x, y, makeRectangle(x + 50, y + 50, 100, 100), world);

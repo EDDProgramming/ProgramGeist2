@@ -1,6 +1,5 @@
 package entity;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.newdawn.slick.Image;
@@ -88,17 +87,13 @@ public class Ball extends PhysicsObject {
     		for(int i = 0; i < outline.length; i++) {
     			if(hitbox.intersects(outline[i])) {
     				System.out.println("Collided");
-    				System.out.println(outline[i]);
     				collided[collisions] = outline[i];
     				collisions++;
     			}
     		}
     		
     		boolean[] ignore = new boolean[collisions];
-    		
-    		for(int i = 0; i < ignore.length; i++) {
-				ignore[i] = false;
-			}
+
     		
     		//determines what collisions to ignore
     		for(int i = 0; i < collisions; i++) {
@@ -127,7 +122,6 @@ public class Ball extends PhysicsObject {
     			
     			if(ignore[i] == false) {
 	    			
-	    			//Absolute value allows us to use the square value while maintaining the direction
 	        		float forceScalar = .008f * mass;
 	        		
 	    			Vector2f surface = lineToVector(collided[i]);
@@ -151,13 +145,13 @@ public class Ball extends PhysicsObject {
 	    			
 	    			normal.normalise();
 	    			
-	    			System.out.println(normal);
+	    			System.out.println("Velocity on hit: "+velocity);
 	    		    		
 	    			Vector2f bounceDir = getReflectionVector(velocity, normal);
 	    		
 	    			Vector2f forceNormal = bounceDir.scale(forceScalar);
 	    			
-	    			System.out.println(forceNormal);
+	    			System.out.println("Normal Force: "+forceNormal);
 	    			
 	    			//Bump the ball out
 	    			
@@ -172,18 +166,23 @@ public class Ball extends PhysicsObject {
 	    			normal.normalise();
 	    			Vector2f positionReset = new Vector2f();
 	    			System.out.println(normal);
-	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - getPerpendicularDistance(collided[i], hitbox.getCenterX(), hitbox.getCenterY()));
+	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - 
+	    										  getPerpendicularDistance(collided[i], 
+	    										  hitbox.getCenterX(), hitbox.getCenterY()));
 	    			System.out.println(positionReset);
 	    			
-	    			position.x += positionReset.x;
-	    			position.y += positionReset.y;
-	
-	        		//Impact force
-	        		
-	        		applyForce(forceNormal.x, forceNormal.y);
+	    			//Does not apply force if ball is going away from the normal.
+	    			if((velocity.x > 0 && normal.x < 0) || (velocity.x < 0 && normal.x > 0)) {
+	    				position.x += positionReset.x;
+	    				applyForce(forceNormal.x, 0);
+	    			}
+	    			
+	    			if((velocity.y > 0 && normal.y < 0) || (velocity.y < 0 && normal.y > 0)) {
+	    				position.y += positionReset.y;
+	    				applyForce(0, forceNormal.y);
+	    			}
     			}
     		}
-    		
     	}
     	
     	if(other.entityType == EntityType.Ball) {
