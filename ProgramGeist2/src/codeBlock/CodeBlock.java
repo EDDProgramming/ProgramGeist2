@@ -3,7 +3,6 @@ package codeBlock;
 import java.util.Iterator;
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
