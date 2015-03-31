@@ -7,7 +7,7 @@ import world.EntityWorld;
 
 public class printlnBlock extends StackBlock implements Cloneable {
 	
-	String printText    = "";
+	String printText    = "PRINTLN BLOCK";
 	
 	public printlnBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
@@ -15,14 +15,21 @@ public class printlnBlock extends StackBlock implements Cloneable {
 		canConnectDown = true;
 	}
 	
+	public printlnBlock(float x, float y, EntityWorld world, String _printText) throws SlickException {
+		this(x, y, world);
+		printText = _printText;
+	}
+	
 	@Override
 	public boolean update(int deltaMS) {
-		call(deltaMS);
 		return true;
 	}
 	
 	public boolean call(int deltaMS) {
 		System.out.println(printText);
+		if(downBlock != null) {
+			downBlock.call(deltaMS);
+		}
 		return true;
 	}
 	@Override

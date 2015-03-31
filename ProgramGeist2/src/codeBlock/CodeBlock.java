@@ -53,21 +53,30 @@ public abstract class CodeBlock extends Entity {
 	
 	public CodeBlock(float x, float y, EntityWorld world) {
 		this(x, y, makeRectangle(x, y, 100, 20), world);
-		//Make the makeRectangle the correct size
 	}
 
 	public CodeBlock(float x, float y, Shape hitbox, EntityWorld world) {
 		super(x, y, hitbox, world);
+		
+		loadImage("res/Code Blocks/The_shape_of_a_Stack_Block.png");
+	}
+	
+	/*
+	 * loadImage
+	 * 
+	 * loads an image to represent this code block.
+	 * 
+	 */
+	protected void loadImage(String filepath) {
 		try {
-			image = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
-		} catch (SlickException e) {
+			loadImage(new Image(filepath));
+		}catch (SlickException e) {
+			System.out.println("Could not find image for code block");
 			e.printStackTrace();
 		}
-		
 	}
-	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		this(downBlock.getX(), downBlock.getY()-20,  world);
-		this.downBlock = downBlock;
+	protected void loadImage(Image I) {
+		image = I;
 	}
 	
 	@Override
@@ -112,9 +121,8 @@ public abstract class CodeBlock extends Entity {
 	 * 
 	 */
 	public void checkConnections(Input input, List<CodeBlock> blocks) {
-		Iterator<CodeBlock> c = blocks.iterator();
-		
-		if(canConnectUp || canConnectDown) {
+		if((canConnectUp || canConnectDown) && !getMenu()) {
+			Iterator<CodeBlock> c = blocks.iterator();
 			while(c.hasNext()) {
 				CodeBlock block = c.next();
 				
@@ -135,7 +143,7 @@ public abstract class CodeBlock extends Entity {
 					}
 					// check for down block
 					if(canConnectDown) {
-						if(block != upBlock) {
+						if(block != upBlock && block.blockType != blockType.Hat) {
 							if(position.x >= block.getX()-100
 									&& position.x <= block.getX()+100
 									&& position.y >= block.getY()-24

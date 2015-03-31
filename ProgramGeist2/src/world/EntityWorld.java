@@ -125,6 +125,8 @@ public class EntityWorld {
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
     	standardRender(gc, g, camX, camY);
+    	drawHitboxes(entities, g);
+    	drawHitboxes(blocks, g, true);
     }
     
     public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {

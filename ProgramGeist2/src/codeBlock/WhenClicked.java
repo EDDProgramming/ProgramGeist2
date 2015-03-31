@@ -12,41 +12,35 @@ import world.EntityWorld;
 public class WhenClicked extends HatBlock {
 	public WhenClicked(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
-	}
-	public WhenClicked(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		super(downBlock, world);
+		
 	}
 	
 	@Override
 	public boolean update(int deltaMS) {
-		// TODO Integrate with Levels
-		
-		
-		
-		return true;
+		//System.out.println("This is the Wrong Update - When Clicked Block");
+		return super.update(deltaMS);
 	}
 	
 	@Override
 	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
 		
-		
+		if(input.isMouseButtonDown(0) && !getMenu()) {
+			if(hitbox.contains(mouseX, mouseY)) {
+				call(deltaMS);
+			}
+		}
 		
 		return super.update(deltaMS, input, blocks);
 	}
 	
-	public boolean call(int deltaMS) {
-		downBlock.call(deltaMS);
-		return true;
-	}
-	
 	public CodeBlock clone() {
 		try {
-			return new WhenLevelStarts(position.x, position.y, world);
+			return new WhenClicked(position.x, position.y, world);
 		} catch (SlickException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
-	
 }
