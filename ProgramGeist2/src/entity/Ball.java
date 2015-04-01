@@ -108,7 +108,7 @@ public class Ball extends PhysicsObject {
     						
     						float pointDiff = Math.abs(line1[0] - line2[0]) + Math.abs(line1[1] - line2[1]) + Math.abs(line1[2] - line2[2]) + Math.abs(line1[3] - line2[3]);
     						float pointDiff2 = Math.abs(line1[0] - line2[2]) + Math.abs(line1[1] - line2[3]) + Math.abs(line1[2] - line2[0]) + Math.abs(line1[3] - line2[1]);
-    						if(pointDiff <= .0001f || pointDiff2 <= .0001f) {
+    						if(pointDiff <= .001f || pointDiff2 <= .0001f) {
     							System.out.println("Ignore");
     							ignore[i] = true;
     						}
@@ -165,25 +165,20 @@ public class Ball extends PhysicsObject {
 	    			
 	    			normal.normalise();
 	    			Vector2f positionReset = new Vector2f();
-	    			System.out.println(normal);
 	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - 
 	    										  getPerpendicularDistance(collided[i], 
 	    										  hitbox.getCenterX(), hitbox.getCenterY()));
 	    			System.out.println(positionReset);
 	    			
-	    			//Does not apply force if ball is going away from the normal.
-	    			if((velocity.x > 0 && normal.x < 0) || (velocity.x < 0 && normal.x > 0)) {
-	    				position.x += positionReset.x;
-	    				applyForce(forceNormal.x, 0);
-	    			}
-	    			
-	    			if((velocity.y > 0 && normal.y < 0) || (velocity.y < 0 && normal.y > 0)) {
-	    				position.y += positionReset.y;
-	    				applyForce(0, forceNormal.y);
-	    			}
+	    			position.x += positionReset.x;
+	    			applyForce(forceNormal.x, 0);
+	    				
+	    			position.y += positionReset.y;
+	    			applyForce(0, forceNormal.y);
     			}
     		}
     	}
+    	
     	
     	if(other.entityType == EntityType.Ball) {
     		//Bumps the ball away
@@ -193,13 +188,15 @@ public class Ball extends PhysicsObject {
     		
     		float scalar = (hitbox.getBoundingCircleRadius() + other.hitbox.getBoundingCircleRadius()) - positionReset.length();
     		scalar /= 2;
-    		positionReset.normalise();
-    		positionReset.scale(scalar);
     		
     		//Adds a new bounce force
     		Vector2f force = new Vector2f();
     		force.x = position.x - other.getX();
     		force.y = position.y - other.getY();
+    		force.scale(scalar);
+    		position.x += positionReset.x;
+    		position.y += positionReset.y;
+    		//applyForce(force.x, force.y);
     	}
     	
     }

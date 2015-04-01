@@ -44,6 +44,7 @@ public abstract class CodeBlock extends Entity {
 	protected boolean mouseDown = false;
 	
 	protected float mouseOnX;
+
 	protected float mouseOnY;
 	
 	// Constructors

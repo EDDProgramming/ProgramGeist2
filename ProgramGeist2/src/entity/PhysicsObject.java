@@ -142,8 +142,10 @@ public class PhysicsObject extends Entity {
     
     public void checkCollisions(List<Entity> entities) {
     	for (Entity e : entities) {
+    		if(e != this) {
     			if(hitbox.intersects(e.hitbox)) {
     				onCollide(e, entities);
+    			}
     		}
     	}
     }
