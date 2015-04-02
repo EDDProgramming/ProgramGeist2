@@ -68,7 +68,7 @@ public class Ball extends PhysicsObject {
 		
 			updateForces(0.5f);
 		
-			updatePosition();
+			updatePosition(deltaMS);
 		}
 		
 		return !removed;

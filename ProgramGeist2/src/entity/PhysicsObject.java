@@ -65,7 +65,7 @@ public class PhysicsObject extends Entity {
 	}
 	
 	//Calculates acceleration, velocity and position based on force, plus some cleanup.
-	public void updatePosition() {
+	public void updatePosition(float deltaMS) {
 		
 		//Calculate the acceleration based on F = MA
 		if(mass != 0) {
@@ -74,18 +74,18 @@ public class PhysicsObject extends Entity {
 		}
 		
 		//Increment the velocity by acceleration
-		velocity.x += acceleration.x;
-		velocity.y += acceleration.y;
+		velocity.x += acceleration.x * deltaMS;
+		velocity.y += acceleration.y * deltaMS;
 		
 		//Move the object based on its current velocity
-		position.x += velocity.x;
-		position.y += velocity.y;
+		position.x += velocity.x * deltaMS;
+		position.y += velocity.y * deltaMS;
 		
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
 		
-		prevPosition.x = position.x;
-		prevPosition.y = position.y;
+		prevPosition.x = position.x * deltaMS;
+		prevPosition.y = position.y * deltaMS;
 	}
 
 	//Force in an X and Y Vector pair
