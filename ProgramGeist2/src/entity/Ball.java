@@ -22,10 +22,10 @@ public class Ball extends PhysicsObject {
 	public void movement(Input input) {
 		//Apply forces using the <x, y> method
 		
-		float mag = 100;
+		float mag = 20;
 		
 		if(input.isKeyDown(Input.KEY_UP)) {
-			applyForce(0, -mag - 50);
+			applyForce(0, -mag - 10);
 		}
 				
 		if(input.isKeyDown(Input.KEY_DOWN)) {

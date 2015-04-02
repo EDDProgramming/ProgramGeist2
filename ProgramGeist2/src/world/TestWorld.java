@@ -71,8 +71,7 @@ public class TestWorld extends EntityWorld {
 //        catalogMenu.render(gc, g);
 //    }
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
-    	catalogMenu.render(gc, g);
     	super.render(gc, g, camX, camY);
-        
+    	catalogMenu.render(gc, g);
     }
 }

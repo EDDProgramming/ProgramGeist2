@@ -12,7 +12,7 @@ public class Level2State extends BasicGameState {
 	public static final int ID = 5;
 	
 	private TestWorld2 world;
-	private final int updatesPerSecond = 40;
+	private final int updatesPerSecond = 60;
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	

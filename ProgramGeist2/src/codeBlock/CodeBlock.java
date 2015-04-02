@@ -91,7 +91,6 @@ public abstract class CodeBlock extends Entity {
 	@Override
 	public boolean update(int deltaMS, Input input) {
 		this.update(deltaMS);
-		
 		centerHitbox();
 		mouseUpdate(deltaMS, input);
 		
@@ -174,48 +173,79 @@ public abstract class CodeBlock extends Entity {
 	public void mouseUpdate(int deltaMS, Input input) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
+		//Testing new input system
 		
-		if(input.isMouseButtonDown(0) && !mouseDown) {
-			if(hitbox.contains(mouseX, mouseY)) {
-			//if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
-				mouseDown = true;
-				if(menuMode) {
-					try {
-						CodeBlock c = this.clone();
-						world.addEntity(c);
-						mouseOnX = mouseX-c.position.x;
-						mouseOnY = mouseY-c.position.y;
-						mouseID = c.id;
-					} catch (Exception e) {
-						System.out.println("Menu Clone Exception");
-						e.printStackTrace();
-					}
-				} else {
-					mouseOnX = mouseX-position.x;
-					mouseOnY = mouseY-position.y;
-					mouseID = this.id;
+		if(input.isMousePressed(0) && hitbox.contains(mouseX, mouseY)) {
+			if(menuMode) {
+				try {
+					CodeBlock c = this.clone();
+					world.addEntity(c);
+					c.mouseOnX = mouseX-c.position.x;
+					c.mouseOnY = mouseY-c.position.y;
+					mouseID = c.id;
+				} catch (Exception e) {
+					System.out.println("Menu Clone Exception");
+					e.printStackTrace();
 				}
+			}
+			else {	
+				mouseID = id;
+				mouseOnX = mouseX-position.x;
+				mouseOnY = mouseY-position.y;
 			}
 		}
 		
-		if(input.isMouseButtonDown(0)){
-			if(mouseID == this.id) {
-				if(connectedUp) {
-					if(mouseX > position.x+mouseOnX+50
-							|| mouseX < position.x+mouseOnX-50
-							|| mouseY > position.y+mouseOnY+50
-							|| mouseY < position.y+mouseOnY-50) {
-						disconnectUp();
-					}
-				} else {
-					position.x = mouseX-mouseOnX;
-					position.y = mouseY-mouseOnY;
-				}
-			}
-		}else {
-			mouseDown = false;
+		if(!input.isMouseButtonDown(0)) {
 			mouseID = -1;
 		}
+		
+		if(mouseID == this.id) {
+			position.x = mouseX-mouseOnX;
+			position.y = mouseY-mouseOnY;
+		}
+		
+		
+//		if(input.isMouseButtonDown(0) && !mouseDown) {
+//			if(hitbox.contains(mouseX, mouseY)) {
+//			//if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
+//				mouseDown = true;
+//				if(menuMode) {
+//					try {
+//						CodeBlock c = this.clone();
+//						world.addEntity(c);
+//						mouseOnX = mouseX-c.position.x;
+//						mouseOnY = mouseY-c.position.y;
+//						mouseID = c.id;
+//					} catch (Exception e) {
+//						System.out.println("Menu Clone Exception");
+//						e.printStackTrace();
+//					}
+//				} else {
+//					mouseOnX = mouseX-position.x;
+//					mouseOnY = mouseY-position.y;
+//					mouseID = this.id;
+//				}
+//			}
+//		}
+//		
+//		if(input.isMouseButtonDown(0)){
+//			if(mouseID == this.id) {
+//				if(connectedUp) {
+//					if(mouseX > position.x+mouseOnX+50
+//							|| mouseX < position.x+mouseOnX-50
+//							|| mouseY > position.y+mouseOnY+50
+//							|| mouseY < position.y+mouseOnY-50) {
+//						disconnectUp();
+//					}
+//				} else {
+//					position.x = mouseX-mouseOnX;
+//					position.y = mouseY-mouseOnY;
+//				}
+//			}
+//		}else {
+//			mouseDown = false;
+//			mouseID = -1;
+//		}
 	}
 	
 	@Override
