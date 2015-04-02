@@ -20,7 +20,7 @@ public class TestWorld2 extends EntityWorld {
 		super(c);
 		
 		for(int i = 0; i<5; i++) {
-		addEntity(new Ball(500 + 100 * i, 50f, this, 100.0f));
+		addEntity(new Ball(300 + 100 * i, 50f, this, 100.0f));
 		
 		}
 		

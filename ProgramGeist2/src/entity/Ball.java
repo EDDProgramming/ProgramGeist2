@@ -183,17 +183,16 @@ public class Ball extends PhysicsObject {
     	if(other.entityType == EntityType.Ball) {
     		//Bumps the ball away
     		Vector2f positionReset = new Vector2f();
-    		positionReset.x = position.x - other.getX();
-    		positionReset.y = position.y - other.getY();
+    		positionReset.x = hitbox.getCenterX() - other.hitbox.getCenterX();
+    		positionReset.y = hitbox.getCenterY() - other.hitbox.getCenterY();
     		
-    		float scalar = (hitbox.getBoundingCircleRadius() + other.hitbox.getBoundingCircleRadius()) - positionReset.length();
-    		scalar /= 2;
+    		positionReset.normalise();
+    		positionReset.scale((float) (hitbox.getBoundingCircleRadius() - distanceTo(other)));
     		
     		//Adds a new bounce force
     		Vector2f force = new Vector2f();
     		force.x = position.x - other.getX();
     		force.y = position.y - other.getY();
-    		force.scale(scalar);
     		position.x += positionReset.x;
     		position.y += positionReset.y;
     		//applyForce(force.x, force.y);
