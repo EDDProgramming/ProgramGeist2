@@ -21,17 +21,13 @@ public class CatalogMenu {
 	private static final int SPACING = 10;
 	private static final int NUM_BLOCKS = 6;
 	
-	private static Image[] images;
-	
 	private ArrayList<CodeBlock> codeBlocks;
 	
 	public EntityWorld world;
 	
 	public CatalogMenu(EntityWorld _world) {
-		images = loadImages();
 		world = _world;
 		codeBlocks = loadBlocks();
-		
 		
 	}
 	
@@ -73,29 +69,10 @@ public class CatalogMenu {
 //			totalHeight += images[i].getHeight();
 //		}
 		
-//		for(int i = 0; i<codeBlocks.size(); i++) {
-//			codeBlocks.get(i).render(g, 0, 0); // TODO will run into problems later with camera panning
-//		}
-		
-	}
-	
-	private int getNumImages() { return NUM_BLOCKS;	}
-
-	public Image[] loadImages() {
-		Image[] out = new Image[6];
-		
-		try {
-			out[0] = new Image("res/Code Blocks/The_shape_of_a_Boolean_block.png");
-			out[1] = new Image("res/Code Blocks/The_shape_of_a_C_block.png");
-			out[2] = new Image("res/Code Blocks/The_shape_of_a_Cap_block.png");
-			out[3] = new Image("res/Code Blocks/The_shape_of_a_Hat_Block.png");
-			out[4] = new Image("res/Code Blocks/The_shape_of_a_Reporter_Block.png");
-			out[5] = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
-		} catch(SlickException e) {
-			e.printStackTrace();
+		for(int i = 0; i<codeBlocks.size(); i++) {
+			codeBlocks.get(i).render(g, 0, 0);
 		}
 		
-		return out;
 	}
 	
 	public ArrayList<CodeBlock> loadBlocks() {
@@ -109,12 +86,10 @@ public class CatalogMenu {
 			//totalHeight += out.get(0).getHeight();
 			
 			CodeBlock add = new printlnBlock(50, 100, world);
-			add.setMenu();
+			out.add(add);
 			
-			world.addEntity(add);
+			out.add(new WhenClicked(50, 200, world));
 			
-//			out.add(new WhenLevelStarts(50, 100+totalHeight+SPACING, world));
-//			totalHeight += out.get(1).getHeight();
 			
 			for(int i = 0; i<out.size(); i++) {
 				out.get(i).setMenu();

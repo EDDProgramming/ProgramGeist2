@@ -27,7 +27,7 @@ public class EntityWorld {
     private List<Entity> newEntities = new ArrayList<Entity>();
     private List<Entity> particles = new ArrayList<Entity>();
     private List<Entity> newParticles = new ArrayList<Entity>();
-    private List<CodeBlock> blocks = new ArrayList<CodeBlock>();
+    protected List<CodeBlock> blocks = new ArrayList<CodeBlock>();
     private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
 	
 	private double width;
@@ -125,7 +125,9 @@ public class EntityWorld {
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
     	standardRender(gc, g, camX, camY);
-        drawHitboxes(entities, g);
+    	drawHitboxes(entities, g);
+    	drawHitboxes(blocks, g, true);
+
     }
     
     public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {
@@ -147,6 +149,14 @@ public class EntityWorld {
     //For rendering hitboxes
     public void drawHitboxes(List<Entity> entities, Graphics g) {
     	Iterator<Entity> iterator = entities.iterator();
+    	while (iterator.hasNext()) {
+    		Entity r = iterator.next();
+    		g.setColor(Color.red);
+    		g.draw(r.hitbox);
+    	}
+    }
+    public void drawHitboxes(List<CodeBlock> entities, Graphics g, boolean b) {
+    	Iterator<CodeBlock> iterator = entities.iterator();
     	while (iterator.hasNext()) {
     		Entity r = iterator.next();
     		g.setColor(Color.red);

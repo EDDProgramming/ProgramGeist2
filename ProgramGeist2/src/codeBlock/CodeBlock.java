@@ -3,6 +3,7 @@ package codeBlock;
 import java.util.Iterator;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -39,11 +40,11 @@ public abstract class CodeBlock extends Entity {
 	protected static Circle radius = new Circle(0, 0, 10);
 	
 	protected boolean menuMode = false;
-	protected static boolean onMouse = false;
 	protected static int mouseID = -1;
 	protected boolean mouseDown = false;
 	
 	protected float mouseOnX;
+
 	protected float mouseOnY;
 	
 	// Constructors
@@ -52,26 +53,36 @@ public abstract class CodeBlock extends Entity {
 	}
 	
 	public CodeBlock(float x, float y, EntityWorld world) {
-		super(x, y, makeRectangle(x, y, 20, 50), world);
-		//Make the makeRectangle the correct size
+		this(x, y, makeRectangle(x, y, 100, 20), world);
 	}
 
 	public CodeBlock(float x, float y, Shape hitbox, EntityWorld world) {
 		super(x, y, hitbox, world);
+		
+		loadImage("res/Code Blocks/The_shape_of_a_Stack_Block.png");
+	}
+	
+	/*
+	 * loadImage
+	 * 
+	 * loads an image to represent this code block.
+	 * 
+	 */
+	protected void loadImage(String filepath) {
 		try {
-			image = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
-		} catch (SlickException e) {
+			loadImage(new Image(filepath));
+		}catch (SlickException e) {
+			System.out.println("Could not find image for code block");
 			e.printStackTrace();
 		}
 	}
-	
-	public CodeBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		this(downBlock.getX(), downBlock.getY()-20,  world);
-		this.downBlock = downBlock;
+	protected void loadImage(Image I) {
+		image = I;
 	}
 	
 	@Override
 	public boolean update(int deltaMS) {
+		
 		
 		
 		return true;
@@ -79,7 +90,9 @@ public abstract class CodeBlock extends Entity {
 
 	@Override
 	public boolean update(int deltaMS, Input input) {
+		this.update(deltaMS);
 		
+		centerHitbox();
 		mouseUpdate(deltaMS, input);
 		
 		return true;
@@ -95,6 +108,11 @@ public abstract class CodeBlock extends Entity {
 		return true;
 	}
 	
+	public void centerHitbox() {
+		hitbox.setX(position.x);
+		hitbox.setY(position.y);
+	}
+	
 	/*
 	 * checkConnections
 	 * 
@@ -104,13 +122,12 @@ public abstract class CodeBlock extends Entity {
 	 * 
 	 */
 	public void checkConnections(Input input, List<CodeBlock> blocks) {
-		Iterator<CodeBlock> c = blocks.iterator();
-		
-		if(canConnectUp || canConnectDown) {
+		if((canConnectUp || canConnectDown) && !getMenu()) {
+			Iterator<CodeBlock> c = blocks.iterator();
 			while(c.hasNext()) {
 				CodeBlock block = c.next();
 				
-				if(block != this && block.getMenu() == false) {
+				if(block != this && !block.getMenu()) {
 					// TODO Fix code block connections
 					
 					// check for up block
@@ -125,8 +142,9 @@ public abstract class CodeBlock extends Entity {
 							}
 						}
 					}
+					// check for down block
 					if(canConnectDown) {
-						if(block != upBlock) {
+						if(block != upBlock && block.blockType != blockType.Hat) {
 							if(position.x >= block.getX()-100
 									&& position.x <= block.getX()+100
 									&& position.y >= block.getY()-24
@@ -143,9 +161,8 @@ public abstract class CodeBlock extends Entity {
 		}
 		if(connectedUp) {
 			position.x = upBlock.getX();
-			position.y = upBlock.getY()+24;
+			position.y = upBlock.getY()+20;
 		}
-		
 	}
 	
 	/*
@@ -158,8 +175,31 @@ public abstract class CodeBlock extends Entity {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
-		if(input.isMouseButtonDown(0)) {
-			if(onMouse && mouseID == this.id) {
+		if(input.isMouseButtonDown(0) && !mouseDown) {
+			if(hitbox.contains(mouseX, mouseY)) {
+			//if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
+				mouseDown = true;
+				if(menuMode) {
+					try {
+						CodeBlock c = this.clone();
+						world.addEntity(c);
+						mouseOnX = mouseX-c.position.x;
+						mouseOnY = mouseY-c.position.y;
+						mouseID = c.id;
+					} catch (Exception e) {
+						System.out.println("Menu Clone Exception");
+						e.printStackTrace();
+					}
+				} else {
+					mouseOnX = mouseX-position.x;
+					mouseOnY = mouseY-position.y;
+					mouseID = this.id;
+				}
+			}
+		}
+		
+		if(input.isMouseButtonDown(0)){
+			if(mouseID == this.id) {
 				if(connectedUp) {
 					if(mouseX > position.x+mouseOnX+50
 							|| mouseX < position.x+mouseOnX-50
@@ -167,32 +207,14 @@ public abstract class CodeBlock extends Entity {
 							|| mouseY < position.y+mouseOnY-50) {
 						disconnectUp();
 					}
-				}else {
+				} else {
 					position.x = mouseX-mouseOnX;
 					position.y = mouseY-mouseOnY;
 				}
-			}else if(mouseX >= position.x && mouseX <= position.x+100 && mouseY >= position.y && mouseY <= position.y+24) {
-				if(menuMode) {
-					if(mouseDown == false) {
-						try {
-							CodeBlock c = this.clone();
-							world.addEntity(c);
-						} catch (Exception e) {
-							System.out.println("Menu Clone Exception");
-							e.printStackTrace();
-						}
-					}
-				}else {
-					mouseOnX = mouseX-position.x;
-					mouseOnY = mouseY-position.y;
-					onMouse = true;
-					mouseID = this.id;
-				}
 			}
-			mouseDown = true;
 		}else {
-			onMouse = false;
 			mouseDown = false;
+			mouseID = -1;
 		}
 	}
 	
@@ -233,5 +255,6 @@ public abstract class CodeBlock extends Entity {
 		upBlock = null;
 		canConnectUp = true;
 		connectedUp = false;
+		position.y+=100;
 	}
 }

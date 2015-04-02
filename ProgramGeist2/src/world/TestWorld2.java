@@ -46,7 +46,10 @@ public class TestWorld2 extends EntityWorld {
 		
 		CatalogMenu cm = new CatalogMenu(this);
 		
-		catalogMenu = cm;
+		for(int i = 0; i < 5; i ++) {
+			addEntity(new Tile(200 + 100 * i, 100 + 100 * i, this));
+		}
+		
 	}
 	
 	public void update(GameContainer gc, int deltaMS) {

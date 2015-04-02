@@ -46,12 +46,6 @@ public class TestWorld extends EntityWorld {
 		
 		addEntity(new TriangleTile(600, 300, this));
 		
-		CodeBlock add = new printlnBlock(300, 200, this);
-		
-		addEntity(add);
-		addEntity(new printlnBlock(500, 200, this));
-		addEntity(new printlnBlock(300, 400, this));
-		
 		CatalogMenu cm = new CatalogMenu(this);
 		
 		catalogMenu = cm;
@@ -69,14 +63,16 @@ public class TestWorld extends EntityWorld {
     	if(input.isKeyPressed(Input.KEY_E)) {
     		catalogMenu.setVisible(!catalogMenu.isVisible());
     	}
+    	
+    	super.update(gc, deltaMS);
     }
     
 //    public void render(GameContainer gc, Graphics g, double camX, double camY) {
 //        catalogMenu.render(gc, g);
 //    }
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
+    	catalogMenu.render(gc, g);
     	super.render(gc, g, camX, camY);
-        catalogMenu.render(gc, g);
+        
     }
-
 }

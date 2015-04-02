@@ -14,9 +14,6 @@ public abstract class CBlock extends CodeBlock {
 	public CBlock(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 	}
-	public CBlock(CodeBlock downBlock, EntityWorld world) throws SlickException {
-		super(downBlock, world);
-	}
 	
 	public boolean call(int deltaMS) {
 		return true;
