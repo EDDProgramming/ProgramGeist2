@@ -74,8 +74,8 @@ public class PhysicsObject extends Entity {
 		}
 		
 		//Increment the velocity by acceleration
-		velocity.x += acceleration.x * deltaMS / 200;
-		velocity.y += acceleration.y * deltaMS / 200;
+		velocity.x += acceleration.x * deltaMS / 250;
+		velocity.y += acceleration.y * deltaMS / 250;
 		
 		//Move the object based on its current velocity
 		position.x += velocity.x * deltaMS;
