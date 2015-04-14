@@ -31,8 +31,8 @@ public class PhysicsObject extends Entity {
     protected Vector2f prevPosition = new Vector2f(0, 0);
 	
 
-	public PhysicsObject(float x, float y, Shape hitbox, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, world);
+	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
+		super(x, y, world);
 		
 		this.mass = mass;
 		
@@ -74,8 +74,8 @@ public class PhysicsObject extends Entity {
 		}
 		
 		//Increment the velocity by acceleration
-		velocity.x += acceleration.x * deltaMS;
-		velocity.y += acceleration.y * deltaMS;
+		velocity.x += acceleration.x * deltaMS / 200;
+		velocity.y += acceleration.y * deltaMS / 200;
 		
 		//Move the object based on its current velocity
 		position.x += velocity.x * deltaMS;
@@ -84,8 +84,8 @@ public class PhysicsObject extends Entity {
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
 		
-		prevPosition.x = position.x * deltaMS;
-		prevPosition.y = position.y * deltaMS;
+		prevPosition.x = position.x;
+		prevPosition.y = position.y;
 	}
 
 	//Force in an X and Y Vector pair

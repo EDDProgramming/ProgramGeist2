@@ -37,8 +37,6 @@ public abstract class CodeBlock extends Entity {
 	protected Boolean connectedUp   = false;
 	protected Boolean fullyConnected = false; // maybe we don't need this
 	
-	protected static Circle radius = new Circle(0, 0, 10);
-	
 	protected boolean menuMode = false;
 	protected static int mouseID = -1;
 	protected boolean mouseDown = false;
@@ -51,14 +49,11 @@ public abstract class CodeBlock extends Entity {
 	public CodeBlock(EntityWorld world) throws SlickException {
 		this(0, 0, world);
 	}
-	
-	public CodeBlock(float x, float y, EntityWorld world) {
-		this(x, y, makeRectangle(x, y, 100, 20), world);
-	}
 
-	public CodeBlock(float x, float y, Shape hitbox, EntityWorld world) {
-		super(x, y, hitbox, world);
+	public CodeBlock(float x, float y, EntityWorld world) {
+		super(x, y, world);
 		
+		hitbox = makeRectangle(x, y, 100, 20);
 		loadImage("res/Code Blocks/The_shape_of_a_Stack_Block.png");
 	}
 	

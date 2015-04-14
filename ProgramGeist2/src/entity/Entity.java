@@ -70,13 +70,13 @@ public abstract class Entity {
     protected Vector2f midpoint;
     
     // Constructors
-    public Entity(Shape hitbox, EntityWorld world) throws SlickException {
-    	this(0, 0, hitbox, world);
+    public Entity(EntityWorld world) throws SlickException {
+    	this(0, 0, world);
     }
-    public Entity(float x, float y, Shape hitbox, EntityWorld world) {
+    public Entity(float x, float y, EntityWorld world) {
     	this.position.x = x;
     	this.position.y = y;
-    	this.hitbox = hitbox;
+    	hitbox = new Rectangle(0, 0, 0, 0);
     	this.world = world;
     	midpoint = position;
     	
