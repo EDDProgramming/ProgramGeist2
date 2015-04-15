@@ -16,12 +16,6 @@ public class WhenClicked extends HatBlock {
 	}
 	
 	@Override
-	public boolean update(int deltaMS) {
-		//System.out.println("This is the Wrong Update - When Clicked Block");
-		return super.update(deltaMS);
-	}
-	
-	@Override
 	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();

@@ -38,11 +38,6 @@ public class PhysicsObject extends Entity {
 		
 		entityType = EntityType.Object;
 	}
-
-	@Override
-	public boolean update(int deltaMS) {
-		return !removed;
-	}
 	
 	public boolean update(int deltaMS, Input input) {
 		return !removed;
@@ -74,8 +69,8 @@ public class PhysicsObject extends Entity {
 		}
 		
 		//Increment the velocity by acceleration
-		velocity.x += acceleration.x * deltaMS / 250;
-		velocity.y += acceleration.y * deltaMS / 250;
+		velocity.x += acceleration.x * deltaMS / 300;
+		velocity.y += acceleration.y * deltaMS / 300;
 		
 		//Move the object based on its current velocity
 		position.x += velocity.x * deltaMS;

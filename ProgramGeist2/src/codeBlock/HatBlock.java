@@ -28,10 +28,6 @@ public abstract class HatBlock extends CodeBlock {
 		return true;
 	}
 	
-	public boolean update(int deltaMS) {
-		return super.update(deltaMS);
-	}
-	
 	@Override
 	public boolean update(int deltaMS, Input input) {
 		// TODO Auto-generated method stub

@@ -53,7 +53,8 @@ public abstract class Entity {
 		CodeBlock,
 		Object,
 		Tile,
-		Ball
+		Ball,
+		GamePiece
 	}
 	
 	protected static Random random = new Random();
@@ -108,8 +109,6 @@ public abstract class Entity {
     }
     
     // Entities will have their own update code
-    public abstract boolean update(int deltaMS);
-    
     public abstract boolean update(int deltaMS, Input input);
     
     public void render(Graphics g, double camX, double camY) {

@@ -12,6 +12,7 @@ import codeBlock.CodeBlock;
 import codeBlock.StackBlock;
 import codeBlock.printlnBlock;
 import entity.Ball;
+import entity.ConveyerBelt;
 import gui.CatalogMenu;
 
 
@@ -31,7 +32,6 @@ public class TestWorld extends EntityWorld {
 		
 		for(int i = 0; i<10; i++) {
 			addEntity(new Tile(100*i, -100, this));
-			
 		}
 		
 		for(int i = 0; i<5; i++) {
@@ -41,10 +41,11 @@ public class TestWorld extends EntityWorld {
 		
 		for(int i = 0; i<5; i++) {
 			addEntity(new Tile(100, 400 - i*100, this));
-			
 		}
 		
 		addEntity(new TriangleTile(600, 300, this));
+		
+		addEntity(new ConveyerBelt(300, 400, this));
 		
 		CatalogMenu cm = new CatalogMenu(this);
 		

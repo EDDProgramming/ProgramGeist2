@@ -1,5 +1,6 @@
 package codeBlock;
 
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import world.EntityWorld;
@@ -21,7 +22,8 @@ public class printlnBlock extends StackBlock implements Cloneable {
 	}
 	
 	@Override
-	public boolean update(int deltaMS) {
+	public boolean update(int deltaMS, Input input) {
+		super.update(deltaMS, input);
 		return true;
 	}
 	

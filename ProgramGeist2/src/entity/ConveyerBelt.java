@@ -9,23 +9,49 @@ import world.EntityWorld;
 
 public class ConveyerBelt extends Entity {
 	
+	int speed;
+	boolean on;
+	
 	public ConveyerBelt(float x, float y, EntityWorld world) throws SlickException {
 		super(x, y, world);
 		
 		hitbox = makeRectangle(x + 100, y, 200, 10);
 		image = new Image("res/Conveyer.png");
+		speed = 4;
+		on = false;
+		entityType = EntityType.GamePiece;
 	}
-
-	@Override
-	public boolean update(int deltaMS) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public void CollideAction(PhysicsObject other) {
+		if(on == true) {
+			other.applyForce(speed / 4, 0);
+		}
 	}
-
+	
+	private void ToggleOn() {
+		on = !on;
+	}
+	
+	private void SetSpeed(int amount) {
+		speed = amount;
+	}
+	
 	@Override
 	public boolean update(int deltaMS, Input input) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		if(input.isKeyPressed(Input.KEY_LSHIFT)) {
+			ToggleOn();
+		}
+		
+		if(input.isKeyDown(Input.KEY_A)) {
+			SetSpeed(speed - 1);
+		}
+		
+		if(input.isKeyDown(Input.KEY_D)) {
+			SetSpeed(speed + 1);
+		}
+		
+		return true;
 	}
 
 }

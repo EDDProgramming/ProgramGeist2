@@ -43,7 +43,7 @@ public class Ball extends PhysicsObject {
 	
 	@Override
 	public boolean update(int deltaMS, Input input) {
-		super.update(deltaMS);
+		super.update(deltaMS, input);
 		
 		if(input.isKeyPressed(Input.KEY_SPACE)) {
 			if(physicsEnabled == true) {
@@ -75,6 +75,9 @@ public class Ball extends PhysicsObject {
 	}
 	
 	protected void onCollide(Entity other, List<Entity> entities) {
+		
+		//**------------Tile Collision-------------**//
+		
     	if(other.entityType == EntityType.Tile) {
     		
     		Line[] outline = getOutline(other.hitbox);
@@ -179,6 +182,7 @@ public class Ball extends PhysicsObject {
     		}
     	}
     	
+    	//**------------Ball Collision-------------**//
     	
     	if(other.entityType == EntityType.Ball) {
     		//Bumps the ball away
@@ -196,6 +200,15 @@ public class Ball extends PhysicsObject {
     		position.x += positionReset.x;
     		position.y += positionReset.y;
     		//applyForce(force.x, force.y);
+    	}
+    	
+    	//**------------GamePiece Collision-------------**//
+    	
+    	if(other.entityType == EntityType.GamePiece) {
+    		if(other instanceof ConveyerBelt) {
+    			ConveyerBelt belt = (ConveyerBelt)other;
+    			belt.CollideAction(this);
+    		}
     	}
     	
     }

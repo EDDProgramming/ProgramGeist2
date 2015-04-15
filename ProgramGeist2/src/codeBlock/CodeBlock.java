@@ -74,18 +74,9 @@ public abstract class CodeBlock extends Entity {
 	protected void loadImage(Image I) {
 		image = I;
 	}
-	
-	@Override
-	public boolean update(int deltaMS) {
-		
-		
-		
-		return true;
-	}
 
 	@Override
 	public boolean update(int deltaMS, Input input) {
-		this.update(deltaMS);
 		centerHitbox();
 		mouseUpdate(deltaMS, input);
 		

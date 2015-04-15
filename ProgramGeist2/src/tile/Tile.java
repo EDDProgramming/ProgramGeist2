@@ -22,16 +22,10 @@ public class Tile extends Entity {
 		
 		entityType = EntityType.Tile;
 	}
-
-	@Override
-	public boolean update(int deltaMS) {
-		// TODO Tile update
-		return true;
-	}
-
+	
 	@Override
 	public boolean update(int deltaMS, Input input) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 }
