@@ -18,7 +18,7 @@ public class Tile extends Entity {
 		super(x, y, world);
 		
 		hitbox = makeRectangle(x + 50, y + 50, 100, 100);
-		image = new Image("res/BetterTile.png");
+		currentImage = new Image("res/BetterTile.png");
 		
 		entityType = EntityType.Tile;
 	}

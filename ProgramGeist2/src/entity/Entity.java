@@ -66,7 +66,9 @@ public abstract class Entity {
     private static int nextId = 0;
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
-    protected Image image;
+    protected Image currentImage;
+    protected Animation currentAnimation;
+    protected boolean animated;
     public Shape hitbox;
     protected Vector2f midpoint;
     
@@ -75,6 +77,7 @@ public abstract class Entity {
     	this(0, 0, world);
     }
     public Entity(float x, float y, EntityWorld world) {
+    	animated = false;
     	this.position.x = x;
     	this.position.y = y;
     	hitbox = new Rectangle(0, 0, 0, 0);
@@ -82,7 +85,7 @@ public abstract class Entity {
     	midpoint = position;
     	
     	try {
-    	image = new Image("res/Whoops.png");
+    	currentImage = new Image("res/Whoops.png");
     	} catch (SlickException e) {
     		e.printStackTrace();
     	}
@@ -112,7 +115,12 @@ public abstract class Entity {
     public abstract boolean update(int deltaMS, Input input);
     
     public void render(Graphics g, double camX, double camY) {
-    	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
+    	if(animated == true && this.currentAnimation != null) {
+    		g.drawAnimation(currentAnimation, (float)(position.x-camX), (float)(position.y-camY));
+    	}
+    	else {
+    		g.drawImage(currentImage, (float)(position.x-camX), (float)(position.y-camY));
+    	}
     }
     public float getX() {
     	return position.x;

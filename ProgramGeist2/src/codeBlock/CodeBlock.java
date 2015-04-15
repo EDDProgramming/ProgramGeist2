@@ -72,7 +72,7 @@ public abstract class CodeBlock extends Entity {
 		}
 	}
 	protected void loadImage(Image I) {
-		image = I;
+		currentImage = I;
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public abstract class CodeBlock extends Entity {
 	
 	@Override
 	public void render(Graphics g, double camX, double camY) {
-		g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
+		g.drawImage(currentImage, (float)(position.x-camX), (float)(position.y-camY));
 	}
 	
 	public abstract boolean call(int deltaMS);

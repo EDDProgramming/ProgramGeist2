@@ -16,8 +16,8 @@ public class TriangleTile2 extends Entity {
 		hitbox = makeTriangle(x + 50, y + 50, -50, 50, 50, 50, -50, -50);
 		midpoint = new Vector2f(position.x + 25, position.y + 75);
 		//Slope faces up-right
-		image = new Image("res/TriangleTile.png");
-		image = image.getFlippedCopy(true, false);
+		currentImage = new Image("res/TriangleTile.png");
+		currentImage = currentImage.getFlippedCopy(true, false);
 		
 		entityType = EntityType.Tile;
 	}

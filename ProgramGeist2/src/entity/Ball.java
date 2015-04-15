@@ -15,7 +15,7 @@ public class Ball extends PhysicsObject {
 	public Ball(float x, float y, EntityWorld world, float mass) throws SlickException {
 		super(x, y, world, mass);
 		hitbox = new Circle(0, 0, 26);
-		image = new Image("res/Ball.png");
+		currentImage = new Image("res/Ball.png");
 		entityType = EntityType.Ball;
 	}
 

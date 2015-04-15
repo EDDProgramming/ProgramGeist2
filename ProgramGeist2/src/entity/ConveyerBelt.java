@@ -1,6 +1,7 @@
 package entity;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Shape;
@@ -16,7 +17,9 @@ public class ConveyerBelt extends Entity {
 		super(x, y, world);
 		
 		hitbox = makeRectangle(x + 100, y, 200, 10);
-		image = new Image("res/Conveyer.png");
+		currentImage = new Image("res/Conveyer.png");
+		Image[] images = new Image[]{new Image("res/Conveyer.png"), new Image("res/Conveyer2.png")};
+		currentAnimation = new Animation(images, 1);
 		speed = 4;
 		on = false;
 		entityType = EntityType.GamePiece;
@@ -30,10 +33,12 @@ public class ConveyerBelt extends Entity {
 	
 	private void ToggleOn() {
 		on = !on;
+		animated = on;
 	}
 	
 	private void SetSpeed(int amount) {
 		speed = amount;
+		currentAnimation.setSpeed(speed);
 	}
 	
 	@Override
