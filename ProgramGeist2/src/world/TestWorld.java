@@ -20,7 +20,7 @@ public class TestWorld extends EntityWorld {
 	
 	private CatalogMenu catalogMenu;
 	
-	public TestWorld(Camera c) throws SlickException {
+	public TestWorld(Camera c, GameContainer gc) throws SlickException {
 		super(c);
 		
 		addEntity(new Ball(300f, 50f, this, 100.0f));
@@ -45,7 +45,7 @@ public class TestWorld extends EntityWorld {
 		
 		addEntity(new TriangleTile(600, 300, this));
 		
-		addEntity(new ConveyerBelt(300, 400, this));
+		addEntity(new ConveyerBelt(300, 400, this, gc));
 		
 		CatalogMenu cm = new CatalogMenu(this);
 		
@@ -71,7 +71,7 @@ public class TestWorld extends EntityWorld {
 //    public void render(GameContainer gc, Graphics g, double camX, double camY) {
 //        catalogMenu.render(gc, g);
 //    }
-    public void render(GameContainer gc, Graphics g, double camX, double camY) {
+    public void render(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {
     	super.render(gc, g, camX, camY);
     	catalogMenu.render(gc, g);
     }

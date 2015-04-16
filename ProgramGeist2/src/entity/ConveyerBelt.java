@@ -1,10 +1,17 @@
 package entity;
 
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.GraphicsEnvironment;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.gui.GUIContext;
+import org.newdawn.slick.gui.TextField;
 
 import world.EntityWorld;
 
@@ -17,11 +24,14 @@ public class ConveyerBelt extends Entity {
 	Animation backwardAnim;
 	Animation forwardAnim;
 	
-	public ConveyerBelt(float x, float y, EntityWorld world) throws SlickException {
+	TextField speedMod;
+	
+	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException {
 		super(x, y, world);
 		
 		hitbox = makeRectangle(x + 100, y, 200, 10);
 		
+		animated = true;
 		currentImage = new Image("res/Conveyer.png");
 		Image[] images = new Image[]{new Image("res/Conveyer.png"), new Image("res/Conveyer2.png"),
 									 new Image("res/Conveyer3.png"), new Image("res/Conveyer4.png"),
@@ -33,11 +43,18 @@ public class ConveyerBelt extends Entity {
 		}
 		backwardAnim = new Animation(backImages, 200);
 		currentAnimation = forwardAnim;
+		currentAnimation.stop();
 		
 		speed = 4;
 		//Note, max speed should be changed based on the animation speed since that is what causes the game to freeze.
 		maxSpeed = 800;
 		on = false;
+		
+		org.newdawn.slick.Font lucidaConsole = new UnicodeFont(new Font("Lucida Console", 0, 5));
+		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -20, 50, 10);
+		speedMod.setConsumeEvents(true);
+		speedMod.setBackgroundColor(Color.white);
+		world.addAbstract(speedMod);
 		
 		entityType = EntityType.GamePiece;
 	}
@@ -50,7 +67,12 @@ public class ConveyerBelt extends Entity {
 	
 	private void ToggleOn() {
 		on = !on;
-		animated = on;
+		if(!on) {
+			currentAnimation.stop();
+		}
+		else {
+			currentAnimation.start();
+		}
 	}
 	
 	private void SetSpeed(int amount) {

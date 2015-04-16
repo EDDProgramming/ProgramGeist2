@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.gui.AbstractComponent;
 
 import codeBlock.CodeBlock;
 import codeBlock.printlnBlock;
@@ -29,6 +30,8 @@ public class EntityWorld {
     private List<Entity> newParticles = new ArrayList<Entity>();
     protected List<CodeBlock> blocks = new ArrayList<CodeBlock>();
     private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
+    private List<AbstractComponent> abstracts = new ArrayList<AbstractComponent>();
+    private List<AbstractComponent> newAbstracts = new ArrayList<AbstractComponent>();
 	
 	private double width;
 	private double height;
@@ -53,6 +56,7 @@ public class EntityWorld {
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
     	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
+    	updateAbstractList(deltaMS, abstracts, newAbstracts, gc);
     }
     
     // getEntitiesInRange
@@ -118,14 +122,26 @@ public class EntityWorld {
         newBlocks.clear();
     }
     
-    public void render(GameContainer gc, Graphics g, double camX, double camY) {
+    private void updateAbstractList(int deltaMS, List<AbstractComponent> abstracts, List<AbstractComponent> newAbstracts, GameContainer gc) {
+    	Iterator<AbstractComponent> a = abstracts.iterator();
+    	while (a.hasNext()) {
+    		AbstractComponent component = a.next();
+    		if(component == null) {
+    			a.remove();
+    		}
+    	}
+    	abstracts.addAll(newAbstracts);
+    	newAbstracts.clear();
+    }
+    
+    public void render(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {
     	standardRender(gc, g, camX, camY);
     	drawHitboxes(entities, g);
     	drawHitboxes(blocks, g, true);
 
     }
     
-    public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {
+    public void standardRender(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
@@ -136,6 +152,15 @@ public class EntityWorld {
             Entity r = iterator.next();
             r.render(g, camX, camY);
             iterator.remove();
+        }
+        
+        ArrayList<AbstractComponent> renderableAbstracts = new ArrayList<AbstractComponent>();
+        renderableAbstracts.addAll(abstracts);
+        Iterator<AbstractComponent> iteratorA = abstracts.iterator();
+        while (iteratorA.hasNext()) {
+        	AbstractComponent r = iteratorA.next();
+        	r.render(gc, g);
+        	iteratorA.remove();
         }
 
     }
@@ -185,6 +210,10 @@ public class EntityWorld {
     
     public void addParticle(Entity e) {
         newParticles.add(e);
+    }
+    
+    public void addAbstract(AbstractComponent a) {
+    	newAbstracts.add(a);
     }
     
     public List<Entity> getEntities() {

@@ -22,7 +22,7 @@ public class GameState extends BasicGameState {
 	
 	void startGame(GameContainer gc) throws SlickException {
 		camera = new Camera();
-		world = new TestWorld(camera);
+		world = new TestWorld(camera, gc);
 	}
 	
 	@Override
