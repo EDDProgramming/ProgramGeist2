@@ -52,7 +52,9 @@ public abstract class Entity {
 		GenericEntity, 
 		CodeBlock,
 		Object,
-		Tile
+		Tile,
+		Ball,
+		GamePiece
 	}
 	
 	protected static Random random = new Random();
@@ -64,38 +66,39 @@ public abstract class Entity {
     private static int nextId = 0;
     protected EntityType entityType = EntityType.GenericEntity;
     protected EntityWorld world;
-    protected Image image;
-    public Polygon hitbox;
-    public Circle radius;
-    public boolean isCircle = false;
+    protected Image currentImage;
+    protected Animation currentAnimation;
+    protected boolean animated;
+    public Shape hitbox;
+    protected Vector2f midpoint;
     
     // Constructors
-    public Entity(Polygon hitbox, Circle radius, boolean circle, EntityWorld world) throws SlickException {
-    	this(0, 0, hitbox, radius, circle, world);
-    	this.id = ++nextId;
+    public Entity(EntityWorld world) throws SlickException {
+    	this(0, 0, world);
     }
-    public Entity(float x, float y, Polygon hitbox, Circle circle, boolean isCircle, EntityWorld world) {
+    public Entity(float x, float y, EntityWorld world) {
+    	animated = false;
     	this.position.x = x;
     	this.position.y = y;
-    	this.hitbox = hitbox;
-        hitbox.setClosed(true);
-    	this.radius = circle;
+    	hitbox = new Rectangle(0, 0, 0, 0);
     	this.world = world;
-    	this.isCircle = isCircle;
+    	midpoint = position;
     	
     	try {
-    	image = new Image("res/Whoops.png");
+    	currentImage = new Image("res/Whoops.png");
     	} catch (SlickException e) {
     		e.printStackTrace();
     	}
+    	
+    	this.id = ++nextId;
     }
     
     public EntityType getType() {
     	return entityType;
     }
     
-    public static Polygon makeRectangle(float x, float y, float width, float height) {
-    	Polygon rectangle;
+    public static Shape makeRectangle(float x, float y, float width, float height) {
+    	Shape rectangle;
     	width /= 2;
     	height /= 2;
     	float[] coordinates = {	x + width, y + height, x + width, y - height, 
@@ -109,12 +112,15 @@ public abstract class Entity {
     }
     
     // Entities will have their own update code
-    public abstract boolean update(int deltaMS);
-    
     public abstract boolean update(int deltaMS, Input input);
     
     public void render(Graphics g, double camX, double camY) {
-    	g.drawImage(image, (float)(position.x-camX), (float)(position.y-camY));
+    	if(animated == true && this.currentAnimation != null) {
+    		g.drawAnimation(currentAnimation, (float)(position.x-camX), (float)(position.y-camY));
+    	}
+    	else {
+    		g.drawImage(currentImage, (float)(position.x-camX), (float)(position.y-camY));
+    	}
     }
     public float getX() {
     	return position.x;
@@ -124,6 +130,14 @@ public abstract class Entity {
     	return position.y;
     }
     
+    public float getWidth() {
+    	return hitbox.getWidth();
+    }
+    
+    public float getHeight() {
+    	return hitbox.getHeight();
+    }
+    
     //Get distance from entity other
     public double distanceTo(Entity other) {
         double dx = position.x - other.position.x;
@@ -131,14 +145,8 @@ public abstract class Entity {
         return Math.sqrt(dx * dx + dy * dy);
     }
     
-    public float getSqrDistance(Vector2f v, Vector2f w) {
-    	
-    	
-    	return null;
-    }
-    
     //Get the lines comprising the hitbox
-    public static Line[] getOutline(Polygon hitbox) {
+    public static Line[] getOutline(Shape hitbox) {
     	
     	//Get a list of points making up the polygon in the form x0, y0... xn, yn
 		float[] points = hitbox.getPoints();
@@ -177,25 +185,32 @@ public abstract class Entity {
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
     	Vector2f reflection = new Vector2f();
-    	reflection = dir.sub(reflector.scale(2 * dir.dot(reflector)));
+    	float dot = 2 * dir.dot(reflector);
+    	Vector2f proj = reflector;
+    	proj.scale(dot);
+    	reflection = dir.sub(proj);
     	return reflection;
     }
     
-    public static Vector2f distancePointToLine(Line line, Vector2f point) {
-    	Vector2f dir = new Vector2f();
+    public static float getPerpendicularDistance(Line line, float x0, float y0) {
+    	float dist = 0;
     	
-    	Vector2f lineStart = new Vector2f(line.getPoints()[0], line.getPoints()[1]);
-    	Vector2f lineEnd = new Vector2f(line.getPoints()[2], line.getPoints()[3]);
+    	float[] points = line.getPoints();
+    	float x1 = points[0];
+    	float y1 = points[1];
+    	float x2 = points[2];
+    	float y2 = points[3];
     	
-    	lengthSqr = 
+    	dist = (float) (Math.abs((y2- y1) * x0 - (x2 - x1) * y0 + (x2 * y1) - (y2 * x1))
+    			/ Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
     	
-    	return dir;
+    	return dist;
     }
     
-    public static Polygon makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
+    public static Shape makeTriangle(float x, float y, float x0, float y0, float x1, float y1, float x2, float y2) {
 		//x, y is the center
     	float[] points = new float[] {x + x0, y + y0, x + x1, y + y1, x + x2, y + y2};
-		Polygon triangle = new Polygon(points);
+		Shape triangle = new Polygon(points);
 		
 		return triangle;
 	}
@@ -229,13 +244,11 @@ public abstract class Entity {
 //        }
 //    }
     
-
-    
     public boolean collidesWith(Entity other) {
         return other != this;
     }
     
-    protected void onCollide(Entity entity) {
+    protected void onCollide(Entity entity, List<Entity> entities) {
     }
     
     public EntityType getEntityType() {

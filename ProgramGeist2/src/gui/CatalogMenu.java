@@ -1,7 +1,13 @@
 package gui;
 
+import java.awt.List;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+
 import org.newdawn.slick.*;
 
+import world.EntityWorld;
 import codeBlock.*;
 
 public class CatalogMenu {
@@ -13,15 +19,16 @@ public class CatalogMenu {
 	private static final int WIDTH = 200;
 	private static int height;
 	private static final int SPACING = 10;
-	private static final int NUM_IMAGES = 6;
+	private static final int NUM_BLOCKS = 6;
 	
-	private static Image[] images;
+	private ArrayList<CodeBlock> codeBlocks;
 	
-	private static CodeBlock[] codeBlocks;
+	public EntityWorld world;
 	
-	public CatalogMenu() {
-		images = loadImages();
+	public CatalogMenu(EntityWorld _world) {
+		world = _world;
 		codeBlocks = loadBlocks();
+		
 	}
 	
 	public void update(GameContainer gc, int deltaMS) {
@@ -30,6 +37,10 @@ public class CatalogMenu {
 		height = gc.getHeight();
 		
 		// check if any code blocks have been clicked.
+		
+		for(int i = 0; i<codeBlocks.size(); i++) {
+			codeBlocks.get(i).update(deltaMS, input);
+		}
 		
 	}
 	
@@ -51,39 +62,42 @@ public class CatalogMenu {
 		g.setColor(Color.white);
 		g.drawString("Code Blocks", xPos, yPos);
 		
-		// draw code blocks
-		int totalHeight = 0;
-		for(int i = 0; i<NUM_IMAGES; i++) {
-			g.drawImage(images[i], xPos, yPos+20+totalHeight+SPACING*(i+1));
-			totalHeight += images[i].getHeight();
+//		// draw code blocks
+//		int totalHeight = 0;
+//		for(int i = 0; i<NUM_BLOCKS; i++) {
+//			g.drawImage(images[i], xPos, yPos+20+totalHeight+SPACING*(i+1));
+//			totalHeight += images[i].getHeight();
+//		}
+		
+		for(int i = 0; i<codeBlocks.size(); i++) {
+			codeBlocks.get(i).render(g, 0, 0);
 		}
 		
 	}
 	
-	private int getNumImages() {
-		return NUM_IMAGES;
-	}
+	public ArrayList<CodeBlock> loadBlocks() {
+		ArrayList<CodeBlock> out = new ArrayList<CodeBlock>();
 
-	public Image[] loadImages() {
-		Image[] out = new Image[6];
-		
+//		TODO make file loader
 		try {
-			out[0] = new Image("res/Code Blocks/The_shape_of_a_Boolean_block.png");
-			out[1] = new Image("res/Code Blocks/The_shape_of_a_C_block.png");
-			out[2] = new Image("res/Code Blocks/The_shape_of_a_Cap_block.png");
-			out[3] = new Image("res/Code Blocks/The_shape_of_a_Hat_Block.png");
-			out[4] = new Image("res/Code Blocks/The_shape_of_a_Reporter_Block.png");
-			out[5] = new Image("res/Code Blocks/The_shape_of_a_Stack_Block.png");
-		} catch(SlickException e) {
+			float totalHeight = 0;
+
+			//out.add(new printlnBlock(50, 100, world));
+			//totalHeight += out.get(0).getHeight();
+			
+			CodeBlock add = new printlnBlock(50, 100, world);
+			out.add(add);
+			
+			out.add(new WhenClicked(50, 200, world));
+			
+			
+			for(int i = 0; i<out.size(); i++) {
+				out.get(i).setMenu();
+			}
+		}catch (SlickException e) {
+			System.out.println("COULD NOT LOAD BLOCKS");
 			e.printStackTrace();
 		}
-		
-		return out;
-	}
-	
-	public CodeBlock[] loadBlocks() {
-		CodeBlock[] out = new CodeBlock[6];
-		
 		
 		return out;
 	}

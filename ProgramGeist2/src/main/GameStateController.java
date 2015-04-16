@@ -19,6 +19,7 @@ public class GameStateController extends StateBasedGame {
         addState(new StartScreenState());
         addState(new LevelSelectionState());
         addState(new GameState());
+        addState(new Level2State());
     }
 
 }

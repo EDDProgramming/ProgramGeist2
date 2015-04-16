@@ -31,17 +31,12 @@ public class PhysicsObject extends Entity {
     protected Vector2f prevPosition = new Vector2f(0, 0);
 	
 
-	public PhysicsObject(float x, float y, Polygon hitbox, Circle radius, boolean circle, EntityWorld world, float mass) throws SlickException {
-		super(x, y, hitbox, radius, circle, world);
+	public PhysicsObject(float x, float y, EntityWorld world, float mass) throws SlickException {
+		super(x, y, world);
 		
 		this.mass = mass;
 		
 		entityType = EntityType.Object;
-	}
-
-	@Override
-	public boolean update(int deltaMS) {
-		return !removed;
 	}
 	
 	public boolean update(int deltaMS, Input input) {
@@ -53,31 +48,33 @@ public class PhysicsObject extends Entity {
 		sumForce.x = 0;
 		sumForce.y = 0;
 
-		hitbox.setCenterX(position.x);
-		hitbox.setCenterY(position.y);
-		radius.setCenterX(position.x);
-		radius.setCenterY(position.y);
+		hitbox.setX(position.x);
+		hitbox.setY(position.y);
 	}
 	
 	//Regular force checks of physics update, for use in subclasses
 	public void updateForces(float friction) {
 		applyGravity();
 		applyFriction(friction);
-		checkCollisions(world.entities);
+		checkCollisions(world.getEntities());
 	}
 	
 	//Calculates acceleration, velocity and position based on force, plus some cleanup.
-	public void updatePosition() {
+	public void updatePosition(float deltaMS) {
+		
+		//Calculate the acceleration based on F = MA
 		if(mass != 0) {
 			acceleration.x = sumForce.x / mass;
 			acceleration.y = sumForce.y / mass;
 		}
-			
-		velocity.x += acceleration.x;
-		velocity.y += acceleration.y;
 		
-		position.x += velocity.x;
-		position.y += velocity.y;
+		//Increment the velocity by acceleration
+		velocity.x += acceleration.x * deltaMS / 300;
+		velocity.y += acceleration.y * deltaMS / 300;
+		
+		//Move the object based on its current velocity
+		position.x += velocity.x * deltaMS;
+		position.y += velocity.y * deltaMS;
 		
 		
 		//Keep this at the end. Is used to get the position of the object in the previous frame.
@@ -114,7 +111,7 @@ public class PhysicsObject extends Entity {
     	
     	float magnitude;
     	
-    	magnitude = (float) (mass * .98);
+    	magnitude = (float) (mass * .20);
     	
     	applyForce(0.0f, magnitude);
     	//Positive is down
@@ -139,35 +136,17 @@ public class PhysicsObject extends Entity {
     }
     
     public void checkCollisions(List<Entity> entities) {
-    	for (Entity e: entities) {
-    		if(isCircle) {
-    			//If both entities are circles
-    			if(e.isCircle && radius.intersects(e.radius)) {
-    				onCollide(e);
-    			}
-    			
-    			//If only this is a circle
-    			else if(!e.isCircle && radius.intersects(e.hitbox)) {
-    				onCollide(e);
-    			}	
-    		}
-    		
-    		else if(!isCircle) {
-    			//If only other is a circle
-    			if(e.isCircle && hitbox.intersects(e.radius)) {
-    				onCollide(e);
-    			}
-    			
-    			//If both are polygons
-    			else if(!e.isCircle && hitbox.intersects(e.hitbox)) {
-    				onCollide(e);
+    	for (Entity e : entities) {
+    		if(e != this) {
+    			if(hitbox.intersects(e.hitbox)) {
+    				onCollide(e, entities);
     			}
     		}
     	}
     }
     
     @Override
-    protected void onCollide(Entity other){};
+    protected void onCollide(Entity other, List<Entity> entities){};
     
     protected void onCollide(PhysicsObject other) {
     	// TODO test if this is ever called by world. The code might not register that what it is contacting is a physics object as well as an entity.

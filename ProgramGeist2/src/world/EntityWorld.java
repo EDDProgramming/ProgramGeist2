@@ -11,8 +11,11 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Polygon;
 
-import codeBlock.StackBlock;
+import codeBlock.CodeBlock;
+import codeBlock.printlnBlock;
 import tile.Tile;
 import tile.TriangleTile;
 import entity.*;
@@ -24,6 +27,8 @@ public class EntityWorld {
     private List<Entity> newEntities = new ArrayList<Entity>();
     private List<Entity> particles = new ArrayList<Entity>();
     private List<Entity> newParticles = new ArrayList<Entity>();
+    protected List<CodeBlock> blocks = new ArrayList<CodeBlock>();
+    private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
 	
 	private double width;
 	private double height;
@@ -34,53 +39,20 @@ public class EntityWorld {
 	
 	private Camera camera;
 	
-	private CatalogMenu catalogMenu = new CatalogMenu();
-	private boolean Edown = false;
-	
 	public EntityWorld(Camera c) throws SlickException {
 		Random random = new Random();
 		
 		camera = c;
-		
-		addEntity(new Ball(300f, 50f, this, 100.0f));
-		
-		for(int i = 0; i<10; i++) {
-		addEntity(new Tile(100*i, 400, this));
-		
-		}
-		
-		addEntity(new TriangleTile(700, 300, this));
-		
-		// end test code
-		
-		addEntity(new StackBlock(300, 200, this));
-		
-		//TODO remove test code
 	}
     
 	
 	
     public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
-    	Input input = gc.getInput();
     	
     	updateEntityList(deltaMS, entities,  newEntities, gc);
     	updateEntityList(deltaMS, particles, newParticles, gc);
-    	drawHitboxes(entities, gc.getGraphics());
-    	
-    	if(catalogMenu.isVisible()) {
-    		catalogMenu.update(gc, deltaMS);
-    	}
-    	
-    	if(Edown == true) {
-    		if(!input.isKeyDown(Input.KEY_E)) {
-    			Edown = false;
-    		}
-    	}
-    	if(input.isKeyDown(Input.KEY_E) && Edown == false) {
-    		catalogMenu.setVisible(!catalogMenu.isVisible());
-    		Edown = true;
-    	}
+    	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
     }
     
     // getEntitiesInRange
@@ -98,7 +70,8 @@ public class EntityWorld {
     	Iterator<Entity> e = entities.iterator();
     	while(e.hasNext()) {
     		Entity entity = e.next();
-    		if(entity.getX() >= x && entity.getX() <= x+width && entity.getY() >= y && entity.getY() <= y+height ) {
+    		if(entity.getX() >= x && entity.getX() <= x + width && entity.getY() >= y
+    				&& entity.getY() <= y + height ) {
     			temp.add(entity);
     		}
     	}
@@ -116,11 +89,7 @@ public class EntityWorld {
             
             boolean entityAlive;
             
-            if(entity.getEntityType() == EntityType.CodeBlock || entity.getEntityType() == EntityType.Object) {
-            	entityAlive = entity.update(deltaMS, gc.getInput());
-            }else {
-            	entityAlive = entity.update(deltaMS);
-            }
+            entityAlive = entity.update(deltaMS, gc.getInput());
             
             if (!entityAlive || entity.isRemoved()) {
                 entity.setRemoved();
@@ -131,10 +100,36 @@ public class EntityWorld {
         newEnts.clear();
     }
     
+    private void updateEntityList(int deltaMS, List<CodeBlock> blocks, List<CodeBlock> newBlocks, GameContainer gc, boolean b) {
+    	Iterator<CodeBlock> e = blocks.iterator();
+        while (e.hasNext()) {
+            CodeBlock entity = e.next();
+            
+            boolean entityAlive;
+            
+            entityAlive = entity.update(deltaMS, gc.getInput(), blocks);
+            
+            if (!entityAlive || entity.isRemoved()) {
+                entity.setRemoved();
+                e.remove();
+            }
+        }
+        blocks.addAll(newBlocks);
+        newBlocks.clear();
+    }
+    
     public void render(GameContainer gc, Graphics g, double camX, double camY) {
+    	standardRender(gc, g, camX, camY);
+    	drawHitboxes(entities, g);
+    	drawHitboxes(blocks, g, true);
+
+    }
+    
+    public void standardRender(GameContainer gc, Graphics g, double camX, double camY) {
     	ArrayList<Entity> renderableEntities = new ArrayList<Entity>();
         renderableEntities.addAll(entities);
         renderableEntities.addAll(particles);
+        renderableEntities.addAll(blocks);
         
         Iterator<Entity> iterator = renderableEntities.iterator();
         while (iterator.hasNext()) {
@@ -142,20 +137,7 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
-        
-        catalogMenu.render(gc, g);
-    }
-    
-    public double[] getPathing(Entity ent, Entity target) {
-    	double[] out = new double[2];
-    	// ???
-    	
-    	// TEMPORARY
-    	out[0] = target.getX();
-    	out[1] = target.getY();
-    	// TEMPORARY
-    	
-    	return out;
+
     }
     
     
@@ -164,21 +146,22 @@ public class EntityWorld {
     	Iterator<Entity> iterator = entities.iterator();
     	while (iterator.hasNext()) {
     		Entity r = iterator.next();
-    		if(r.isCircle == true) {
-    	    	ShapeFill red = new GradientFill(r.radius.getMaxX(), r.radius.getMaxY(), Color.red, r.radius.getMinX(), r.radius.getMinY(), Color.red);
-    			g.draw(r.radius, red);
-    		}
-    		
-    		else {
-    			g.draw(r.hitbox);
-    		}
+    		g.setColor(Color.red);
+    		g.draw(r.hitbox);
+    	}
+    }
+    public void drawHitboxes(List<CodeBlock> entities, Graphics g, boolean b) {
+    	Iterator<CodeBlock> iterator = entities.iterator();
+    	while (iterator.hasNext()) {
+    		Entity r = iterator.next();
+    		g.setColor(Color.red);
+    		g.draw(r.hitbox);
     	}
     }
     
     public boolean isGameOver() {
     	return false;
-    }
-    
+    }   
     
     public long getTime() {
     	return time;
@@ -195,6 +178,9 @@ public class EntityWorld {
     
     public void addEntity(Entity e) {
         newEntities.add(e);
+    }
+    public void addEntity(CodeBlock e) {
+    	newBlocks.add(e);
     }
     
     public void addParticle(Entity e) {
