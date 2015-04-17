@@ -156,10 +156,10 @@ public class EntityWorld {
         
         ArrayList<AbstractComponent> renderableAbstracts = new ArrayList<AbstractComponent>();
         renderableAbstracts.addAll(abstracts);
-        Iterator<AbstractComponent> iteratorA = abstracts.iterator();
+        Iterator<AbstractComponent> iteratorA = renderableAbstracts.iterator();
         while (iteratorA.hasNext()) {
-        	AbstractComponent r = iteratorA.next();
-        	r.render(gc, g);
+        	AbstractComponent a = iteratorA.next();
+        	a.render(gc, g);
         	iteratorA.remove();
         }
 

@@ -10,6 +10,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.gui.GUIContext;
 import org.newdawn.slick.gui.TextField;
 
@@ -25,6 +26,7 @@ public class ConveyerBelt extends Entity {
 	Animation forwardAnim;
 	
 	TextField speedMod;
+	Rectangle modBox;
 	
 	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException {
 		super(x, y, world);
@@ -51,10 +53,12 @@ public class ConveyerBelt extends Entity {
 		on = false;
 		
 		org.newdawn.slick.Font lucidaConsole = new UnicodeFont(new Font("Lucida Console", 0, 5));
-		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -20, 50, 10);
+		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -40, 50, 10);
 		speedMod.setConsumeEvents(true);
-		speedMod.setBackgroundColor(Color.white);
+		speedMod.setBackgroundColor(Color.gray);
+		speedMod.setBorderColor(Color.black);
 		world.addAbstract(speedMod);
+		modBox = new Rectangle(speedMod.getX(), speedMod.getY(), speedMod.getWidth(), speedMod.getHeight());
 		
 		entityType = EntityType.GamePiece;
 	}
@@ -110,6 +114,14 @@ public class ConveyerBelt extends Entity {
 		
 		if(input.isKeyDown(Input.KEY_D)) {
 			SetSpeed(speed + 1);
+		}
+		
+		if(speedMod.hasFocus()){
+			speedMod.setBackgroundColor(Color.white);
+		}
+		
+		else {
+			speedMod.setBackgroundColor(Color.gray);
 		}
 		
 		return true;

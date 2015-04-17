@@ -57,10 +57,10 @@ public class Ball extends PhysicsObject {
 		
 		if(physicsEnabled == true) {
 		
-			System.out.println();
-			System.out.println("Velocity: "+this.velocity);
-			System.out.println("Acceleration: "+this.acceleration);
-			System.out.println("Position: "+this.position);
+			//System.out.println();
+			//System.out.println("Velocity: "+this.velocity);
+			//System.out.println("Acceleration: "+this.acceleration);
+			//System.out.println("Position: "+this.position);
 		
 			updateInit();
 		
@@ -85,11 +85,11 @@ public class Ball extends PhysicsObject {
     		
     		int collisions = 0;
     		
-    		System.out.println("Collide");
+    		//System.out.println("Collide");
     		
     		for(int i = 0; i < outline.length; i++) {
     			if(hitbox.intersects(outline[i])) {
-    				System.out.println("Collided");
+    				//System.out.println("Collided");
     				collided[collisions] = outline[i];
     				collisions++;
     			}
@@ -112,7 +112,7 @@ public class Ball extends PhysicsObject {
     						float pointDiff = Math.abs(line1[0] - line2[0]) + Math.abs(line1[1] - line2[1]) + Math.abs(line1[2] - line2[2]) + Math.abs(line1[3] - line2[3]);
     						float pointDiff2 = Math.abs(line1[0] - line2[2]) + Math.abs(line1[1] - line2[3]) + Math.abs(line1[2] - line2[0]) + Math.abs(line1[3] - line2[1]);
     						if(pointDiff <= .001f || pointDiff2 <= .0001f) {
-    							System.out.println("Ignore");
+    							//System.out.println("Ignore");
     							ignore[i] = true;
     						}
     					}
@@ -148,13 +148,13 @@ public class Ball extends PhysicsObject {
 	    			
 	    			normal.normalise();
 	    			
-	    			System.out.println("Velocity on hit: "+velocity);
+	    			//System.out.println("Velocity on hit: "+velocity);
 	    		    		
 	    			Vector2f bounceDir = getReflectionVector(velocity, normal);
 	    		
 	    			Vector2f forceNormal = bounceDir.scale(forceScalar);
 	    			
-	    			System.out.println("Normal Force: "+forceNormal);
+	    			//System.out.println("Normal Force: "+forceNormal);
 	    			
 	    			//Bump the ball out
 	    			
@@ -171,7 +171,7 @@ public class Ball extends PhysicsObject {
 	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - 
 	    										  getPerpendicularDistance(collided[i], 
 	    										  hitbox.getCenterX(), hitbox.getCenterY()));
-	    			System.out.println(positionReset);
+	    			//System.out.println(positionReset);
 	    			
 	    			position.x += positionReset.x;
 	    			applyForce(forceNormal.x, 0);
