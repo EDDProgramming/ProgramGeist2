@@ -8,9 +8,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import tile.*;
-import codeBlock.CodeBlock;
-import codeBlock.StackBlock;
-import codeBlock.printlnBlock;
 import entity.Ball;
 import entity.ConveyerBelt;
 import gui.CatalogMenu;

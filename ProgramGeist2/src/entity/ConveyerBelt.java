@@ -1,16 +1,11 @@
 package entity;
 
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.GraphicsEnvironment;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.gui.GUIContext;
 import org.newdawn.slick.gui.TextField;
 
@@ -26,9 +21,8 @@ public class ConveyerBelt extends Entity {
 	Animation forwardAnim;
 	
 	TextField speedMod;
-	Rectangle modBox;
 	
-	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException {
+	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException{
 		super(x, y, world);
 		
 		hitbox = makeRectangle(x + 100, y, 200, 10);
@@ -52,13 +46,13 @@ public class ConveyerBelt extends Entity {
 		maxSpeed = 800;
 		on = false;
 		
-		org.newdawn.slick.Font lucidaConsole = new UnicodeFont(new Font("Lucida Console", 0, 5));
-		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -40, 50, 10);
+		org.newdawn.slick.Font lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
+		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -40, 100, 20);
 		speedMod.setConsumeEvents(true);
 		speedMod.setBackgroundColor(Color.gray);
 		speedMod.setBorderColor(Color.black);
+		speedMod.setText("25");
 		world.addAbstract(speedMod);
-		modBox = new Rectangle(speedMod.getX(), speedMod.getY(), speedMod.getWidth(), speedMod.getHeight());
 		
 		entityType = EntityType.GamePiece;
 	}
@@ -69,8 +63,8 @@ public class ConveyerBelt extends Entity {
 		}
 	}
 	
-	private void ToggleOn() {
-		on = !on;
+	private void ToggleOn(boolean on) {
+		this.on = on;
 		if(!on) {
 			currentAnimation.stop();
 		}
@@ -97,6 +91,10 @@ public class ConveyerBelt extends Entity {
 			currentAnimation = forwardAnim;
 		}
 		
+		if(speed == 0) {
+			ToggleOn(false);
+		}
+		
 		currentAnimation.setSpeed((float) (Math.abs(speed) / 4));
 		System.out.println("ConveyerSpeed:" +speed);
 	}
@@ -105,7 +103,7 @@ public class ConveyerBelt extends Entity {
 	public boolean update(int deltaMS, Input input) {
 		
 		if(input.isKeyPressed(Input.KEY_LSHIFT)) {
-			ToggleOn();
+			ToggleOn(!on);
 		}
 		
 		if(input.isKeyDown(Input.KEY_A)) {

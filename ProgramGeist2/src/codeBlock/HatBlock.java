@@ -1,9 +1,7 @@
 package codeBlock;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
@@ -18,7 +16,7 @@ public abstract class HatBlock extends CodeBlock {
 		super(x, y, world);
 		loadImage("res/Code Blocks/The_shape_of_a_Hat_Block.png");
 		canConnectUp = false;
-		blockType = blockType.Hat;
+		blockType = BlockType.Hat;
 	}
 	
 	public boolean call(int deltaMS) {

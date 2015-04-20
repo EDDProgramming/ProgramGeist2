@@ -7,21 +7,11 @@ import main.Camera;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.gui.AbstractComponent;
 
 import codeBlock.CodeBlock;
-import codeBlock.printlnBlock;
-import tile.Tile;
-import tile.TriangleTile;
 import entity.*;
-import entity.Entity.EntityType;
-import gui.CatalogMenu;
 
 public class EntityWorld {
 	public List<Entity> entities = new ArrayList<Entity>();
@@ -32,20 +22,15 @@ public class EntityWorld {
     private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
     private List<AbstractComponent> abstracts = new ArrayList<AbstractComponent>();
     private List<AbstractComponent> newAbstracts = new ArrayList<AbstractComponent>();
-	
-	private double width;
-	private double height;
-	
+    
 	private long time;
 	
 	private int resource1;
 	
-	private Camera camera;
+	//private Camera camera;
 	
 	public EntityWorld(Camera c) throws SlickException {
-		Random random = new Random();
-		
-		camera = c;
+		//camera = c;
 	}
     
 	

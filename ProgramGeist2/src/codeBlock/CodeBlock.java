@@ -3,12 +3,10 @@ package codeBlock;
 import java.util.Iterator;
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.*;
 
 import world.*;
 import entity.*;
@@ -129,7 +127,7 @@ public abstract class CodeBlock extends Entity {
 					}
 					// check for down block
 					if(canConnectDown) {
-						if(block != upBlock && block.blockType != blockType.Hat) {
+						if(block != upBlock && block.blockType != BlockType.Hat) {
 							if(position.x >= block.getX()-100
 									&& position.x <= block.getX()+100
 									&& position.y >= block.getY()-24

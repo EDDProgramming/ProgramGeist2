@@ -20,7 +20,7 @@ public class GameState extends BasicGameState {
 	public GameState() {
 	}
 	
-	void startGame(GameContainer gc) throws SlickException {
+	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
 		world = new TestWorld(camera, gc);
 	}
@@ -42,7 +42,7 @@ public class GameState extends BasicGameState {
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
 		super.enter(gc, game);
-		startGame(gc);
+			startGame(gc);
 		System.out.println("Enter GameState");
 	}
 

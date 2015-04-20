@@ -1,8 +1,5 @@
 package gui;
 
-import java.awt.List;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import org.newdawn.slick.*;
@@ -18,8 +15,6 @@ public class CatalogMenu {
 	
 	private static final int WIDTH = 200;
 	private static int height;
-	private static final int SPACING = 10;
-	private static final int NUM_BLOCKS = 6;
 	
 	private ArrayList<CodeBlock> codeBlocks;
 	
@@ -80,7 +75,7 @@ public class CatalogMenu {
 
 //		TODO make file loader
 		try {
-			float totalHeight = 0;
+			//float totalHeight = 0;
 
 			//out.add(new printlnBlock(50, 100, world));
 			//totalHeight += out.get(0).getHeight();
