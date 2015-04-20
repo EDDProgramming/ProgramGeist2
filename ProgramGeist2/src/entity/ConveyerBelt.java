@@ -91,10 +91,6 @@ public class ConveyerBelt extends Entity {
 			currentAnimation = forwardAnim;
 		}
 		
-		if(speed == 0) {
-			ToggleOn(false);
-		}
-		
 		currentAnimation.setSpeed((float) (Math.abs(speed) / 4));
 		System.out.println("ConveyerSpeed:" +speed);
 	}
