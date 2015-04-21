@@ -65,9 +65,6 @@ public class TestWorld extends EntityWorld {
     	super.update(gc, deltaMS);
     }
     
-//    public void render(GameContainer gc, Graphics g, double camX, double camY) {
-//        catalogMenu.render(gc, g);
-//    }
     public void render(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {
     	super.render(gc, g, camX, camY);
     	catalogMenu.render(gc, g);

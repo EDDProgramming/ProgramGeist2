@@ -1,13 +1,16 @@
 package entity;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.GUIContext;
 import org.newdawn.slick.gui.TextField;
+import org.newdawn.slick.tests.SavedStateTest;
 
 import world.EntityWorld;
 
@@ -20,6 +23,8 @@ public class ConveyerBelt extends Entity {
 	Animation backwardAnim;
 	Animation forwardAnim;
 	
+	ComponentListener speedEar;
+	Font lucidaConsole;
 	TextField speedMod;
 	
 	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException{
@@ -46,8 +51,10 @@ public class ConveyerBelt extends Entity {
 		maxSpeed = 800;
 		on = false;
 		
-		org.newdawn.slick.Font lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
+		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
+		speedEar = new SavedStateTest();
 		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -40, 100, 20);
+		speedMod.addListener(speedEar);
 		speedMod.setConsumeEvents(true);
 		speedMod.setBackgroundColor(Color.gray);
 		speedMod.setBorderColor(Color.black);
@@ -85,10 +92,20 @@ public class ConveyerBelt extends Entity {
 		
 		if(speed < 0) {
 			currentAnimation = backwardAnim;
+			if(on) {
+				currentAnimation.start();
+			}
 		}
 		
 		if(speed > 0) {
 			currentAnimation = forwardAnim;
+			if(on) {
+				currentAnimation.start();
+			}
+		}
+		
+		if(speed == 0) {
+			currentAnimation.stop();
 		}
 		
 		currentAnimation.setSpeed((float) (Math.abs(speed) / 4));
@@ -110,12 +127,12 @@ public class ConveyerBelt extends Entity {
 			SetSpeed(speed + 1);
 		}
 		
-		if(speedMod.hasFocus()){
-			speedMod.setBackgroundColor(Color.white);
+		if(!speedMod.hasFocus()){
+			speedMod.setBackgroundColor(Color.gray);
 		}
 		
 		else {
-			speedMod.setBackgroundColor(Color.gray);
+			speedMod.setBackgroundColor(Color.white);
 		}
 		
 		return true;
