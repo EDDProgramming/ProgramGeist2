@@ -7,11 +7,10 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.GUIContext;
-import org.newdawn.slick.gui.TextField;
-import org.newdawn.slick.tests.SavedStateTest;
 
+import de.lessvoid.nifty.controls.TextField;
+import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import world.EntityWorld;
 
 public class ConveyerBelt extends Entity {
@@ -23,9 +22,8 @@ public class ConveyerBelt extends Entity {
 	Animation backwardAnim;
 	Animation forwardAnim;
 	
-	ComponentListener speedEar;
 	Font lucidaConsole;
-	TextField speedMod;
+	
 	
 	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException{
 		super(x, y, world);
@@ -46,21 +44,15 @@ public class ConveyerBelt extends Entity {
 		currentAnimation = forwardAnim;
 		currentAnimation.stop();
 		
+		
 		speed = 4;
 		//Note, max speed should be changed based on the animation speed since that is what causes the game to freeze.
 		maxSpeed = 800;
 		on = false;
 		
-		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
-		speedEar = new SavedStateTest();
-		speedMod = new TextField(gc, lucidaConsole, (int)position.x, (int)position.y -40, 100, 20);
-		speedMod.addListener(speedEar);
-		speedMod.setConsumeEvents(true);
-		speedMod.setBackgroundColor(Color.gray);
-		speedMod.setBorderColor(Color.black);
-		speedMod.setText("25");
-		world.addAbstract(speedMod);
+		TextFieldBuilder speedField = new TextFieldBuilder();
 		
+		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;
 	}
 	
@@ -125,14 +117,6 @@ public class ConveyerBelt extends Entity {
 		
 		if(input.isKeyDown(Input.KEY_D)) {
 			SetSpeed(speed + 1);
-		}
-		
-		if(!speedMod.hasFocus()){
-			speedMod.setBackgroundColor(Color.gray);
-		}
-		
-		else {
-			speedMod.setBackgroundColor(Color.white);
 		}
 		
 		return true;
