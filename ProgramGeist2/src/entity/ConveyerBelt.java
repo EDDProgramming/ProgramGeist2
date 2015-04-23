@@ -51,6 +51,7 @@ public class ConveyerBelt extends Entity {
 		on = false;
 		
 		TextFieldBuilder speedField = new TextFieldBuilder();
+		speedField.x(Float.toString(this.position.x));
 		
 		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;
