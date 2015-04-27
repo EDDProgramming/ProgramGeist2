@@ -18,10 +18,7 @@ public class TestWorld2 extends EntityWorld {
 	public TestWorld2(Camera c) throws SlickException {
 		super(c);
 		
-		for(int i = 0; i<5; i++) {
-		addEntity(new Ball(300 + 100 * i, 50f, this, 100.0f));
-		
-		}
+		addEntity(new Ball(300, 50f, this, 100.0f));
 		
 		for(int i = 0; i<10; i++) {
 		addEntity(new Tile(100*i, 500, this));
@@ -45,7 +42,7 @@ public class TestWorld2 extends EntityWorld {
 		
 		catalogMenu = new CatalogMenu(this);
 		
-		for(int i = 0; i < 5; i ++) {
+		for(int i = 0; i < 4; i ++) {
 			addEntity(new Tile(200 + 100 * i, 100 + 100 * i, this));
 		}
 		
@@ -69,5 +66,4 @@ public class TestWorld2 extends EntityWorld {
     	super.render(gc, g, camX, camY);
         catalogMenu.render(gc, g);
     }
-
 }

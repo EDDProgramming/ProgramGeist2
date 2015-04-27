@@ -184,11 +184,13 @@ public abstract class Entity {
     }
     
     public static Vector2f getReflectionVector(Vector2f dir, Vector2f reflector) {
+    	Vector2f d = new Vector2f(dir.x, dir.y);
+    	Vector2f r = new Vector2f(reflector.x, reflector.y);
     	Vector2f reflection = new Vector2f();
-    	float dot = 2 * dir.dot(reflector);
-    	Vector2f proj = reflector;
+    	float dot = 2 * d.dot(r);
+    	Vector2f proj = r;
     	proj.scale(dot);
-    	reflection = dir.sub(proj);
+    	reflection = d.sub(proj);
     	return reflection;
     }
     

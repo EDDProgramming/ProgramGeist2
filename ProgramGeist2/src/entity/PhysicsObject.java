@@ -140,6 +140,7 @@ public class PhysicsObject extends Entity {
     		if(e != this) {
     			if(hitbox.intersects(e.hitbox)) {
     				onCollide(e, entities);
+    				return;
     			}
     		}
     	}

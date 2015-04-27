@@ -120,6 +120,8 @@ public class Ball extends PhysicsObject {
     			}
     		}
     		
+    		
+    		
     		//Calculates the result of collision
     		for(int i = 0; i < collisions; i++) {
     			
@@ -151,8 +153,6 @@ public class Ball extends PhysicsObject {
 	    			//System.out.println("Velocity on hit: "+velocity);
 	    		    		
 	    			Vector2f bounceDir = getReflectionVector(velocity, normal);
-	    		
-	    			Vector2f forceNormal = bounceDir.scale(forceScalar);
 	    			
 	    			//System.out.println("Normal Force: "+forceNormal);
 	    			
@@ -166,6 +166,8 @@ public class Ball extends PhysicsObject {
 	    				normal.y *= -1;
 	    			}
 	    			
+	    			bounceDir.scale(forceScalar);
+	    			
 	    			normal.normalise();
 	    			Vector2f positionReset = new Vector2f();
 	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - 
@@ -173,13 +175,22 @@ public class Ball extends PhysicsObject {
 	    										  hitbox.getCenterX(), hitbox.getCenterY()));
 	    			//System.out.println(positionReset);
 	    			
+	    			velocity = bounceDir;
 	    			position.x += positionReset.x;
-	    			applyForce(forceNormal.x, 0);
-	    				
 	    			position.y += positionReset.y;
-	    			applyForce(0, forceNormal.y);
+	    			hitbox.setX(position.x);
+	    			hitbox.setY(position.y);
     			}
     		}
+    		
+    		for (Entity e : entities) {
+        		if(e != this && e != other) {
+        			if(hitbox.intersects(e.hitbox)) {
+        				onCollide(e, entities);
+        				return;
+        			}
+        		}
+        	}
     	}
     	
     	//**------------Ball Collision-------------**//
