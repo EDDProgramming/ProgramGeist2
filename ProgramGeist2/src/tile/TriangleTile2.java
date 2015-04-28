@@ -5,6 +5,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import de.lessvoid.nifty.Nifty;
 import entity.Entity;
 import world.EntityWorld;
 
@@ -23,7 +24,7 @@ public class TriangleTile2 extends Entity {
 	}
 
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		// TODO Auto-generated method stub
 		return true;
 	}

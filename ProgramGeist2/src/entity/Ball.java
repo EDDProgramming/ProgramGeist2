@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
 
+import de.lessvoid.nifty.Nifty;
 import world.EntityWorld;
 
 public class Ball extends PhysicsObject {
@@ -42,8 +43,8 @@ public class Ball extends PhysicsObject {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
-		super.update(deltaMS, input);
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
+		super.update(deltaMS, input, nifty);
 		
 		if(input.isKeyPressed(Input.KEY_SPACE)) {
 			if(physicsEnabled == true) {
@@ -170,9 +171,11 @@ public class Ball extends PhysicsObject {
 	    			
 	    			normal.normalise();
 	    			Vector2f positionReset = new Vector2f();
-	    			positionReset =  normal.scale(hitbox.getBoundingCircleRadius() - 
+	    			
+	    			//+0.1f prevents issues with checking for new collisions, and makes movement smoother
+	    			positionReset =  normal.scale((hitbox.getBoundingCircleRadius() - 
 	    										  getPerpendicularDistance(collided[i], 
-	    										  hitbox.getCenterX(), hitbox.getCenterY()));
+	    										  hitbox.getCenterX(), hitbox.getCenterY())) + 0.1f);
 	    			//System.out.println(positionReset);
 	    			
 	    			velocity = bounceDir;

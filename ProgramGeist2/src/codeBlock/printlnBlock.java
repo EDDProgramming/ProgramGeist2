@@ -3,6 +3,7 @@ package codeBlock;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import world.EntityWorld;
 
 
@@ -22,8 +23,8 @@ public class printlnBlock extends StackBlock implements Cloneable {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
-		super.update(deltaMS, input);
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
+		super.update(deltaMS, input, nifty);
 		return true;
 	}
 	

@@ -8,9 +8,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.AbstractComponent;
 
 import codeBlock.CodeBlock;
+import de.lessvoid.nifty.Nifty;
 import entity.*;
 
 public class EntityWorld {
@@ -20,8 +20,6 @@ public class EntityWorld {
     private List<Entity> newParticles = new ArrayList<Entity>();
     protected List<CodeBlock> blocks = new ArrayList<CodeBlock>();
     private List<CodeBlock> newBlocks = new ArrayList<CodeBlock>();
-    private List<AbstractComponent> abstracts = new ArrayList<AbstractComponent>();
-    private List<AbstractComponent> newAbstracts = new ArrayList<AbstractComponent>();
     
 	private long time;
 	
@@ -35,13 +33,12 @@ public class EntityWorld {
     
 	
 	
-    public void update(GameContainer gc, int deltaMS) {
+    public void update(GameContainer gc, int deltaMS, Nifty nifty) {
     	time += deltaMS;
     	
-    	updateEntityList(deltaMS, entities,  newEntities, gc);
-    	updateEntityList(deltaMS, particles, newParticles, gc);
-    	updateEntityList(deltaMS, blocks, newBlocks, gc, true);
-    	updateAbstractList(deltaMS, abstracts, newAbstracts, gc);
+    	updateEntityList(deltaMS, entities,  newEntities, gc, nifty);
+    	updateEntityList(deltaMS, particles, newParticles, gc, nifty);
+    	updateEntityList(deltaMS, blocks, newBlocks, gc, true, nifty);
     }
     
     // getEntitiesInRange
@@ -71,14 +68,14 @@ public class EntityWorld {
     	return out;
     }
     
-    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts, GameContainer gc) {
+    private void updateEntityList(int deltaMS, List<Entity> ents, List<Entity> newEnts, GameContainer gc, Nifty nifty) {
     	Iterator<Entity> e = ents.iterator();
         while (e.hasNext()) {
             Entity entity = e.next();
             
             boolean entityAlive;
             
-            entityAlive = entity.update(deltaMS, gc.getInput());
+            entityAlive = entity.update(deltaMS, gc.getInput(), nifty);
             
             if (!entityAlive || entity.isRemoved()) {
                 entity.setRemoved();
@@ -89,14 +86,14 @@ public class EntityWorld {
         newEnts.clear();
     }
     
-    private void updateEntityList(int deltaMS, List<CodeBlock> blocks, List<CodeBlock> newBlocks, GameContainer gc, boolean b) {
+    private void updateEntityList(int deltaMS, List<CodeBlock> blocks, List<CodeBlock> newBlocks, GameContainer gc, boolean b, Nifty nifty) {
     	Iterator<CodeBlock> e = blocks.iterator();
         while (e.hasNext()) {
             CodeBlock entity = e.next();
             
             boolean entityAlive;
             
-            entityAlive = entity.update(deltaMS, gc.getInput(), blocks);
+            entityAlive = entity.update(deltaMS, gc.getInput(), blocks, nifty);
             
             if (!entityAlive || entity.isRemoved()) {
                 entity.setRemoved();
@@ -105,18 +102,6 @@ public class EntityWorld {
         }
         blocks.addAll(newBlocks);
         newBlocks.clear();
-    }
-    
-    private void updateAbstractList(int deltaMS, List<AbstractComponent> abstracts, List<AbstractComponent> newAbstracts, GameContainer gc) {
-    	Iterator<AbstractComponent> a = abstracts.iterator();
-    	while (a.hasNext()) {
-    		AbstractComponent component = a.next();
-    		if(component == null) {
-    			a.remove();
-    		}
-    	}
-    	abstracts.addAll(newAbstracts);
-    	newAbstracts.clear();
     }
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {
@@ -138,16 +123,6 @@ public class EntityWorld {
             r.render(g, camX, camY);
             iterator.remove();
         }
-        
-        ArrayList<AbstractComponent> renderableAbstracts = new ArrayList<AbstractComponent>();
-        renderableAbstracts.addAll(abstracts);
-        Iterator<AbstractComponent> iteratorA = renderableAbstracts.iterator();
-        while (iteratorA.hasNext()) {
-        	AbstractComponent a = iteratorA.next();
-        	a.render(gc, g);
-        	iteratorA.remove();
-        }
-
     }
     
     
@@ -195,10 +170,6 @@ public class EntityWorld {
     
     public void addParticle(Entity e) {
         newParticles.add(e);
-    }
-    
-    public void addAbstract(AbstractComponent a) {
-    	newAbstracts.add(a);
     }
     
     public List<Entity> getEntities() {

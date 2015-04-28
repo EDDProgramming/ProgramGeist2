@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import world.*;
 import entity.*;
 
@@ -74,15 +75,15 @@ public abstract class CodeBlock extends Entity {
 	}
 
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		centerHitbox();
 		mouseUpdate(deltaMS, input);
 		
 		return true;
 	}
 	
-	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
-		this.update(deltaMS, input);
+	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks, Nifty nifty) {
+		this.update(deltaMS, input, nifty);
 		
 		if(!menuMode) {
 			checkConnections(input, blocks);

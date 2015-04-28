@@ -5,6 +5,7 @@ import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import entity.PhysicsObject;
 import world.EntityWorld;
 
@@ -27,14 +28,14 @@ public abstract class HatBlock extends CodeBlock {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		// TODO Auto-generated method stub
-		return super.update(deltaMS, input);
+		return super.update(deltaMS, input, nifty);
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
-		return super.update(deltaMS, input, blocks);
+	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks, Nifty nifty) {
+		return super.update(deltaMS, input, blocks, nifty);
 	}
 	
 }

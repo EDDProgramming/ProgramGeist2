@@ -4,6 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import entity.Entity;
 import world.EntityWorld;
 
@@ -23,7 +24,7 @@ public class Tile extends Entity {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		// TODO Auto-generated method stub
 		return true;
 	}

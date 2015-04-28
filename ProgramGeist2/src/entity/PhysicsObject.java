@@ -10,6 +10,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.*;
 
+import de.lessvoid.nifty.Nifty;
+
 
 public class PhysicsObject extends Entity {
 	
@@ -39,7 +41,7 @@ public class PhysicsObject extends Entity {
 		entityType = EntityType.Object;
 	}
 	
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		return !removed;
 	}
     

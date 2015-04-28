@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.gui.GUIContext;
 
+import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import world.EntityWorld;
@@ -52,6 +53,7 @@ public class ConveyerBelt extends Entity {
 		
 		TextFieldBuilder speedField = new TextFieldBuilder();
 		speedField.x(Float.toString(this.position.x));
+		speedField.y(Float.toString(this.position.y));
 		
 		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;
@@ -106,7 +108,7 @@ public class ConveyerBelt extends Entity {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		
 		if(input.isKeyPressed(Input.KEY_LSHIFT)) {
 			ToggleOn(!on);

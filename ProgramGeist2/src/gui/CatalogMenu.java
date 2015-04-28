@@ -6,6 +6,7 @@ import org.newdawn.slick.*;
 
 import world.EntityWorld;
 import codeBlock.*;
+import de.lessvoid.nifty.Nifty;
 
 public class CatalogMenu {
 	
@@ -26,7 +27,7 @@ public class CatalogMenu {
 		
 	}
 	
-	public void update(GameContainer gc, int deltaMS) {
+	public void update(GameContainer gc, int deltaMS, Nifty nifty) {
 		
 		Input input = gc.getInput();
 		height = gc.getHeight();
@@ -34,7 +35,7 @@ public class CatalogMenu {
 		// check if any code blocks have been clicked.
 		
 		for(int i = 0; i<codeBlocks.size(); i++) {
-			codeBlocks.get(i).update(deltaMS, input);
+			codeBlocks.get(i).update(deltaMS, input, nifty);
 		}
 		
 	}

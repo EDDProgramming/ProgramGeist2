@@ -5,6 +5,14 @@ import org.newdawn.slick.state.*;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.nulldevice.NullSoundDevice;
+import de.lessvoid.nifty.render.ScalingRenderDevice;
+import de.lessvoid.nifty.spi.input.InputSystem;
+import de.lessvoid.nifty.spi.render.RenderDevice;
+import de.lessvoid.nifty.spi.sound.SoundDevice;
+import de.lessvoid.nifty.spi.time.TimeProvider;
+import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 import world.EntityWorld;
 import world.TestWorld;
 
@@ -16,6 +24,7 @@ public class GameState extends BasicGameState {
 	private final int updatesPerSecond = 60;
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
+	private Nifty nifty;
 	
 	public GameState() {
 	}
@@ -23,6 +32,7 @@ public class GameState extends BasicGameState {
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
 		world = new TestWorld(camera, gc);
+		//nifty = new Nifty(new , new NullSoundDevice, input, new AccurateTimeProvider);
 	}
 	
 	@Override
@@ -56,7 +66,7 @@ public class GameState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
 		if(world != null) {
 			camera.update(deltaMS);
-			world.update(gc, deltaMS);
+			world.update(gc, deltaMS, nifty);
 		}
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_F2)) {

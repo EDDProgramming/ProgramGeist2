@@ -44,6 +44,7 @@ import java.util.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 
+import de.lessvoid.nifty.Nifty;
 import world.*;
 
 
@@ -112,7 +113,7 @@ public abstract class Entity {
     }
     
     // Entities will have their own update code
-    public abstract boolean update(int deltaMS, Input input);
+    public abstract boolean update(int deltaMS, Input input, Nifty nifty);
     
     public void render(Graphics g, double camX, double camY) {
     	if(animated == true && this.currentAnimation != null) {

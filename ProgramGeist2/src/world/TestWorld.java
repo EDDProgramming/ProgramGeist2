@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import tile.*;
 import entity.Ball;
 import entity.ConveyerBelt;
@@ -49,20 +50,18 @@ public class TestWorld extends EntityWorld {
 		catalogMenu = cm;
 	}
 	
-    public void update(GameContainer gc, int deltaMS) {
-    	super.update(gc, deltaMS);
+    public void update(GameContainer gc, int deltaMS, Nifty nifty) {
+    	super.update(gc, deltaMS, nifty);
     	
     	Input input = gc.getInput();
     	
     	if(catalogMenu.isVisible()) {
-    		catalogMenu.update(gc, deltaMS);
+    		catalogMenu.update(gc, deltaMS, nifty);
     	}
     	
     	if(input.isKeyPressed(Input.KEY_E)) {
     		catalogMenu.setVisible(!catalogMenu.isVisible());
     	}
-    	
-    	super.update(gc, deltaMS);
     }
     
     public void render(GameContainer gc, Graphics g, double camX, double camY) throws SlickException {

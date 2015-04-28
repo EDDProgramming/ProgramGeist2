@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import world.*;
 
 public abstract class CBlock extends CodeBlock {
@@ -20,7 +21,7 @@ public abstract class CBlock extends CodeBlock {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		// TODO Auto-generated method stub
 		return false;
 	}

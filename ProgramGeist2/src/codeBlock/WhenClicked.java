@@ -5,6 +5,7 @@ import java.util.List;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import world.EntityWorld;
 
 public class WhenClicked extends HatBlock {
@@ -14,7 +15,7 @@ public class WhenClicked extends HatBlock {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks) {
+	public boolean update(int deltaMS, Input input, List<CodeBlock> blocks, Nifty nifty) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
@@ -24,7 +25,7 @@ public class WhenClicked extends HatBlock {
 			}
 		}
 		
-		return super.update(deltaMS, input, blocks);
+		return super.update(deltaMS, input, blocks, nifty);
 	}
 	
 	public CodeBlock clone() {

@@ -3,6 +3,7 @@ package codeBlock;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.lessvoid.nifty.Nifty;
 import world.EntityWorld;
 
 public class WhenLevelStarts extends HatBlock {
@@ -12,7 +13,7 @@ public class WhenLevelStarts extends HatBlock {
 	}
 	
 	@Override
-	public boolean update(int deltaMS, Input input) {
+	public boolean update(int deltaMS, Input input, Nifty nifty) {
 		
 		// TODO Integrate with Levels
 		call(deltaMS);
