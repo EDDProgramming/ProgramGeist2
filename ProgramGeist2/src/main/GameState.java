@@ -1,20 +1,22 @@
 package main;
 
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.InputListener;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.nulldevice.NullSoundDevice;
-import de.lessvoid.nifty.render.ScalingRenderDevice;
-import de.lessvoid.nifty.spi.input.InputSystem;
-import de.lessvoid.nifty.spi.render.RenderDevice;
-import de.lessvoid.nifty.spi.sound.SoundDevice;
-import de.lessvoid.nifty.spi.time.TimeProvider;
-import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 import world.EntityWorld;
 import world.TestWorld;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.nulldevice.NullSoundDevice;
+import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
+import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
+import de.lessvoid.nifty.slick2d.input.*;
 
 
 public class GameState extends BasicGameState {
@@ -25,6 +27,7 @@ public class GameState extends BasicGameState {
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	private Nifty nifty;
+	private InputListener listener = this;
 	
 	public GameState() {
 	}
@@ -32,7 +35,7 @@ public class GameState extends BasicGameState {
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
 		world = new TestWorld(camera, gc);
-		//nifty = new Nifty(new , new NullSoundDevice, input, new AccurateTimeProvider);
+		nifty = new Nifty(new SlickRenderDevice(gc), new NullSoundDevice(), new SlickSlickInputSystem(listener), new AccurateTimeProvider());
 	}
 	
 	@Override

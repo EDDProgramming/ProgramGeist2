@@ -22,10 +22,6 @@ public class Level2State extends BasicGameState {
 	private Camera camera;
 
 	private Nifty nifty;
-	private RenderDevice render;
-	private SoundDevice sound;
-	private InputSystem input;
-	private TimeProvider time;
 	
 	public Level2State() {
 	}
@@ -33,7 +29,7 @@ public class Level2State extends BasicGameState {
 	void startGame(GameContainer gc) throws SlickException {
 		camera = new Camera();
 		world = new TestWorld2(camera);
-		nifty = new Nifty(render, sound, input, time);
+		//nifty = new Nifty(render, sound, input, time);
 	}
 	
 	@Override

@@ -113,7 +113,7 @@ public class PhysicsObject extends Entity {
     	
     	float magnitude;
     	
-    	magnitude = (float) (mass * .20);
+    	magnitude = (float) (mass * .40);
     	
     	applyForce(0.0f, magnitude);
     	//Positive is down

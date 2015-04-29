@@ -38,8 +38,9 @@ public class ConveyerBelt extends Entity {
 									 new Image("res/Conveyer5.png"), new Image("res/Conveyer6.png"), };
 		forwardAnim = new Animation(images, 200);
 		Image[] backImages = new Image[images.length];
-		for(int i = 0; i < images.length; i++) {
-			backImages[i] = images[(images.length - 1) - i];
+		backImages[0] = images[0];
+		for(int i = 0; i < images.length - 1; i++) {
+			backImages[i + 1] = images[(images.length) - 1 - i];
 		}
 		backwardAnim = new Animation(backImages, 200);
 		currentAnimation = forwardAnim;
@@ -67,12 +68,6 @@ public class ConveyerBelt extends Entity {
 	
 	private void ToggleOn(boolean on) {
 		this.on = on;
-		if(!on) {
-			currentAnimation.stop();
-		}
-		else {
-			currentAnimation.start();
-		}
 	}
 	
 	private void SetSpeed(int amount) {
@@ -87,20 +82,10 @@ public class ConveyerBelt extends Entity {
 		
 		if(speed < 0) {
 			currentAnimation = backwardAnim;
-			if(on) {
-				currentAnimation.start();
-			}
 		}
 		
 		if(speed > 0) {
 			currentAnimation = forwardAnim;
-			if(on) {
-				currentAnimation.start();
-			}
-		}
-		
-		if(speed == 0) {
-			currentAnimation.stop();
 		}
 		
 		currentAnimation.setSpeed((float) (Math.abs(speed) / 4));
@@ -120,6 +105,18 @@ public class ConveyerBelt extends Entity {
 		
 		if(input.isKeyDown(Input.KEY_D)) {
 			SetSpeed(speed + 1);
+		}
+		
+		if(on && speed != 0) {
+			currentAnimation.start();
+		}
+		
+		else {
+			currentAnimation.stop();
+		}
+		
+		if(speed == 0) {
+			currentAnimation.stop();
 		}
 		
 		return true;
