@@ -16,8 +16,8 @@ public class TestWorld2 extends EntityWorld {
 	
 	private CatalogMenu catalogMenu;
 
-	public TestWorld2(Camera c) throws SlickException {
-		super(c);
+	public TestWorld2(Camera c, Nifty n) throws SlickException {
+		super(c, n);
 		
 		addEntity(new Ball(300, 50f, this, 100.0f));
 		

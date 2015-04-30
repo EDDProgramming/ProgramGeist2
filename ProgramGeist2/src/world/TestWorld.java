@@ -18,8 +18,8 @@ public class TestWorld extends EntityWorld {
 	
 	private CatalogMenu catalogMenu;
 	
-	public TestWorld(Camera c, GameContainer gc) throws SlickException {
-		super(c);
+	public TestWorld(Camera c, GameContainer gc, Nifty n) throws SlickException {
+		super(c, n);
 		
 		addEntity(new Ball(300f, 50f, this, 100.0f));
 		

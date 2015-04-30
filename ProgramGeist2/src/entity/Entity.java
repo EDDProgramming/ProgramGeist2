@@ -81,7 +81,7 @@ public abstract class Entity {
     	animated = false;
     	this.position.x = x;
     	this.position.y = y;
-    	hitbox = new Rectangle(0, 0, 0, 0);
+    	hitbox = null;
     	this.world = world;
     	midpoint = position;
     	

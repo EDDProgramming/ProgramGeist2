@@ -25,10 +25,13 @@ public class EntityWorld {
 	
 	private int resource1;
 	
+	public Nifty nifty;
+	
 	//private Camera camera;
 	
-	public EntityWorld(Camera c) throws SlickException {
+	public EntityWorld(Camera c, Nifty n) throws SlickException {
 		//camera = c;
+		nifty = n;
 	}
     
 	

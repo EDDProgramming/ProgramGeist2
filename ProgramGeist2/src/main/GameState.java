@@ -27,15 +27,14 @@ public class GameState extends BasicGameState {
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	private Nifty nifty;
-	private InputListener listener = this;
 	
 	public GameState() {
 	}
 	
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
-		world = new TestWorld(camera, gc);
-		nifty = new Nifty(new SlickRenderDevice(gc), new NullSoundDevice(), new SlickSlickInputSystem(listener), new AccurateTimeProvider());
+		world = new TestWorld(camera, gc, nifty);
+		nifty = new Nifty(new SlickRenderDevice(gc), new NullSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
 	}
 	
 	@Override
