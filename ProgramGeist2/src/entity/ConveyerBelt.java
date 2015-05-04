@@ -29,10 +29,9 @@ public class ConveyerBelt extends Entity {
 	
 	Font lucidaConsole;
 	
-	Screen screen;
-	ScreenController screenController;
-	
 	Nifty nifty;
+	
+	TextField speedMod;
 	
 	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException{
 		super(x, y, world);
@@ -62,12 +61,7 @@ public class ConveyerBelt extends Entity {
 		
 		nifty = world.nifty;
 		
-		TextFieldBuilder speedField = new TextFieldBuilder();
-		speedField.x(Float.toString(this.position.x));
-		speedField.y(Float.toString(this.position.y));
-		screenController = new DefaultScreenController();
-		screen = new Screen(nifty, "screen1", screenController, nifty.getTimeProvider());
-		speedField.build(nifty, screen, );
+		speedMod.setText(Integer.toString(speed));
 		
 		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;
