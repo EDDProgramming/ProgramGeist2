@@ -30,6 +30,7 @@ public class ConveyerBelt extends Entity {
 	Font lucidaConsole;
 	
 	Nifty nifty;
+	Screen screen;
 	
 	TextField speedMod;
 	
@@ -60,6 +61,9 @@ public class ConveyerBelt extends Entity {
 		on = false;
 		
 		nifty = world.nifty;
+		screen = nifty.getScreen("screen1");
+		
+		speedMod = new TextFieldBuilder().build(nifty, screen,);
 		
 		speedMod.setText(Integer.toString(speed));
 		

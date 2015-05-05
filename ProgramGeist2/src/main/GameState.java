@@ -13,8 +13,12 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import world.EntityWorld;
 import world.TestWorld;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.ImageBuilder;
+import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
+import de.lessvoid.nifty.loaderv2.types.PanelType;
 import de.lessvoid.nifty.nulldevice.NullSoundDevice;
 import de.lessvoid.nifty.spi.render.RenderDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
@@ -33,20 +37,22 @@ public class GameState extends BasicGameState {
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	private Nifty nifty;
-	private Screen screen;
-	private ScreenController screenController;
-	private Element dynamicParent;
-	
+	private ScreenBuilder screenBuilder;
+	private Element mainPanel;
+	private ImageBuilder imageBuilder;
 	
 	public GameState() {
 	}
 	
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
-		screenController = new DefaultScreenController();
 		nifty = new Nifty(new SlickRenderDevice(gc), new NullSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		screen = new Screen(nifty, "screen1", screenController, nifty.getTimeProvider());
-		nifty.addScreen("screen1", screen);
+		screenBuilder = new ScreenBuilder("screen1");
+		screenBuilder.build(nifty);
+		mainPanel = imageBuilder.build();
+		
+		//screen = new Screen(nifty, "screen1", screenController, nifty.getTimeProvider());
+		//nifty.addScreen("screen1", screen);
 		world = new TestWorld(camera, gc, nifty);
 	}
 	
