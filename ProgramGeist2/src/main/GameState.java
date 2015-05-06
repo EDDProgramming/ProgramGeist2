@@ -3,7 +3,6 @@ package main;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.InputListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -13,19 +12,16 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import world.EntityWorld;
 import world.TestWorld;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.builder.ImageBuilder;
-import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.loaderv2.types.ElementType;
-import de.lessvoid.nifty.loaderv2.types.PanelType;
+import de.lessvoid.nifty.examples.test.TestScreen;
 import de.lessvoid.nifty.nulldevice.NullSoundDevice;
-import de.lessvoid.nifty.spi.render.RenderDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
+import de.lessvoid.nifty.slick2d.sound.SlickSoundDevice;
 import de.lessvoid.nifty.slick2d.input.*;
 
 
@@ -38,21 +34,23 @@ public class GameState extends BasicGameState {
 	private Camera camera;
 	private Nifty nifty;
 	private ScreenBuilder screenBuilder;
-	private Element mainPanel;
-	private ImageBuilder imageBuilder;
+	private Screen screen;
+	private ScreenController screenController;
+	
+	private LayerBuilder uiLayer;
 	
 	public GameState() {
 	}
 	
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
-		nifty = new Nifty(new SlickRenderDevice(gc), new NullSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		screenBuilder = new ScreenBuilder("screen1");
-		screenBuilder.build(nifty);
-		mainPanel = imageBuilder.build();
+		nifty = new Nifty(new SlickRenderDevice(gc), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
+		screenController = new TestScreen();
+		screenBuilder = new ScreenBuilder("screen1", screenController);
+		screen = screenBuilder.build(nifty);
+		uiLayer.build(nifty, screen, screen.getRootElement());
+		System.out.println(uiLayer.getId());
 		
-		//screen = new Screen(nifty, "screen1", screenController, nifty.getTimeProvider());
-		//nifty.addScreen("screen1", screen);
 		world = new TestWorld(camera, gc, nifty);
 	}
 	

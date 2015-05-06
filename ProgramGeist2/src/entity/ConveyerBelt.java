@@ -63,7 +63,7 @@ public class ConveyerBelt extends Entity {
 		nifty = world.nifty;
 		screen = nifty.getScreen("screen1");
 		
-		speedMod = new TextFieldBuilder().build(nifty, screen,);
+		speedMod = new TextFieldBuilder().build(nifty, screen, screen.);
 		
 		speedMod.setText(Integer.toString(speed));
 		
