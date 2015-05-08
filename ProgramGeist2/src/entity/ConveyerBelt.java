@@ -57,15 +57,15 @@ public class ConveyerBelt extends Entity {
 		
 		speed = 4;
 		//Note, max speed should be changed based on the animation speed since that is what causes the game to freeze.
-		maxSpeed = 800;
+		maxSpeed = 150;
 		on = false;
 		
 		nifty = world.nifty;
-		screen = nifty.getScreen("screen1");
+		//screen = nifty.getScreen("screen1");
 		
-		speedMod = new TextFieldBuilder().build(nifty, screen, screen.);
+		//speedMod = new TextFieldBuilder().build(nifty, screen, screen.);
 		
-		speedMod.setText(Integer.toString(speed));
+		//speedMod.setText(Integer.toString(speed));
 		
 		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;

@@ -13,9 +13,11 @@ import world.EntityWorld;
 import world.TestWorld;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.LayerBuilder;
-import de.lessvoid.nifty.controls.dynamic.ScreenCreator;
+import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.examples.test.TestScreen;
+import de.lessvoid.nifty.nulldevice.NullSoundDevice;
 import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
+import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
@@ -31,7 +33,7 @@ public class GameState extends BasicGameState {
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	private Nifty nifty;
-	private ScreenCreator screenCreator;
+	private ScreenBuilder screenBuilder;
 	private Screen screen;
 	private ScreenController screenController;
 	
@@ -42,10 +44,12 @@ public class GameState extends BasicGameState {
 	
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
-		nifty = new Nifty(new SlickRenderDevice(gc), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		screenController = new TestScreen();
-		screen = screenCreator.create(nifty);
-		System.out.println(screen.getScreenId());
+		//nifty = new Nifty(new SlickRenderDevice(gc), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
+		//screenController = new TestScreen();
+		//screenBuilder = new ScreenBuilder("screen1", screenController);
+		//screen = screenBuilder.build(nifty);
+		//uiLayer.build(nifty, screen, screen.getRootElement());
+		//System.out.println(uiLayer.getId());
 		
 		world = new TestWorld(camera, gc, nifty);
 	}
