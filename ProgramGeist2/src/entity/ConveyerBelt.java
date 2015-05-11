@@ -73,7 +73,7 @@ public class ConveyerBelt extends Entity {
 	
 	public void CollideAction(PhysicsObject other) {
 		if(on == true) {
-			other.applyForce(speed / 4, 0);
+			other.applyForce(speed, 0);
 		}
 	}
 	

@@ -13,6 +13,7 @@ import world.EntityWorld;
 import world.TestWorld;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.LayerBuilder;
+import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.examples.test.TestScreen;
 import de.lessvoid.nifty.nulldevice.NullSoundDevice;
@@ -20,12 +21,15 @@ import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
+import de.lessvoid.nifty.slick2d.NiftyBasicGameState;
+import de.lessvoid.nifty.render.batch.BatchRenderDevice;
+import de.lessvoid.nifty.slick2d.render.batch.SlickBatchRenderBackendFactory;
 import de.lessvoid.nifty.slick2d.sound.SlickSoundDevice;
 import de.lessvoid.nifty.slick2d.input.*;
+import de.lessvoid.nifty.slick2d.NiftyStateBasedGame;
 
 
-public class GameState extends BasicGameState {
+public class GameState extends NiftyBasicGameState {
 	public static final int ID = 2;
 	
 	private EntityWorld world;
@@ -33,7 +37,6 @@ public class GameState extends BasicGameState {
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
 	private Nifty nifty;
-	private ScreenBuilder screenBuilder;
 	private Screen screen;
 	private ScreenController screenController;
 	
@@ -44,34 +47,42 @@ public class GameState extends BasicGameState {
 	
 	void startGame(GameContainer gc) throws SlickException{
 		camera = new Camera();
-		//nifty = new Nifty(new SlickRenderDevice(gc), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		//screenController = new TestScreen();
-		//screenBuilder = new ScreenBuilder("screen1", screenController);
-		//screen = screenBuilder.build(nifty);
-		//uiLayer.build(nifty, screen, screen.getRootElement());
-		//System.out.println(uiLayer.getId());
-		
 		world = new TestWorld(camera, gc, nifty);
 	}
 	
-	@Override
-	public void init(GameContainer gc, StateBasedGame game) throws SlickException {	
-		gc.setMinimumLogicUpdateInterval(msPerUpdate);
-		gc.setMaximumLogicUpdateInterval(msPerUpdate);
-		System.out.println("Init GameState");
-	}
+//	@Override
+//	public void init(GameContainer gc, StateBasedGame game) throws SlickException {	
+//		gc.setMinimumLogicUpdateInterval(msPerUpdate);
+//		gc.setMaximumLogicUpdateInterval(msPerUpdate);
+//		System.out.println("Init GameState");
+//	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+	public void renderGame(GameContainer gc, StateBasedGame game, Graphics g) {
 		if(world != null) {
-			world.render(gc, g, camera.getX(), camera.getY());
+			try {
+				world.render(gc, g, camera.getX(), camera.getY());
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	@Override
-	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
-		super.enter(gc, game);
-			startGame(gc);
+	public void enterState(GameContainer gc, StateBasedGame game) {
+//		try {
+//			super.enter(gc, game);
+//		} catch (SlickException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+			try {
+				startGame(gc);
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		System.out.println("Enter GameState");
 	}
 
@@ -82,7 +93,7 @@ public class GameState extends BasicGameState {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
+	public void updateGame(GameContainer gc, StateBasedGame game, int deltaMS) {
 		if(world != null) {
 			camera.update(deltaMS);
 			world.update(gc, deltaMS, nifty);
@@ -92,6 +103,21 @@ public class GameState extends BasicGameState {
 			game.enterState(5, new FadeOutTransition(), new FadeInTransition());
 		}
 		// TODO add isGameOver code
+	}
+
+	@Override
+	protected void prepareNifty(Nifty nifty, StateBasedGame game) {
+		nifty = new Nifty(new BatchRenderDevice(SlickBatchRenderBackendFactory.create()), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
+		screen = new ScreenBuilder("Screen1") {{
+			controller(new DefaultScreenController());
+			layer(new LayerBuilder("UI Layer") {{
+				childLayoutCenter();
+				panel(new PanelBuilder() {{
+					width("50%");
+					height("50%");
+				}});
+			}});
+		}}.build(nifty);
 	}
 	
 }
