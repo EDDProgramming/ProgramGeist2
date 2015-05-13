@@ -67,7 +67,7 @@ public class Level2State extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int deltaMS) throws SlickException {
 		if(world != null) {
 			camera.update(deltaMS);
-			world.update(gc, deltaMS, nifty);
+			world.update(gc, deltaMS);
 		}
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_F1)) {

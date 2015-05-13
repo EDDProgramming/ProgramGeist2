@@ -27,16 +27,16 @@ public class EntityWorld {
 	
 	public Nifty nifty;
 	
-	//private Camera camera;
+	private Camera camera;
 	
 	public EntityWorld(Camera c, Nifty n) throws SlickException {
-		//camera = c;
+		camera = c;
 		nifty = n;
 	}
     
 	
 	
-    public void update(GameContainer gc, int deltaMS, Nifty nifty) {
+    public void update(GameContainer gc, int deltaMS) {
     	time += deltaMS;
     	
     	updateEntityList(deltaMS, entities,  newEntities, gc, nifty);

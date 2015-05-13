@@ -10,12 +10,10 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.gui.GUIContext;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.screen.DefaultScreenController;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
 import world.EntityWorld;
 
 public class ConveyerBelt extends Entity {
@@ -31,8 +29,8 @@ public class ConveyerBelt extends Entity {
 	
 	Nifty nifty;
 	Screen screen;
-	
-	TextField speedMod;
+	PanelBuilder textPanel;
+	TextFieldBuilder speedMod;
 	
 	public ConveyerBelt(float x, float y, EntityWorld world, GUIContext gc) throws SlickException{
 		super(x, y, world);
@@ -61,13 +59,8 @@ public class ConveyerBelt extends Entity {
 		on = false;
 		
 		nifty = world.nifty;
-		//screen = nifty.getScreen("screen1");
+		screen = nifty.getCurrentScreen();
 		
-		//speedMod = new TextFieldBuilder().build(nifty, screen, screen.);
-		
-		//speedMod.setText(Integer.toString(speed));
-		
-		lucidaConsole = new UnicodeFont("res/Fonts/lucon.ttf", 5, false, false);
 		entityType = EntityType.GamePiece;
 	}
 	

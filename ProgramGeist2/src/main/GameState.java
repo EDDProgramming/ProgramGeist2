@@ -36,18 +36,14 @@ public class GameState extends NiftyBasicGameState {
 	private final int updatesPerSecond = 60;
 	private final int msPerUpdate = 1000 / updatesPerSecond;
 	private Camera camera;
-	private Nifty nifty;
 	private Screen screen;
-	private ScreenController screenController;
-	
-	private LayerBuilder uiLayer;
 	
 	public GameState() {
 	}
 	
-	void startGame(GameContainer gc) throws SlickException{
+	void startGame(GameContainer gc) throws SlickException {
 		camera = new Camera();
-		world = new TestWorld(camera, gc, nifty);
+		world = new TestWorld(camera, gc, getNifty());
 	}
 	
 //	@Override
@@ -77,6 +73,7 @@ public class GameState extends NiftyBasicGameState {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		
 			try {
 				startGame(gc);
 			} catch (SlickException e) {
@@ -96,7 +93,7 @@ public class GameState extends NiftyBasicGameState {
 	public void updateGame(GameContainer gc, StateBasedGame game, int deltaMS) {
 		if(world != null) {
 			camera.update(deltaMS);
-			world.update(gc, deltaMS, nifty);
+			world.update(gc, deltaMS);
 		}
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_F2)) {
@@ -108,7 +105,7 @@ public class GameState extends NiftyBasicGameState {
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame game) {
 		nifty = new Nifty(new BatchRenderDevice(SlickBatchRenderBackendFactory.create()), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		screen = new ScreenBuilder("Screen1") {{
+		screen = new ScreenBuilder("start") {{
 			controller(new DefaultScreenController());
 			layer(new LayerBuilder("UI Layer") {{
 				childLayoutCenter();

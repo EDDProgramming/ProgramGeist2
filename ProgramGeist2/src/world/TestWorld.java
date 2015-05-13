@@ -51,7 +51,7 @@ public class TestWorld extends EntityWorld {
 	}
 	
     public void update(GameContainer gc, int deltaMS, Nifty nifty) {
-    	super.update(gc, deltaMS, nifty);
+    	super.update(gc, deltaMS);
     	
     	Input input = gc.getInput();
     	
