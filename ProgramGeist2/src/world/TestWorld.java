@@ -45,12 +45,10 @@ public class TestWorld extends EntityWorld {
 		
 		addEntity(new ConveyerBelt(300, 400, this, gc));
 		
-		CatalogMenu cm = new CatalogMenu(this);
-		
-		catalogMenu = cm;
+		catalogMenu = new CatalogMenu(this);
 	}
 	
-    public void update(GameContainer gc, int deltaMS, Nifty nifty) {
+    public void update(GameContainer gc, int deltaMS) {
     	super.update(gc, deltaMS);
     	
     	Input input = gc.getInput();

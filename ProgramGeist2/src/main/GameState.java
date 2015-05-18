@@ -65,21 +65,13 @@ public class GameState extends NiftyBasicGameState {
 		}
 	}
 	
-	@Override
 	public void enterState(GameContainer gc, StateBasedGame game) {
-//		try {
-//			super.enter(gc, game);
-//		} catch (SlickException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-			try {
-				startGame(gc);
-			} catch (SlickException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			startGame(gc);
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("Enter GameState");
 	}
 
@@ -105,7 +97,7 @@ public class GameState extends NiftyBasicGameState {
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame game) {
 		nifty = new Nifty(new BatchRenderDevice(SlickBatchRenderBackendFactory.create()), new SlickSoundDevice(), new SlickSlickInputSystem(this), new AccurateTimeProvider());
-		screen = new ScreenBuilder("start") {{
+		screen = new ScreenBuilder("default") {{
 			controller(new DefaultScreenController());
 			layer(new LayerBuilder("UI Layer") {{
 				childLayoutCenter();
